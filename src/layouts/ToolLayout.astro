@@ -1,0 +1,63 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import { relatedTools } from '@/lib/registry';
+import type { ToolMeta } from '@/lib/types';
+import { getIcon } from '@/lib/icons';
+
+export interface Props {
+  meta: ToolMeta;
+  locale?: 'zh' | 'en';
+}
+
+const { meta, locale = 'zh' } = Astro.props;
+const related = relatedTools(meta);
+const i18n = meta.i18n[locale];
+const RelatedIcon = getIcon;
+---
+
+<BaseLayout title={`${i18n.title} · WeTools`} description={i18n.description}>
+  <SiteHeader />
+
+  <div class="container py-6">
+    <!-- 主内容 -->
+    <main class="mx-auto max-w-4xl">
+      <slot name="header" />
+
+      <div class="mt-6">
+        <slot />
+      </div>
+
+      <!-- 相关工具 -->
+      {related.length > 0 && (
+        <section class="mt-16">
+          <h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            {locale === 'en' ? 'Related tools' : '相关工具'}
+          </h2>
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {related.map((t) => {
+              const Icon = RelatedIcon(t.icon);
+              const ti = t.i18n[locale];
+              return (
+                <a href={`/tools/${t.id}`} class="group tool-card">
+                  <div class="flex items-start gap-3">
+                    <span class="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-foreground/70 transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+                      <Icon size={16} />
+                    </span>
+                    <div class="min-w-0 flex-1">
+                      <p class="truncate text-sm font-medium">{ti.title}</p>
+                      <p class="mt-1 line-clamp-2 text-xs text-muted-foreground">{ti.description}</p>
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
+    </main>
+  </div>
+
+  <SiteFooter />
+</BaseLayout>

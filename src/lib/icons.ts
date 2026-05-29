@@ -1,0 +1,136 @@
+/**
+ * 集中式图标注册表 —— Tree-shaking 友好
+ *
+ * 为什么需要这一层？
+ * 工具的 meta.icon 是字符串（如 'Hash'），如果直接在运行时通过
+ * `import * as Lucide from 'lucide-vue-next'` 反查，会把整个图标库（数百 KB）
+ * 全部打入 chunk。这里显式 import 我们用到的全部图标，由打包器 tree-shake，
+ * 只保留实际引用的那部分。
+ *
+ * 新增工具用到新图标时，请在此处补一行映射。
+ */
+import {
+  Wrench,
+  Star,
+  Clock,
+  Search,
+  Command,
+  Sun,
+  Moon,
+  MonitorCog,
+  Languages,
+  Github,
+  Heart,
+  ShieldCheck,
+  Globe2,
+  Sparkles,
+
+  // 分类图标
+  Binary,
+  Braces,
+  KeyRound,
+  ImageIcon,
+  Type,
+  Globe,
+  Code2,
+
+  // 工具图标
+  Hash,
+  Lock,
+  FileKey2,
+  ShieldQuestion,
+  CalendarClock,
+  Timer,
+  Watch,
+  Dice5,
+  Fingerprint,
+  Rows3,
+  Quote,
+  Database,
+  QrCode,
+  ScanLine,
+  ImageDown,
+  Replace,
+  Pipette,
+  FileImage,
+  Diff,
+  FileText,
+  CaseSensitive,
+  Regex,
+  ListOrdered,
+  Network,
+  Smartphone,
+  TerminalSquare,
+  Link as LinkIcon,
+  Palette,
+  Ruler,
+  Calculator,
+  Layers,
+} from 'lucide-vue-next';
+import type { Component } from 'vue';
+
+export const iconMap: Record<string, Component> = {
+  // 通用 / 站点
+  Wrench,
+  Star,
+  Clock,
+  Search,
+  Command,
+  Sun,
+  Moon,
+  MonitorCog,
+  Languages,
+  Github,
+  Heart,
+  ShieldCheck,
+  Globe2,
+  Sparkles,
+
+  // 分类
+  Binary,
+  Braces,
+  KeyRound,
+  ImageIcon,
+  Type,
+  Globe,
+  Code2,
+
+  // 工具
+  Hash,
+  Lock,
+  FileKey2,
+  ShieldQuestion,
+  CalendarClock,
+  Timer,
+  Watch,
+  Dice5,
+  Fingerprint,
+  Rows3,
+  Quote,
+  Database,
+  QrCode,
+  ScanLine,
+  ImageDown,
+  Replace,
+  Pipette,
+  FileImage,
+  Diff,
+  FileText,
+  CaseSensitive,
+  Regex,
+  ListOrdered,
+  Network,
+  Smartphone,
+  TerminalSquare,
+  Link: LinkIcon,
+  Palette,
+  Ruler,
+  Calculator,
+  Layers,
+};
+
+/** 根据字符串名取图标组件，找不到时回退到 Wrench */
+export function getIcon(name?: string): Component {
+  if (!name) return Wrench;
+  return iconMap[name] ?? Wrench;
+}

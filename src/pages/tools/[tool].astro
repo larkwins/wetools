@@ -1,0 +1,31 @@
+---
+import ToolLayout from '@/layouts/ToolLayout.astro';
+import ToolHeader from '@/components/layout/ToolHeader.vue';
+import ToolMount from '@/components/layout/ToolMount.vue';
+import PrivacyNotice from '@/components/ui/PrivacyNotice.vue';
+import { allTools } from '@/lib/registry';
+import type { ToolMeta } from '@/lib/types';
+
+export function getStaticPaths() {
+  return allTools.map((meta) => ({
+    params: { tool: meta.id },
+    props: { meta },
+  }));
+}
+
+interface Props {
+  meta: ToolMeta;
+}
+
+const { meta } = Astro.props as Props;
+---
+
+<ToolLayout meta={meta}>
+  <ToolHeader slot="header" client:load meta={meta} />
+
+  <ToolMount client:visible meta={meta} />
+
+  <div class="mt-10">
+    <PrivacyNotice mode={meta.privacy ?? 'local'} />
+  </div>
+</ToolLayout>

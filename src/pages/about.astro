@@ -1,0 +1,62 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import { ShieldCheck, Github, Sparkles } from 'lucide-vue-next';
+---
+
+<BaseLayout
+  title="关于 · WeTools"
+  description="WeTools 是一个专为开发者打造的浏览器工具箱，所有工具在浏览器本地运行。"
+>
+  <SiteHeader />
+  <main class="container max-w-3xl py-16">
+    <h1 class="text-4xl font-bold tracking-tight">关于 WeTools</h1>
+    <p class="mt-4 text-base text-muted-foreground">
+      WeTools 是一个面向程序员的开源在线工具合集。它把那些每天都会用到的小工具
+      集中在一个干净、快速、可信的站点里——所有计算都跑在你的浏览器里，无需登录、无需上传。
+    </p>
+
+    <section id="privacy" class="mt-12">
+      <h2 class="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+        <ShieldCheck class="text-primary" size={22} />
+        隐私承诺
+      </h2>
+      <ul class="mt-4 space-y-3 text-sm text-muted-foreground">
+        <li>
+          所有标注 <span class="badge badge-success">本地处理</span>
+          的工具，输入数据从不离开你的浏览器。
+        </li>
+        <li>
+          少数工具（如 IP 查询）必须调用第三方公开接口，会显式标注
+          <span class="badge badge-warning">调用外部 API</span> 并说明请求内容。
+        </li>
+        <li>WeTools 没有后端服务、没有埋点、没有 Cookie 跟踪。</li>
+      </ul>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+        <Sparkles class="text-primary" size={22} />
+        技术栈
+      </h2>
+      <p class="mt-4 text-sm text-muted-foreground">
+        Astro 4（SSG）+ Vue 3 岛屿 + TypeScript + Tailwind CSS，
+        通过插件化架构使新增一个工具的成本接近零。所有重型库按需懒加载，首页仅有几 KB JS。
+      </p>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+        <Github class="text-primary" size={22} />
+        参与贡献
+      </h2>
+      <p class="mt-4 text-sm text-muted-foreground">
+        欢迎提交工具或改进现有工具，复制
+        <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">src/tools/_template</code>
+        即可开始。
+      </p>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

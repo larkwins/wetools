@@ -1,0 +1,117 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings:
+      'cv02',
+      'cv03',
+      'cv04',
+      'cv11';
+  }
+
+  html,
+  body {
+    @apply min-h-full;
+  }
+
+  body {
+    @apply bg-background font-sans text-[14px] leading-6 text-foreground antialiased;
+  }
+
+  ::selection {
+    @apply bg-primary/25 text-foreground;
+  }
+
+  /* 滚动条（仅桌面端） */
+  @media (pointer: fine) {
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      @apply rounded-full bg-border;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-muted-foreground/40;
+    }
+  }
+
+  /* 焦点环统一 */
+  :where(button, [role='button'], a, input, textarea, select):focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* 通用 hairline 容器 */
+  .hairline {
+    @apply rounded-lg border bg-card;
+  }
+
+  /* 工具卡片 */
+  .tool-card {
+    @apply relative flex h-full flex-col gap-2 rounded-lg border bg-card p-4 transition-all duration-150;
+    @apply hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-soft;
+  }
+
+  /* 等宽代码区基础样式 */
+  .code-area {
+    @apply font-mono text-[13px] leading-[1.6] tracking-[-0.01em];
+  }
+
+  /* 隐私 badge */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-medium;
+  }
+  .badge-success {
+    @apply border-primary/30 bg-primary/10 text-primary;
+  }
+  .badge-warning {
+    @apply border-warning/30 bg-warning/10 text-warning;
+  }
+  .badge-info {
+    @apply border-info/30 bg-info/10 text-info;
+  }
+
+  /* 极弱噪点 grid 背景，仅 hero 使用 */
+  .hero-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.6) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.6) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 70%);
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}

@@ -1,0 +1,76 @@
+---
+import '@/styles/globals.css';
+import CommandPalette from '@/components/layout/CommandPalette.vue';
+import { allTools } from '@/lib/registry';
+import { categories } from '@/lib/categories';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  /** 是否为首页（影响 og:type） */
+  home?: boolean;
+}
+
+const {
+  title = 'WeTools — 程序员的浏览器工具箱',
+  description = '40+ 个程序员常用在线工具：JSON 格式化、Base64、加密哈希、二维码、时间戳、正则、图片压缩…… 全部在你的浏览器本地运行，不上传任何数据。',
+  home = false,
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://wetools.cc';
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://wetools.cc').toString();
+const ogImage = `${siteUrl}/og.png`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#10B981" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={home ? 'website' : 'article'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="WeTools" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- 主题防闪烁脚本：必须在 body 渲染前同步执行 -->
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('wetools:theme'); // 'light' | 'dark' | 'system'
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark = stored === 'dark' || ((stored === null || stored === 'system') && prefersDark);
+          var root = document.documentElement;
+          if (isDark) root.classList.add('dark');
+          else root.classList.remove('dark');
+          root.style.colorScheme = isDark ? 'dark' : 'light';
+        } catch (e) {
+          /* no-op */
+        }
+      })();
+    </script>
+
+    <slot name="head" />
+  </head>
+  <body class="min-h-full bg-background text-foreground">
+    <slot />
+    <CommandPalette client:idle allTools={allTools} categories={categories} />
+  </body>
+</html>

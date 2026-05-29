@@ -1,0 +1,143 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import { groupedByCategory, allTools } from '@/lib/registry';
+import { getIcon } from '@/lib/icons';
+import { ArrowRight } from 'lucide-vue-next';
+
+const groups = groupedByCategory();
+const total = allTools.length;
+const Ico = getIcon;
+---
+
+<BaseLayout home>
+  <SiteHeader />
+
+  <main class="relative">
+    <!-- Hero -->
+    <div class="hero-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[480px]"></div>
+
+    <section class="container flex flex-col items-center pb-16 pt-20 text-center sm:pt-24">
+      <span class="badge badge-success mb-5 animate-fade-in" aria-label="本地处理">
+        <span class="h-1.5 w-1.5 rounded-full bg-primary"></span>
+        100% 本地运行 · 不上传任何数据
+      </span>
+
+      <h1
+        class="max-w-3xl animate-slide-up text-balance text-4xl font-bold tracking-tight sm:text-5xl"
+      >
+        程序员的<span class="text-primary">浏览器工具箱</span>
+      </h1>
+      <p
+        class="mt-5 max-w-2xl animate-slide-up text-balance text-base text-muted-foreground sm:text-lg"
+      >
+        {total} 个开箱即用的开发者工具：JSON、Base64、加密哈希、二维码、时间戳、正则、图片压缩……
+        全部在你的浏览器本地完成，开源、免费、无追踪。
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <button
+          id="hero-open-palette"
+          class="inline-flex h-10 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow-soft-sm transition-all hover:opacity-90 hover:shadow-glow-primary"
+        >
+          打开命令面板
+          <kbd
+            class="inline-flex h-5 items-center rounded border border-primary-foreground/30 bg-primary-foreground/10 px-1.5 font-mono text-[11px]"
+          >
+            ⌘K
+          </kbd>
+        </button>
+        <a
+          href="#tools"
+          class="inline-flex h-10 items-center gap-1.5 rounded-md border bg-card px-4 text-sm font-medium transition-colors hover:border-primary/60 hover:text-primary"
+        >
+          浏览全部工具
+          <ArrowRight size={14} />
+        </a>
+      </div>
+    </section>
+
+    <!-- 工具分类网格 -->
+    <section id="tools" class="container space-y-12 pb-24">
+      {groups.length === 0 ? (
+        <div class="hairline p-8 text-center text-muted-foreground">
+          <p class="font-mono text-xs uppercase tracking-widest text-primary">no tools yet</p>
+          <p class="mt-3 text-sm">尚未注册任何工具，请在 <code>src/tools/</code> 下添加。</p>
+        </div>
+      ) : (
+        groups.map((g) => {
+          const CatIcon = Ico(g.category.icon);
+          return (
+            <div id={g.category.id}>
+              <div class="mb-5 flex items-end justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-primary/10 text-primary"
+                  >
+                    <CatIcon size={18} />
+                  </span>
+                  <div>
+                    <h2 class="text-lg font-semibold tracking-tight">
+                      {g.category.i18n.zh.title}
+                    </h2>
+                    <p class="text-xs text-muted-foreground">
+                      {g.category.i18n.zh.description}
+                    </p>
+                  </div>
+                </div>
+                <span class="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  {g.tools.length} tools
+                </span>
+              </div>
+
+              <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {g.tools.map((t) => {
+                  const ToolIco = Ico(t.icon);
+                  return (
+                    <a href={`/tools/${t.id}`} class="group tool-card">
+                      <div class="flex items-start gap-3">
+                        <span
+                          class="mt-0.5 inline-flex h-9 w-9 flex-none items-center justify-center rounded-md bg-secondary text-foreground/70 transition-colors group-hover:bg-primary/10 group-hover:text-primary"
+                        >
+                          <ToolIco size={18} />
+                        </span>
+                        <div class="min-w-0 flex-1">
+                          <div class="flex items-center gap-1.5">
+                            <p class="truncate text-sm font-semibold">{t.i18n.zh.title}</p>
+                            {t.tags?.includes('new') && (
+                              <span
+                                class="rounded-sm bg-info/15 px-1 py-0 text-[9px] font-bold uppercase tracking-wider text-info"
+                              >NEW</span>
+                            )}
+                            {t.tags?.includes('hot') && (
+                              <span
+                                class="rounded-sm bg-destructive/15 px-1 py-0 text-[9px] font-bold uppercase tracking-wider text-destructive"
+                              >HOT</span>
+                            )}
+                          </div>
+                          <p class="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                            {t.i18n.zh.description}
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })
+      )}
+    </section>
+  </main>
+
+  <SiteFooter />
+
+  <script is:inline>
+    // 首页"打开命令面板"按钮触发全局事件（命令面板将在后续阶段挂载）
+    document.getElementById('hero-open-palette')?.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('wetools:openPalette'));
+    });
+  </script>
+</BaseLayout>

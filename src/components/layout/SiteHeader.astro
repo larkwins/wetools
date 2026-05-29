@@ -1,0 +1,75 @@
+---
+import ThemeToggle from '@/components/layout/ThemeToggle.vue';
+import SearchTrigger from '@/components/layout/SearchTrigger.vue';
+import { groupedByCategory } from '@/lib/registry';
+import { Wrench } from 'lucide-vue-next';
+
+const groups = groupedByCategory();
+---
+
+<div class="h-14"></div>
+<header
+  class="fixed top-0 left-0 right-0 z-50 h-14 border-b bg-background/95 backdrop-blur-md"
+>
+  <div class="container flex h-full items-center gap-2">
+    <!-- Logo -->
+    <a
+      href="/"
+      class="group inline-flex flex-none items-center gap-2 font-semibold tracking-tight"
+      aria-label="WeTools 首页"
+    >
+      <span
+        class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-soft-sm transition-transform group-hover:scale-105"
+      >
+        <Wrench size={16} />
+      </span>
+      <span class="hidden text-base sm:inline">WeTools</span>
+    </a>
+
+    <!-- 分类下拉导航 -->
+    <nav class="hidden md:flex items-center gap-0.5 ml-4" aria-label="分类导航">
+      {groups.map((g) => (
+        <div class="nav-dropdown relative">
+          <button
+            type="button"
+            class="inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          >
+            {g.category.i18n.zh.title}
+            <svg class="h-3 w-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-menu absolute left-0 top-full z-50 mt-0 hidden min-w-[180px] rounded-md border bg-popover py-1 shadow-lg">
+            {g.tools.map((t) => (
+              <a
+                href={`/tools/${t.id}`}
+                class="block px-3 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                {t.i18n.zh.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </nav>
+
+    <!-- 搜索 + 主题切换 -->
+    <div class="ml-auto flex flex-none items-center gap-2">
+      <SearchTrigger client:only="vue" />
+      <ThemeToggle client:only="vue" />
+    </div>
+  </div>
+</header>
+
+<style>
+  /* 下拉菜单：hover 时显示 */
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
+    display: block;
+  }
+  /* 留一个 padding-top 防止鼠标移出 button 到 menu 之间的间隙触发关闭 */
+  .nav-dropdown-menu {
+    padding-top: 4px;
+    margin-top: -4px;
+  }
+</style>
