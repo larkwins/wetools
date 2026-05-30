@@ -24,6 +24,16 @@ export const usePrefsStore = defineStore('prefs', () => {
     } else {
       favorites.value = [id, ...favorites.value];
     }
+    // 通知页面上其它需要响应收藏变化的 DOM（如首页的"我的收藏"静态区块）
+    if (typeof window !== 'undefined') {
+      try {
+        window.dispatchEvent(
+          new CustomEvent('wetools:favoritesChanged', { detail: { favorites: favorites.value.slice() } })
+        );
+      } catch {
+        /* ignore */
+      }
+    }
   }
 
   function pushRecent(id: string): void {

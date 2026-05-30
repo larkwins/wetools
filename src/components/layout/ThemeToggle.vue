@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { Sun, Moon } from 'lucide-vue-next';
+import { useI18n } from '@/composables/useI18n';
 
+const { dict } = useI18n();
 type Theme = 'light' | 'dark' | 'system';
 const theme = ref<Theme>('system');
 const dark = ref(false); // SSR 时默认 false，客户端同步
@@ -42,7 +44,7 @@ onMounted(() => {
   <button
     type="button"
     class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-    aria-label="切换主题"
+    :aria-label="dict.theme.toggle"
     @click="toggle"
   >
     <Sun v-if="!dark" :size="15" />

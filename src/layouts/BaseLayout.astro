@@ -1,6 +1,7 @@
 ---
 import '@/styles/globals.css';
 import CommandPalette from '@/components/layout/CommandPalette.vue';
+import GlobalI18n from '@/components/layout/GlobalI18n.vue';
 import { allTools } from '@/lib/registry';
 import { categories } from '@/lib/categories';
 
@@ -34,8 +35,8 @@ const ogImage = `${siteUrl}/og.png`;
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#FCFCFC" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0D1117" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F2F8F5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B1714" media="(prefers-color-scheme: dark)" />
 
     <!-- 字体使用系统字体栈（在 tailwind.config 中定义），避免 Google Fonts 异步加载造成布局跳动 -->
 
@@ -53,9 +54,10 @@ const ogImage = `${siteUrl}/og.png`;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- 主题防闪烁 + 卸载旧的 Service Worker（PWA 已移除） -->
+    <!-- 主题 + 语言防闪烁（必须在 body 渲染之前同步执行） -->
     <script is:inline>
       (function () {
+        // —— 主题 ——
         try {
           var stored = localStorage.getItem('wetools:theme');
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -66,7 +68,51 @@ const ogImage = `${siteUrl}/og.png`;
           root.style.colorScheme = isDark ? 'dark' : 'light';
         } catch (e) {}
 
-        // 主动卸载之前 PWA 注册的 Service Worker，并清理 Workbox 缓存
+        // —— 语言防中文闪烁 ——
+        // 站点 HTML 是 Astro SSR 渲染（默认中文），如果用户选择了 en / zh-TW，
+        // 在 GlobalI18n 完成首次 DOM 文本/属性翻译之前，会看到一闪而过的中文。
+        // 这里：
+        //   1) 同步读取 localStorage 中保存的 locale；
+        //   2) 若是非默认语言（en / zh-TW），暂时把 body 隐藏（visibility:hidden）
+        //      —— 注意必须用 visibility 而不是 display，避免布局抖动；
+        //   3) 由 GlobalI18n 在首次扫描完成后调用 window.__wetoolsRevealBody() 解锁；
+        //   4) 兜底定时器 800ms 后无论如何都解锁，避免脚本异常导致页面一直空白。
+        try {
+          var rawLocale = localStorage.getItem('wetools:locale');
+          // useStorage 对 string 类型默认存裸字符串，但容错下也支持被 JSON.stringify 过的形式
+          if (rawLocale && rawLocale.length >= 2 && rawLocale.charAt(0) === '"' && rawLocale.charAt(rawLocale.length - 1) === '"') {
+            try { rawLocale = JSON.parse(rawLocale); } catch (e) {}
+          }
+          var locale = rawLocale || (function () {
+            var nav = navigator.language || 'zh-CN';
+            if (/^en\b/i.test(nav)) return 'en';
+            if (/zh-(TW|HK|MO)|zh-Hant/i.test(nav)) return 'zh-TW';
+            return 'zh-CN';
+          })();
+          document.documentElement.lang = locale;
+          document.documentElement.setAttribute('data-locale', locale);
+
+          if (locale === 'en' || locale === 'zh-TW') {
+            // 注入临时样式遮住未翻译的中文
+            var style = document.createElement('style');
+            style.id = 'wetools-lang-cloak';
+            style.textContent = 'html[data-locale="' + locale + '"] body{visibility:hidden!important;}';
+            document.head.appendChild(style);
+
+            // 全局 reveal 函数 —— GlobalI18n 首扫完成后调用
+            window.__wetoolsRevealBody = function () {
+              var el = document.getElementById('wetools-lang-cloak');
+              if (el && el.parentNode) el.parentNode.removeChild(el);
+            };
+
+            // 兜底：800ms 后无论如何都解锁，避免脚本异常导致页面一直空白
+            setTimeout(function () {
+              if (window.__wetoolsRevealBody) window.__wetoolsRevealBody();
+            }, 800);
+          }
+        } catch (e) {}
+
+        // —— 卸载旧的 Service Worker（PWA 已移除） ——
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.getRegistrations().then(function (regs) {
             regs.forEach(function (r) { r.unregister(); });
@@ -86,8 +132,12 @@ const ogImage = `${siteUrl}/og.png`;
 
     <slot name="head" />
   </head>
-  <body class="bg-background text-foreground min-h-screen flex flex-col">
-    <slot />
+  <body class="bg-background text-foreground">
+    <div class="flex min-h-screen flex-col pt-14">
+      <slot />
+    </div>
     <CommandPalette client:idle allTools={allTools} categories={categories} />
+    <!-- 语言翻译必须尽早执行，避免中文 FOUC，所以用 client:load 而非 client:idle -->
+    <GlobalI18n client:load />
   </body>
 </html>

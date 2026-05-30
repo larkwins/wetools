@@ -1,15 +1,16 @@
 ---
 import ThemeToggle from '@/components/layout/ThemeToggle.vue';
 import SearchTrigger from '@/components/layout/SearchTrigger.vue';
+import LangSwitch from '@/components/layout/LangSwitch.vue';
 import { groupedByCategory } from '@/lib/registry';
 import { Menu } from 'lucide-vue-next';
 
 const groups = groupedByCategory();
 ---
 
-<header class="sticky top-0 z-50 h-14 border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+<header class="fixed top-0 left-0 right-0 z-50 h-14 border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
   <div class="container flex h-full items-center gap-4 lg:gap-6">
-    <!-- Logo - SVG 内联，避免任何网络请求闪现 -->
+    <!-- Logo - 内联 SVG -->
     <a href="/" class="inline-flex flex-none items-center gap-2 font-semibold tracking-tight text-foreground" aria-label="WeTools 首页">
       <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="h-7 w-7 flex-none" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -26,7 +27,7 @@ const groups = groupedByCategory();
       <span class="text-sm">WeTools</span>
     </a>
 
-    <!-- 桌面端：分类下拉导航（≥xl 显示，避免挤压变形） -->
+    <!-- 桌面端：分类下拉导航（Astro 静态） -->
     <nav class="hidden xl:flex items-center gap-0.5" aria-label="分类导航">
       {groups.map((g) => (
         <div class="nav-dropdown relative">
@@ -53,21 +54,21 @@ const groups = groupedByCategory();
       ))}
     </nav>
 
-    <!-- 移动端/中屏：汉堡菜单按钮 -->
+    <!-- 移动端汉堡按钮 -->
     <button
       id="mobile-nav-toggle"
       type="button"
       class="xl:hidden inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
       aria-label="打开菜单"
       aria-expanded="false"
-      aria-controls="mobile-nav-panel"
     >
       <Menu :size="18" />
     </button>
 
     <!-- 右侧 -->
-    <div class="ml-auto flex flex-none items-center gap-2">
+    <div class="ml-auto flex flex-none items-center gap-1.5">
       <SearchTrigger client:load />
+      <LangSwitch client:load />
       <ThemeToggle client:load />
     </div>
   </div>
@@ -117,7 +118,6 @@ const groups = groupedByCategory();
 </style>
 
 <script>
-  // 移动端汉堡菜单交互
   function initMobileNav() {
     const btn = document.getElementById('mobile-nav-toggle');
     const panel = document.getElementById('mobile-nav-panel');
@@ -138,29 +138,17 @@ const groups = groupedByCategory();
       btn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     };
-    const toggle = () => {
-      panel.classList.contains('hidden') ? open() : close();
-    };
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      toggle();
+      panel.classList.contains('hidden') ? open() : close();
     });
-
-    // 点击链接后自动关闭
     panel.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (target.closest('a')) close();
+      if ((e.target as HTMLElement).closest('a')) close();
     });
-
-    // 点击遮罩关闭
     backdrop.addEventListener('click', close);
-
-    // ESC 关闭
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !panel.classList.contains('hidden')) close();
     });
-
-    // 窗口放大到 xl 时自动关闭
     const mq = window.matchMedia('(min-width: 1280px)');
     mq.addEventListener('change', (e) => {
       if (e.matches) close();

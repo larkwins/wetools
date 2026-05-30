@@ -1,9 +1,27 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { Upload, X } from 'lucide-vue-next';
+// 顶层 namespace 静态 import：让 Vite 在 optimizeDeps 阶段正确预构建，
+// 避免 dev 下动态 import 出现 "Failed to fetch dynamically imported module" 错误。
+// 同时用 namespace import 兼容包的多种导出形态（ESM 命名 / CJS interop default 是对象 / default 直接是函数）。
+import * as jsMd5 from 'js-md5';
 import Textarea from '@/components/ui/Textarea.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
+
+type Md5Fn = (s: string | Uint8Array | ArrayBuffer) => string;
+
+function resolveMd5(): Md5Fn {
+  const mod = jsMd5 as unknown as { md5?: unknown; default?: unknown };
+  if (typeof mod.md5 === 'function') return mod.md5 as Md5Fn;
+  if (typeof mod.default === 'function') return mod.default as Md5Fn;
+  if (mod.default && typeof (mod.default as { md5?: unknown }).md5 === 'function') {
+    return (mod.default as { md5: Md5Fn }).md5;
+  }
+  if (typeof jsMd5 === 'function') return jsMd5 as unknown as Md5Fn;
+  throw new Error('js-md5: unable to resolve md5 function from module');
+}
+const md5: Md5Fn = resolveMd5();
 
 type Mode = 'text' | 'file';
 const mode = ref<Mode>('text');
@@ -24,24 +42,25 @@ async function sha(algo: 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512', data: Arra
   return buf2hex(out);
 }
 
-const md5Mod = ref<{ default: (s: string | Uint8Array | ArrayBuffer) => string } | null>(null);
-async function ensureMd5() {
-  if (!md5Mod.value) md5Mod.value = await import('js-md5');
-  return md5Mod.value!.default;
-}
-
 const textResults = ref<Record<string, string>>({});
+const error = ref<string>('');
 
 async function recompute() {
   if (mode.value !== 'text') return;
-  const md5 = await ensureMd5();
-  const r: Record<string, string> = {};
-  r['MD5'] = md5(text.value);
-  r['SHA-1'] = await sha('SHA-1', text.value);
-  r['SHA-256'] = await sha('SHA-256', text.value);
-  r['SHA-384'] = await sha('SHA-384', text.value);
-  r['SHA-512'] = await sha('SHA-512', text.value);
-  textResults.value = r;
+  error.value = '';
+  try {
+    textResults.value = {
+      MD5: md5(text.value),
+      'SHA-1': await sha('SHA-1', text.value),
+      'SHA-256': await sha('SHA-256', text.value),
+      'SHA-384': await sha('SHA-384', text.value),
+      'SHA-512': await sha('SHA-512', text.value),
+    };
+  } catch (e) {
+    console.error('[hash] recompute failed', e);
+    error.value = (e as Error).message || String(e);
+    textResults.value = { MD5: '', 'SHA-1': '', 'SHA-256': '', 'SHA-384': '', 'SHA-512': '' };
+  }
 }
 
 watch([text, mode], recompute, { immediate: true });
@@ -52,9 +71,9 @@ async function onFile(e: Event) {
   file.value = f;
   fileName.value = f.name;
   computing.value = true;
+  error.value = '';
   try {
     const buf = await f.arrayBuffer();
-    const md5 = await ensureMd5();
     const u8 = new Uint8Array(buf);
     fileResults.value = {
       MD5: md5(u8),
@@ -63,6 +82,9 @@ async function onFile(e: Event) {
       'SHA-384': await sha('SHA-384', buf),
       'SHA-512': await sha('SHA-512', buf),
     };
+  } catch (e) {
+    console.error('[hash] file hash failed', e);
+    error.value = (e as Error).message || String(e);
   } finally {
     computing.value = false;
   }
@@ -119,6 +141,10 @@ function fmtSize(n: number) {
       </div>
       <p v-if="computing" class="mt-3 text-xs text-muted-foreground">正在计算…（大文件会读入内存，仅在浏览器本地处理）</p>
     </div>
+
+    <p v-if="error" class="rounded-md border border-destructive/40 bg-destructive/5 px-3 py-2 text-xs text-destructive">
+      {{ error }}
+    </p>
 
     <ul class="space-y-2">
       <li v-for="(v, k) in display" :key="k" class="flex items-center gap-3 rounded-md border bg-card px-3 py-2">

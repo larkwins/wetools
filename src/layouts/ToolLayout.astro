@@ -3,20 +3,18 @@ import BaseLayout from './BaseLayout.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
 import ToolActions from '@/components/layout/ToolActions.vue';
+import RelatedTools from '@/components/layout/RelatedTools.vue';
 import { relatedTools } from '@/lib/registry';
 import type { ToolMeta } from '@/lib/types';
-import { getIcon } from '@/lib/icons';
 import { ShieldCheck, Globe2 } from 'lucide-vue-next';
 
 export interface Props {
   meta: ToolMeta;
-  locale?: 'zh' | 'en';
 }
 
-const { meta, locale = 'zh' } = Astro.props;
+const { meta } = Astro.props;
 const related = relatedTools(meta);
-const i18n = meta.i18n[locale];
-const RelatedIcon = getIcon;
+const i18n = meta.i18n.zh;
 const isExternal = meta.privacy === 'external';
 ---
 
@@ -25,7 +23,7 @@ const isExternal = meta.privacy === 'external';
 
   <div class="container pt-8 pb-6 flex-1">
     <main class="mx-auto max-w-4xl">
-      <!-- 标题（纯静态，不闪烁） -->
+      <!-- 标题区（Astro 静态渲染，无 hydrate 闪烁） -->
       <header class="flex flex-col gap-4 border-b pb-6">
         <div class="flex items-start justify-between gap-4">
           <div class="min-w-0 flex-1">
@@ -48,8 +46,7 @@ const isExternal = meta.privacy === 'external';
               )}
             </div>
           </div>
-
-          <!-- 收藏/复制 — client:only 避免 hydration mismatch，外层 div 占位防止布局跳动 -->
+          <!-- 收藏/复制 — 占位避免布局跳动 -->
           <div class="flex flex-none items-center gap-2 w-[72px] h-8">
             <ToolActions client:only="vue" toolId={meta.id} />
           </div>
@@ -60,34 +57,9 @@ const isExternal = meta.privacy === 'external';
         <slot />
       </div>
 
-      <!-- 相关工具 -->
-      {related.length > 0 && (
-        <section class="mt-16">
-          <h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            相关工具
-          </h2>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {related.map((t) => {
-              const Icon = RelatedIcon(t.icon);
-              const ti = t.i18n[locale];
-              return (
-                <a href={`/${t.id}`} class="group tool-card cursor-pointer">
-                  <div class="flex items-start gap-3">
-                    <span class="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-foreground/70 transition-colors group-hover:text-primary">
-                      <Icon size={16} />
-                    </span>
-                    <div class="min-w-0 flex-1">
-                      <p class="truncate text-sm font-medium">{ti.title}</p>
-                      <p class="mt-1 line-clamp-2 text-xs text-muted-foreground">{ti.description}</p>
-                    </div>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </section>
-      )}
+      <RelatedTools client:visible related={related} />
     </main>
   </div>
+
   <SiteFooter />
 </BaseLayout>

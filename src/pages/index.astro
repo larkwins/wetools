@@ -2,16 +2,17 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
+import FavoriteButton from '@/components/ui/FavoriteButton.vue';
 import { groupedByCategory, allTools } from '@/lib/registry';
 import { getIcon } from '@/lib/icons';
+import { Star, ClipboardList } from 'lucide-vue-next';
 
 const groups = groupedByCategory();
 const total = allTools.length;
 const Ico = getIcon;
 
-// 每个分类分配一个辅助色
 const categoryColors: Record<string, { icon: string; iconBg: string; hover: string }> = {
-  encoding:  { icon: 'text-blue-500',   iconBg: 'bg-blue-500/10',   hover: 'group-hover:text-blue-500' },
+  encoding:  { icon: 'text-blue-500',    iconBg: 'bg-blue-500/10',    hover: 'group-hover:text-blue-500' },
   json:      { icon: 'text-emerald-500', iconBg: 'bg-emerald-500/10', hover: 'group-hover:text-emerald-500' },
   crypto:    { icon: 'text-purple-500',  iconBg: 'bg-purple-500/10',  hover: 'group-hover:text-purple-500' },
   datetime:  { icon: 'text-orange-500',  iconBg: 'bg-orange-500/10',  hover: 'group-hover:text-orange-500' },
@@ -44,8 +45,43 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
       </div>
     </section>
 
-    <!-- 工具分类网格 -->
     <section class="container space-y-12 pb-20">
+      <!-- 我的收藏 —— 完全静态预渲染，由内联同步脚本从 localStorage 填充 -->
+      <!--
+        实现思路（避免 Vue hydrate 延迟导致 "先空状态再出现收藏卡片"）：
+          1. Astro 在 SSR 阶段为每个工具卡片打上 data-tool-id，渲染到各分类下；
+          2. 这里输出一个空的收藏外壳（标题 + 空状态 + 卡片容器，二者用 hidden 切换）；
+          3. 紧跟一段 <script is:inline>，body 解析到这里时同步执行：
+             - 读 localStorage 中的 wetools:favorites
+             - 在 DOM 中找到对应 [data-tool-id] 卡片，克隆到 #favorites-grid
+             - 若有收藏 → 显示卡片网格、隐藏空状态、显示计数 badge
+          4. 整个过程在浏览器解析 HTML 时同步完成，无需等 Vue / JS chunk 下载。
+      -->
+      <div class="favorites-shell">
+        <div class="mb-4 flex items-center gap-2.5">
+          <span class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-amber-500/10">
+            <Star size={14} class="text-amber-500" fill="currentColor" stroke-width={1.5} />
+          </span>
+          <h2 class="text-sm font-semibold text-foreground">我的收藏</h2>
+          <span id="favorites-count" style="display:none" class="ml-1 rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
+            0
+          </span>
+        </div>
+
+        <!-- 卡片网格容器（同步脚本会往里 clone 卡片） -->
+        <div id="favorites-grid" style="display:none" class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+
+        <!-- 空状态 -->
+        <div id="favorites-empty" class="flex items-center gap-3 rounded-lg border border-dashed bg-card/40 px-4 py-5 text-sm text-muted-foreground">
+          <ClipboardList size={20} class="flex-none text-muted-foreground/70" />
+          <p>
+            还没有收藏任何工具。点击工具卡片右上角的
+            <Star size={13} class="inline-block -mt-0.5 text-amber-500" />
+            即可收藏，方便下次快速访问。
+          </p>
+        </div>
+      </div>
+
       {groups.map((g) => {
         const CatIcon = Ico(g.category.icon);
         const colors = categoryColors[g.category.id] ?? defaultColor;
@@ -55,9 +91,7 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
               <span class={`inline-flex h-7 w-7 items-center justify-center rounded-md ${colors.iconBg}`}>
                 <CatIcon size={14} class={colors.icon} />
               </span>
-              <h2 class="text-sm font-semibold text-foreground">
-                {g.category.i18n.zh.title}
-              </h2>
+              <h2 class="text-sm font-semibold text-foreground">{g.category.i18n.zh.title}</h2>
               <span class="ml-1 rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
                 {g.tools.length}
               </span>
@@ -67,17 +101,18 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
               {g.tools.map((t) => {
                 const ToolIco = Ico(t.icon);
                 return (
-                  <a href={`/${t.id}`} class="group tool-card cursor-pointer">
+                  <a href={`/${t.id}`} data-tool-id={t.id} class="group tool-card relative cursor-pointer">
                     <div class="flex items-center gap-3">
                       <span class={`inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-muted-foreground transition-colors ${colors.hover}`}>
                         <ToolIco size={15} />
                       </span>
-                      <div class="min-w-0 flex-1">
+                      <div class="min-w-0 flex-1 pr-7">
                         <p class="truncate text-sm font-medium text-foreground">{t.i18n.zh.title}</p>
-                        <p class="truncate text-xs text-muted-foreground mt-0.5">
-                          {t.i18n.zh.description}
-                        </p>
+                        <p class="truncate text-xs text-muted-foreground mt-0.5">{t.i18n.zh.description}</p>
                       </div>
+                    </div>
+                    <div class="absolute right-2 top-2">
+                      <FavoriteButton client:load toolId={t.id} size="sm" />
                     </div>
                   </a>
                 );
@@ -87,13 +122,76 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
         );
       })}
     </section>
+
+    <!-- 收藏区同步填充脚本：HTML 解析到此处时立刻执行，避免等 Vue hydrate -->
+    <script is:inline>
+      (function () {
+        function readFavoriteIds() {
+          try {
+            var raw = localStorage.getItem('wetools:favorites');
+            if (!raw) return [];
+            var parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed.filter(function (x) { return typeof x === 'string'; }) : [];
+          } catch (e) {
+            return [];
+          }
+        }
+
+        function render() {
+          var grid = document.getElementById('favorites-grid');
+          var empty = document.getElementById('favorites-empty');
+          var countEl = document.getElementById('favorites-count');
+          if (!grid || !empty) return;
+
+          var ids = readFavoriteIds();
+
+          // 清空当前收藏区
+          while (grid.firstChild) grid.removeChild(grid.firstChild);
+
+          var added = 0;
+          for (var i = 0; i < ids.length; i++) {
+            var id = ids[i];
+            // tool id 都是 kebab-case 安全字符
+            var src = document.querySelector('[data-tool-id="' + id.replace(/"/g, '') + '"]');
+            if (!src) continue;
+            var clone = src.cloneNode(true);
+            clone.removeAttribute('data-tool-id'); // 避免下次再被选中、克隆嵌套
+            grid.appendChild(clone);
+            added++;
+          }
+          // 注意：grid / empty 是 Tailwind 的 grid / flex 容器，
+          // HTML 原生 hidden 属性等价 display:none，但会被 class 中的 display:grid/flex
+          // 覆盖，所以必须用 inline style 强制隐藏（特异性更高）。
+          function setVisible(el, visible) {
+            if (visible) el.style.display = '';
+            else el.style.display = 'none';
+            el.removeAttribute('hidden');
+          }
+          if (added > 0) {
+            setVisible(grid, true);
+            setVisible(empty, false);
+            if (countEl) {
+              countEl.textContent = String(added);
+              setVisible(countEl, true);
+            }
+          } else {
+            setVisible(grid, false);
+            setVisible(empty, true);
+            if (countEl) setVisible(countEl, false);
+          }
+        }
+
+        // 首屏立刻执行
+        render();
+        // 收藏变化时刷新（FavoriteButton 在 toggle 时会派发此事件）
+        window.addEventListener('wetools:favoritesChanged', render);
+        // 跨标签同步：另一个标签修改了 localStorage 也刷新
+        window.addEventListener('storage', function (e) {
+          if (e.key === 'wetools:favorites') render();
+        });
+      })();
+    </script>
   </main>
 
   <SiteFooter />
-
-  <script is:inline>
-    document.getElementById('hero-open-palette')?.addEventListener('click', () => {
-      window.dispatchEvent(new CustomEvent('wetools:openPalette'));
-    });
-  </script>
 </BaseLayout>

@@ -10,10 +10,10 @@ import { getIcon } from '@/lib/icons';
 const props = defineProps<{
   allTools: ToolMeta[];
   categories: CategoryMeta[];
-  locale?: 'zh' | 'en';
 }>();
 
-const locale = props.locale ?? 'zh';
+// 所有可见文案以中文为源，由 GlobalI18n 在客户端按当前 locale 翻译为 zh-TW / en，
+// 避免每个 Astro client island 各自创建 Pinia 实例导致的 SSR/CSR locale 不一致。
 const prefs = usePrefsStore();
 const { favorites, recents } = storeToRefs(prefs);
 
@@ -56,18 +56,18 @@ const groups = computed<Group[]>(() => {
   const q = query.value.trim();
   if (q) {
     const found = fuse.value.search(q).map((r) => r.item).slice(0, 24);
-    return [{ id: 'search', title: locale === 'en' ? 'Results' : '搜索结果', tools: found }];
+    return [{ id: 'search', title: '搜索结果', tools: found }];
   }
   const arr: Group[] = [];
   const favs = favorites.value.map(byId).filter((x): x is ToolMeta => Boolean(x));
-  if (favs.length) arr.push({ id: 'fav', title: locale === 'en' ? 'Favorites' : '收藏', icon: 'Star', tools: favs.slice(0, 8) });
+  if (favs.length) arr.push({ id: 'fav', title: '收藏', icon: 'Star', tools: favs.slice(0, 8) });
   const recs = recents.value.map(byId).filter((x): x is ToolMeta => Boolean(x));
-  if (recs.length) arr.push({ id: 'recent', title: locale === 'en' ? 'Recent' : '最近使用', icon: 'Clock', tools: recs.slice(0, 6) });
-  // 分类
+  if (recs.length) arr.push({ id: 'recent', title: '最近使用', icon: 'Clock', tools: recs.slice(0, 6) });
+  // 分类（取 zh 标题；GlobalI18n 会按 locale 翻译）
   const sorted = [...props.categories].sort((a, b) => a.order - b.order);
   for (const c of sorted) {
     const tools = props.allTools.filter((t) => t.category === c.id);
-    if (tools.length) arr.push({ id: c.id, title: c.i18n[locale].title, icon: c.icon, tools });
+    if (tools.length) arr.push({ id: c.id, title: c.i18n.zh.title, icon: c.icon, tools });
   }
   return arr;
 });
@@ -187,7 +187,7 @@ onUnmounted(() => {
         @click.self="hide"
       >
         <div
-          class="mx-auto mt-[12vh] flex max-h-[70vh] w-[min(680px,calc(100%-2rem))] flex-col overflow-hidden rounded-xl border bg-popover shadow-2xl animate-pop-in"
+          class="mx-auto mt-[12vh] flex max-h-[70vh] w-[min(680px,calc(100%-2rem))] flex-col overflow-hidden rounded-xl border bg-background shadow-2xl animate-pop-in"
           role="dialog"
           aria-modal="true"
         >
@@ -198,7 +198,7 @@ onUnmounted(() => {
               v-model="query"
               type="text"
               class="h-12 flex-1 bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus-visible:!ring-0 focus-visible:!ring-offset-0"
-              :placeholder="locale === 'en' ? 'Search tools…' : '搜索工具…'"
+              placeholder="搜索工具…"
               autocomplete="off"
               spellcheck="false"
             />
@@ -215,7 +215,7 @@ onUnmounted(() => {
 
           <ul ref="listRef" class="flex-1 overflow-y-auto p-2">
             <li v-if="flat.length === 0" class="px-3 py-8 text-center text-sm text-muted-foreground">
-              {{ locale === 'en' ? 'No matches' : '没有匹配的工具' }}
+              没有匹配的工具
             </li>
             <template v-for="(item, idx) in flatWithHeaders" :key="`${item.kind}-${idx}`">
               <li
@@ -237,24 +237,27 @@ onUnmounted(() => {
               >
                 <component :is="ico(item.tool.icon)" :size="16" class="flex-none opacity-80" />
                 <div class="min-w-0 flex-1">
-                  <p class="truncate font-medium">{{ item.tool.i18n[locale].title }}</p>
-                  <p class="truncate text-xs text-muted-foreground">{{ item.tool.i18n[locale].description }}</p>
+                  <p class="truncate font-medium">{{ item.tool.i18n.zh.title }}</p>
+                  <p class="truncate text-xs text-muted-foreground">{{ item.tool.i18n.zh.description }}</p>
                 </div>
                 <ArrowRight v-if="item.idx === activeIdx" :size="14" class="flex-none text-primary" />
               </li>
             </template>
           </ul>
 
-          <div class="flex items-center gap-3 border-t bg-secondary/30 px-4 py-2 text-xs text-muted-foreground">
+          <div class="flex items-center gap-3 border-t bg-secondary/50 px-4 py-2 text-xs text-muted-foreground">
             <span class="inline-flex items-center gap-1.5">
               <kbd class="rounded border bg-background px-1.5 py-0.5 font-mono text-[10px]">↑↓</kbd>
-              <span>{{ locale === 'en' ? 'navigate' : '选择' }}</span>
+              <span>选择</span>
             </span>
             <span class="inline-flex items-center gap-1.5">
               <kbd class="rounded border bg-background px-1.5 py-0.5 font-mono text-[10px]"><CornerDownLeft :size="10" class="inline" /></kbd>
-              <span>{{ locale === 'en' ? 'open' : '打开' }}</span>
+              <span>打开</span>
             </span>
-            <span class="ml-auto">{{ flat.length }} {{ locale === 'en' ? 'tools' : '项' }}</span>
+            <!-- 数量统计：把数字单独包 <span>，前后中文短语在字典里可整段命中 -->
+            <span class="ml-auto">
+              <span>共匹配</span> {{ flat.length }} <span>个工具</span>
+            </span>
           </div>
         </div>
       </div>

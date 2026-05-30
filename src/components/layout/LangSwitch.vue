@@ -1,25 +1,38 @@
 <script setup lang="ts">
-import { Languages } from 'lucide-vue-next';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { Languages, Check } from 'lucide-vue-next';
+import { useLocaleStore, type LocaleId } from '@/stores/locale';
+import { getDict, waitOpenCC } from '@/lib/i18n';
+
+const LOCALES: { id: LocaleId; native: string; short: string }[] = [
+  { id: 'zh-CN', native: '简体中文', short: '中' },
+  { id: 'zh-TW', native: '繁體中文', short: '繁' },
+  { id: 'en', native: 'English', short: 'EN' },
+];
 
 const open = ref(false);
-const locale = ref<'zh' | 'en'>('zh');
+const store = useLocaleStore();
+const { locale } = storeToRefs(store);
+const current = computed(() => LOCALES.find((l) => l.id === locale.value) ?? LOCALES[0]);
+const dict = computed(() => getDict(locale.value));
 
 onMounted(() => {
-  locale.value = window.location.pathname.startsWith('/en') ? 'en' : 'zh';
+  document.documentElement.lang = locale.value;
   document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (!target.closest('[data-lang-switch]')) open.value = false;
   });
 });
 
-function pick(next: 'zh' | 'en') {
-  // i18n 路由将在 i18n-and-pwa 阶段接入；当前先持久化偏好
-  localStorage.setItem('wetools:locale', next);
+async function pick(e: MouseEvent, next: LocaleId) {
   open.value = false;
+  // 主动 blur，避免点击后 :focus-visible 仍在该按钮上残留蓝色焦点环
+  (e.currentTarget as HTMLElement | null)?.blur();
   if (next === locale.value) return;
-  // 简单策略：跳到首页 / 或 /en
-  window.location.href = next === 'en' ? '/en' : '/';
+  // 切到繁体时确保 OpenCC 已加载，避免首次切换看不到效果
+  if (next === 'zh-TW') await waitOpenCC();
+  store.set(next);
 }
 </script>
 
@@ -27,30 +40,50 @@ function pick(next: 'zh' | 'en') {
   <div class="relative" data-lang-switch>
     <button
       type="button"
-      class="inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-      aria-label="切换语言"
+      class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+      :aria-label="dict.lang.switch"
+      :title="current.native"
       @click="open = !open"
     >
-      <Languages :size="16" />
-      <span class="hidden font-mono text-xs uppercase sm:inline">{{ locale }}</span>
+      <Languages :size="15" />
     </button>
-    <div
-      v-show="open"
-      class="absolute right-0 top-full z-50 mt-2 min-w-[140px] origin-top-right animate-pop-in rounded-lg border bg-popover p-1 shadow-soft"
+    <Transition
+      enter-active-class="transition duration-100 ease-out"
+      enter-from-class="opacity-0 scale-95"
+      enter-to-class="opacity-100 scale-100"
+      leave-active-class="transition duration-75 ease-in"
+      leave-from-class="opacity-100 scale-100"
+      leave-to-class="opacity-0 scale-95"
     >
-      <button
-        v-for="opt in [{v:'zh',l:'简体中文'},{v:'en',l:'English'}]"
-        :key="opt.v"
-        type="button"
-        :class="[
-          'flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors hover:bg-secondary',
-          locale === opt.v ? 'text-primary' : 'text-foreground',
-        ]"
-        @click="pick(opt.v as 'zh' | 'en')"
+      <div
+        v-show="open"
+        class="absolute right-0 top-full z-50 mt-1.5 min-w-[160px] origin-top-right rounded-lg border bg-popover p-1 shadow-lg"
       >
-        {{ opt.l }}
-        <span v-if="locale === opt.v" class="text-xs text-primary">●</span>
-      </button>
-    </div>
+        <button
+          v-for="opt in LOCALES"
+          :key="opt.id"
+          type="button"
+          translate="no"
+          data-no-i18n
+          :lang="opt.id"
+          :style="locale === opt.id
+            ? { color: 'hsl(var(--primary))', fontWeight: 500 }
+            : { color: 'hsl(var(--foreground))' }"
+          :class="[
+            'flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-[13px] transition-colors hover:bg-secondary',
+            // 菜单项不需要焦点环（hover 已表达），否则点击后蓝色 ring 残留像选中
+            'focus-visible:!ring-0 focus-visible:!ring-offset-0',
+          ]"
+          @click="pick($event, opt.id)"
+        >
+          <!-- translate="no" + data-no-i18n 双重保险：
+               1. translate="no" 告诉浏览器内置翻译/沉浸式翻译等扩展跳过这段文本（避免其把"English"染成蓝色提示）；
+               2. data-no-i18n 告诉本站 GlobalI18n 翻译器跳过该子树；
+               3. 颜色用 inline style 而非 class，绕过任何用户样式/扩展样式覆盖。 -->
+          <span>{{ opt.native }}</span>
+          <Check v-if="locale === opt.id" :size="13" />
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>

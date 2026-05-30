@@ -55,8 +55,8 @@
 @layer components {
   /* 工具卡片 */
   .tool-card {
-    @apply relative flex h-full flex-col gap-2 rounded-lg border border-transparent bg-card p-4 transition-all duration-200;
-    @apply hover:border-border hover:bg-secondary/50;
+    @apply relative flex h-full flex-col gap-2 rounded-lg border border-border bg-card p-4 transition-all duration-200;
+    @apply hover:border-primary/40 hover:bg-secondary/50 hover:shadow-sm;
   }
 
   /* 等宽代码区 */

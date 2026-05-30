@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { defineAsyncComponent, computed, h, type Component } from 'vue';
 import type { ToolMeta } from '@/lib/types';
+import { useToolI18n } from '@/composables/useToolI18n';
 
 const props = defineProps<{ meta: ToolMeta }>();
+
+// 启用工具页文本自动多语言（DOM 扫描 + OpenCC 简繁转换）
+useToolI18n({ container: '[data-tool-content]' });
 
 // 收集所有工具组件，由 Vite 自动按工具拆分 chunk
 const components = import.meta.glob<{ default: Component }>('/src/tools/*/Tool.vue');
@@ -38,5 +42,7 @@ const Comp = computed(() => {
 </script>
 
 <template>
-  <component :is="Comp" :meta="meta" />
+  <div data-tool-content>
+    <component :is="Comp" :meta="meta" />
+  </div>
 </template>

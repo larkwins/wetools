@@ -1,119 +1,213 @@
 import type { ToolMeta } from './types';
 
-export type Locale = 'zh' | 'en';
+export type Locale = 'zh-CN' | 'zh-TW' | 'en';
+export type BaseLang = 'zh' | 'en';
 
-export const SUPPORTED_LOCALES: Locale[] = ['zh', 'en'];
-export const DEFAULT_LOCALE: Locale = 'zh';
+export const SUPPORTED_LOCALES: Locale[] = ['zh-CN', 'zh-TW', 'en'];
+export const DEFAULT_LOCALE: Locale = 'zh-CN';
 
-export function getLocaleFromPath(pathname: string): Locale {
-  return pathname.startsWith('/en') ? 'en' : 'zh';
+export function localeToBase(locale: Locale): BaseLang {
+  return locale === 'en' ? 'en' : 'zh';
 }
 
-/** 给定 locale 与 tool meta，返回当前语言下的标题/描述 */
+/** 给定 locale 与 tool meta，返回当前语言下的标题/描述（繁体由 OpenCC 自动转换） */
 export function pickI18n(meta: ToolMeta, locale: Locale) {
-  return meta.i18n[locale] ?? meta.i18n[DEFAULT_LOCALE];
+  const base = localeToBase(locale);
+  const raw = meta.i18n[base] ?? meta.i18n.zh;
+  if (locale === 'zh-TW') {
+    return {
+      title: toTraditional(raw.title),
+      description: toTraditional(raw.description),
+    };
+  }
+  return raw;
 }
 
-/** 站点级文案字典（最小子集，菜单/按钮等通用文案） */
+/**
+ * 简体 → 繁体转换（OpenCC s2twp 词组级转换，效果接近台湾正体）
+ * 客户端懒加载，SSR 阶段直接返回原文
+ */
+let converter: ((s: string) => string) | null = null;
+let loading: Promise<void> | null = null;
+
+export function toTraditional(text: string): string {
+  if (!text) return text;
+  if (converter) return converter(text);
+  // 客户端首次调用时启动加载，但本次先返回原文（next tick 会拿到转换后的）
+  if (typeof window !== 'undefined' && !loading) {
+    loading = import('opencc-js').then((mod) => {
+      const ConverterFactory = (mod as any).Converter ?? (mod as any).default?.Converter;
+      converter = ConverterFactory({ from: 'cn', to: 'twp' });
+    });
+  }
+  return text;
+}
+
+/** 等待 OpenCC 加载完成（用于 mounted 后强制刷新一次显示） */
+export function waitOpenCC(): Promise<void> {
+  if (converter) return Promise.resolve();
+  if (loading) return loading;
+  if (typeof window !== 'undefined') {
+    toTraditional(''); // 触发加载
+    return loading || Promise.resolve();
+  }
+  return Promise.resolve();
+}
+
+/** 站点级文案字典 */
 export const siteDict = {
-  zh: {
+  'zh-CN': {
     siteName: 'WeTools',
     tagline: '程序员的浏览器工具箱',
-    heroSub:
-      '40+ 个开箱即用的开发者工具：JSON、Base64、加密哈希、二维码、时间戳、正则、图片压缩…… 全部在你的浏览器本地完成。',
-    heroBadge: '100% 本地运行 · 不上传任何数据',
-    heroPrimary: '打开命令面板',
-    heroSecondary: '浏览全部工具',
-    searchPlaceholder: '搜索工具…',
+    home: {
+      badge: '数据 100% 本地处理',
+      title1: '开发者',
+      title2: '浏览器工具箱',
+      desc: (n: number) => `${n} 个常用工具，无需安装、无需注册、数据不离开你的设备。开源免费。`,
+      favorites: '我的收藏',
+    },
+    search: {
+      placeholder: '搜索工具…',
+      noResults: '没有匹配的工具',
+      results: '搜索结果',
+      recent: '最近使用',
+      favorites: '收藏',
+      navigate: '选择',
+      open: '打开',
+      close: '关闭',
+      count: (n: number) => `${n} 项`,
+    },
     nav: {
       home: '首页',
       about: '关于',
       github: 'GitHub',
-    },
-    sidebar: {
-      favorites: '收藏',
-      recents: '最近使用',
-      allTools: '全部工具',
-      noFavorites: '点击工具页右上角的星标即可收藏',
-    },
-    privacy: {
-      local: '所有计算在你的浏览器本地完成，不上传任何数据。',
-      external: '本工具会调用第三方公开接口，请注意隐私。',
-      badgeLocal: '本地处理',
-      badgeExternal: '调用外部 API',
+      openMenu: '打开菜单',
     },
     tool: {
       copy: '复制',
       copied: '已复制',
       clear: '清空',
-      download: '下载',
-      upload: '上传',
-      paste: '粘贴',
-      input: '输入',
-      output: '输出',
+      favorite: '收藏',
+      unfavorite: '取消收藏',
+      copyLink: '复制链接',
       related: '相关工具',
-      backHome: '返回首页',
+      runsLocally: '本地处理',
+      usesExternal: '调用外部 API',
     },
     footer: {
-      madeBy: '专为开发者打造，开源、免费、无追踪。',
-      privacy: '隐私声明',
+      copyright: (year: number) => `© ${year} WeTools · 开源 · 本地运行`,
       about: '关于',
-      source: '源码',
     },
-    notFound: {
-      title: '页面没找到',
-      desc: '我们没找到这个页面，但你可以从下面继续。',
+    theme: {
+      toggle: '切换主题',
+    },
+    lang: {
+      switch: '切换语言',
+    },
+  },
+  'zh-TW': {
+    siteName: 'WeTools',
+    tagline: '程式設計師的瀏覽器工具箱',
+    home: {
+      badge: '資料 100% 本地處理',
+      title1: '開發者',
+      title2: '瀏覽器工具箱',
+      desc: (n: number) => `${n} 個常用工具，無需安裝、無需註冊、資料不離開你的裝置。開放原始碼、免費。`,
+      favorites: '我的收藏',
+    },
+    search: {
+      placeholder: '搜尋工具…',
+      noResults: '沒有符合的工具',
+      results: '搜尋結果',
+      recent: '最近使用',
+      favorites: '收藏',
+      navigate: '選擇',
+      open: '開啟',
+      close: '關閉',
+      count: (n: number) => `${n} 項`,
+    },
+    nav: {
+      home: '首頁',
+      about: '關於',
+      github: 'GitHub',
+      openMenu: '開啟選單',
+    },
+    tool: {
+      copy: '複製',
+      copied: '已複製',
+      clear: '清空',
+      favorite: '收藏',
+      unfavorite: '取消收藏',
+      copyLink: '複製連結',
+      related: '相關工具',
+      runsLocally: '本地處理',
+      usesExternal: '呼叫外部 API',
+    },
+    footer: {
+      copyright: (year: number) => `© ${year} WeTools · 開放原始碼 · 本地執行`,
+      about: '關於',
+    },
+    theme: {
+      toggle: '切換主題',
+    },
+    lang: {
+      switch: '切換語言',
     },
   },
   en: {
     siteName: 'WeTools',
     tagline: 'A Developer Toolbox in Your Browser',
-    heroSub:
-      '40+ ready-to-use developer tools — JSON, Base64, hashing, QR, timestamps, regex, image compression — all running locally in your browser.',
-    heroBadge: '100% local · No data ever leaves your browser',
-    heroPrimary: 'Open command palette',
-    heroSecondary: 'Browse all tools',
-    searchPlaceholder: 'Search tools…',
+    home: {
+      badge: '100% local — your data stays on your device',
+      title1: 'Developer ',
+      title2: 'Browser Toolbox',
+      desc: (n: number) =>
+        `${n} essential tools, no install, no signup, your data never leaves your device. Free & open source.`,
+      favorites: 'My Favorites',
+    },
+    search: {
+      placeholder: 'Search tools…',
+      noResults: 'No matches',
+      results: 'Results',
+      recent: 'Recent',
+      favorites: 'Favorites',
+      navigate: 'navigate',
+      open: 'open',
+      close: 'close',
+      count: (n: number) => `${n} tools`,
+    },
     nav: {
       home: 'Home',
       about: 'About',
       github: 'GitHub',
-    },
-    sidebar: {
-      favorites: 'Favorites',
-      recents: 'Recent',
-      allTools: 'All tools',
-      noFavorites: 'Star a tool from its page header to pin it here.',
-    },
-    privacy: {
-      local: 'Everything runs locally in your browser. No data is uploaded.',
-      external: 'This tool calls a third-party public API. Mind your privacy.',
-      badgeLocal: 'Runs locally',
-      badgeExternal: 'Uses external API',
+      openMenu: 'Open menu',
     },
     tool: {
       copy: 'Copy',
       copied: 'Copied',
       clear: 'Clear',
-      download: 'Download',
-      upload: 'Upload',
-      paste: 'Paste',
-      input: 'Input',
-      output: 'Output',
+      favorite: 'Favorite',
+      unfavorite: 'Unfavorite',
+      copyLink: 'Copy link',
       related: 'Related tools',
-      backHome: 'Back home',
+      runsLocally: 'Runs locally',
+      usesExternal: 'Uses external API',
     },
     footer: {
-      madeBy: 'Built for developers — open source, free, no tracking.',
-      privacy: 'Privacy',
+      copyright: (year: number) => `© ${year} WeTools · Open source · Runs locally`,
       about: 'About',
-      source: 'Source',
     },
-    notFound: {
-      title: 'Page not found',
-      desc: 'The page you tried to reach is missing — but you can keep exploring.',
+    theme: {
+      toggle: 'Toggle theme',
+    },
+    lang: {
+      switch: 'Change language',
     },
   },
 } as const;
 
-export type SiteDict = (typeof siteDict)['zh'];
+export type SiteDict = (typeof siteDict)['zh-CN'];
+
+export function getDict(locale: Locale): SiteDict {
+  return (siteDict[locale] ?? siteDict['zh-CN']) as SiteDict;
+}
