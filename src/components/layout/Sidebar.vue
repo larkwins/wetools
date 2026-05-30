@@ -47,7 +47,7 @@ const recentTools = computed(() =>
       <ul class="space-y-0.5">
         <li v-for="t in favoriteTools" :key="t.id">
           <a
-            :href="`/tools/${t.id}`"
+            :href="`/${t.id}`"
             :class="[
               'flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors',
               activeId === t.id
@@ -73,7 +73,7 @@ const recentTools = computed(() =>
       <ul class="space-y-0.5">
         <li v-for="t in recentTools.slice(0, 5)" :key="t.id">
           <a
-            :href="`/tools/${t.id}`"
+            :href="`/${t.id}`"
             :class="[
               'flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors',
               activeId === t.id
@@ -103,7 +103,7 @@ const recentTools = computed(() =>
       <ul class="space-y-0.5">
         <li v-for="t in g.tools" :key="t.id">
           <a
-            :href="`/tools/${t.id}`"
+            :href="`/${t.id}`"
             :class="[
               'flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors',
               activeId === t.id

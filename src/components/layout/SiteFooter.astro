@@ -1,32 +1,12 @@
 ---
-import { Github, Heart, ShieldCheck } from 'lucide-vue-next';
 ---
 
-<footer class="mt-24 border-t bg-card/40">
-  <div class="container py-10">
-    <div class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-      <div class="flex items-center gap-2 text-sm text-muted-foreground">
-        <ShieldCheck size={16} class="text-primary" />
-        <span>专为开发者打造，开源、免费、无追踪。所有工具在浏览器本地运行。</span>
-      </div>
-      <div class="flex items-center gap-6 text-sm text-muted-foreground">
-        <a href="/about" class="transition-colors hover:text-foreground">关于</a>
-        <a href="/about#privacy" class="transition-colors hover:text-foreground">隐私</a>
-        <a
-          href="https://github.com"
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-        >
-          <Github size={14} />
-          源码
-        </a>
-      </div>
-    </div>
-    <div class="mt-6 flex items-center gap-1 text-xs text-muted-foreground">
-      <span>© {new Date().getFullYear()} WeTools — Made with</span>
-      <Heart size={12} class="text-destructive" />
-      <span>for developers.</span>
+<footer class="border-t">
+  <div class="container flex items-center justify-between py-6 text-xs text-muted-foreground">
+    <span>© {new Date().getFullYear()} WeTools · 开源 · 本地运行</span>
+    <div class="flex items-center gap-4">
+      <a href="/about" class="transition-colors hover:text-foreground">关于</a>
+      <a href="https://github.com" target="_blank" rel="noopener" class="transition-colors hover:text-foreground">GitHub</a>
     </div>
   </div>
 </footer>

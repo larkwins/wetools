@@ -9,7 +9,7 @@ export const GET: APIRoute = ({ site }) => {
     { loc: `${origin}/`, priority: '1.0', changefreq: 'weekly' },
     { loc: `${origin}/about`, priority: '0.5', changefreq: 'monthly' },
     ...allTools.map((t) => ({
-      loc: `${origin}/tools/${t.id}`,
+      loc: `${origin}/${t.id}`,
       priority: '0.7',
       changefreq: 'weekly',
     })),

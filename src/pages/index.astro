@@ -4,138 +4,94 @@ import SiteHeader from '@/components/layout/SiteHeader.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
 import { groupedByCategory, allTools } from '@/lib/registry';
 import { getIcon } from '@/lib/icons';
-import { ArrowRight } from 'lucide-vue-next';
 
 const groups = groupedByCategory();
 const total = allTools.length;
 const Ico = getIcon;
+
+// 每个分类分配一个辅助色
+const categoryColors: Record<string, { icon: string; iconBg: string; hover: string }> = {
+  encoding:  { icon: 'text-blue-500',   iconBg: 'bg-blue-500/10',   hover: 'group-hover:text-blue-500' },
+  json:      { icon: 'text-emerald-500', iconBg: 'bg-emerald-500/10', hover: 'group-hover:text-emerald-500' },
+  crypto:    { icon: 'text-purple-500',  iconBg: 'bg-purple-500/10',  hover: 'group-hover:text-purple-500' },
+  datetime:  { icon: 'text-orange-500',  iconBg: 'bg-orange-500/10',  hover: 'group-hover:text-orange-500' },
+  generator: { icon: 'text-cyan-500',    iconBg: 'bg-cyan-500/10',    hover: 'group-hover:text-cyan-500' },
+  image:     { icon: 'text-pink-500',    iconBg: 'bg-pink-500/10',    hover: 'group-hover:text-pink-500' },
+  text:      { icon: 'text-amber-500',   iconBg: 'bg-amber-500/10',   hover: 'group-hover:text-amber-500' },
+  network:   { icon: 'text-teal-500',    iconBg: 'bg-teal-500/10',    hover: 'group-hover:text-teal-500' },
+  dev:       { icon: 'text-indigo-500',  iconBg: 'bg-indigo-500/10',  hover: 'group-hover:text-indigo-500' },
+};
+const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'group-hover:text-primary' };
 ---
 
 <BaseLayout home>
   <SiteHeader />
 
-  <main class="relative">
+  <main class="flex-1">
     <!-- Hero -->
-    <div class="hero-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[480px]"></div>
-
-    <section class="container flex flex-col items-center pb-16 pt-20 text-center sm:pt-24">
-      <span class="badge badge-success mb-5 animate-fade-in" aria-label="本地处理">
-        <span class="h-1.5 w-1.5 rounded-full bg-primary"></span>
-        100% 本地运行 · 不上传任何数据
-      </span>
-
-      <h1
-        class="max-w-3xl animate-slide-up text-balance text-4xl font-bold tracking-tight sm:text-5xl"
-      >
-        程序员的<span class="text-primary">浏览器工具箱</span>
-      </h1>
-      <p
-        class="mt-5 max-w-2xl animate-slide-up text-balance text-base text-muted-foreground sm:text-lg"
-      >
-        {total} 个开箱即用的开发者工具：JSON、Base64、加密哈希、二维码、时间戳、正则、图片压缩……
-        全部在你的浏览器本地完成，开源、免费、无追踪。
-      </p>
-
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <button
-          id="hero-open-palette"
-          class="inline-flex h-10 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow-soft-sm transition-all hover:opacity-90 hover:shadow-glow-primary"
-        >
-          打开命令面板
-          <kbd
-            class="inline-flex h-5 items-center rounded border border-primary-foreground/30 bg-primary-foreground/10 px-1.5 font-mono text-[11px]"
-          >
-            ⌘K
-          </kbd>
-        </button>
-        <a
-          href="#tools"
-          class="inline-flex h-10 items-center gap-1.5 rounded-md border bg-card px-4 text-sm font-medium transition-colors hover:border-primary/60 hover:text-primary"
-        >
-          浏览全部工具
-          <ArrowRight size={14} />
-        </a>
+    <section class="container pt-6 pb-8">
+      <div class="max-w-2xl">
+        <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          数据 100% 本地处理
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">
+          开发者<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-500">浏览器工具箱</span>
+        </h1>
+        <p class="mt-3 text-muted-foreground leading-relaxed">
+          {total} 个常用工具，无需安装、无需注册、数据不离开你的设备。开源免费。
+        </p>
       </div>
     </section>
 
     <!-- 工具分类网格 -->
-    <section id="tools" class="container space-y-12 pb-24">
-      {groups.length === 0 ? (
-        <div class="hairline p-8 text-center text-muted-foreground">
-          <p class="font-mono text-xs uppercase tracking-widest text-primary">no tools yet</p>
-          <p class="mt-3 text-sm">尚未注册任何工具，请在 <code>src/tools/</code> 下添加。</p>
-        </div>
-      ) : (
-        groups.map((g) => {
-          const CatIcon = Ico(g.category.icon);
-          return (
-            <div id={g.category.id}>
-              <div class="mb-5 flex items-end justify-between gap-4">
-                <div class="flex items-center gap-3">
-                  <span
-                    class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-primary/10 text-primary"
-                  >
-                    <CatIcon size={18} />
-                  </span>
-                  <div>
-                    <h2 class="text-lg font-semibold tracking-tight">
-                      {g.category.i18n.zh.title}
-                    </h2>
-                    <p class="text-xs text-muted-foreground">
-                      {g.category.i18n.zh.description}
-                    </p>
-                  </div>
-                </div>
-                <span class="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                  {g.tools.length} tools
-                </span>
-              </div>
-
-              <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {g.tools.map((t) => {
-                  const ToolIco = Ico(t.icon);
-                  return (
-                    <a href={`/tools/${t.id}`} class="group tool-card">
-                      <div class="flex items-start gap-3">
-                        <span
-                          class="mt-0.5 inline-flex h-9 w-9 flex-none items-center justify-center rounded-md bg-secondary text-foreground/70 transition-colors group-hover:bg-primary/10 group-hover:text-primary"
-                        >
-                          <ToolIco size={18} />
-                        </span>
-                        <div class="min-w-0 flex-1">
-                          <div class="flex items-center gap-1.5">
-                            <p class="truncate text-sm font-semibold">{t.i18n.zh.title}</p>
-                            {t.tags?.includes('new') && (
-                              <span
-                                class="rounded-sm bg-info/15 px-1 py-0 text-[9px] font-bold uppercase tracking-wider text-info"
-                              >NEW</span>
-                            )}
-                            {t.tags?.includes('hot') && (
-                              <span
-                                class="rounded-sm bg-destructive/15 px-1 py-0 text-[9px] font-bold uppercase tracking-wider text-destructive"
-                              >HOT</span>
-                            )}
-                          </div>
-                          <p class="mt-1 line-clamp-2 text-xs text-muted-foreground">
-                            {t.i18n.zh.description}
-                          </p>
-                        </div>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
+    <section class="container space-y-12 pb-20">
+      {groups.map((g) => {
+        const CatIcon = Ico(g.category.icon);
+        const colors = categoryColors[g.category.id] ?? defaultColor;
+        return (
+          <div id={g.category.id}>
+            <div class="mb-4 flex items-center gap-2.5">
+              <span class={`inline-flex h-7 w-7 items-center justify-center rounded-md ${colors.iconBg}`}>
+                <CatIcon size={14} class={colors.icon} />
+              </span>
+              <h2 class="text-sm font-semibold text-foreground">
+                {g.category.i18n.zh.title}
+              </h2>
+              <span class="ml-1 rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
+                {g.tools.length}
+              </span>
             </div>
-          );
-        })
-      )}
+
+            <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {g.tools.map((t) => {
+                const ToolIco = Ico(t.icon);
+                return (
+                  <a href={`/${t.id}`} class="group tool-card cursor-pointer">
+                    <div class="flex items-center gap-3">
+                      <span class={`inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-muted-foreground transition-colors ${colors.hover}`}>
+                        <ToolIco size={15} />
+                      </span>
+                      <div class="min-w-0 flex-1">
+                        <p class="truncate text-sm font-medium text-foreground">{t.i18n.zh.title}</p>
+                        <p class="truncate text-xs text-muted-foreground mt-0.5">
+                          {t.i18n.zh.description}
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
     </section>
   </main>
 
   <SiteFooter />
 
   <script is:inline>
-    // 首页"打开命令面板"按钮触发全局事件（命令面板将在后续阶段挂载）
     document.getElementById('hero-open-palette')?.addEventListener('click', () => {
       window.dispatchEvent(new CustomEvent('wetools:openPalette'));
     });

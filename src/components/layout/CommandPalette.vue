@@ -79,6 +79,22 @@ const flat = computed(() => {
   return list;
 });
 
+// 渲染用：把分组标题和工具按顺序混合，每个 tool 携带它在 flat 中的索引
+type HeaderItem = { kind: 'header'; title: string; icon?: string };
+type ToolItem = { kind: 'tool'; tool: ToolMeta; idx: number };
+const flatWithHeaders = computed<(HeaderItem | ToolItem)[]>(() => {
+  const out: (HeaderItem | ToolItem)[] = [];
+  let i = 0;
+  for (const g of groups.value) {
+    out.push({ kind: 'header', title: g.title, icon: g.icon });
+    for (const t of g.tools) {
+      out.push({ kind: 'tool', tool: t, idx: i });
+      i++;
+    }
+  }
+  return out;
+});
+
 watch(query, () => {
   activeIdx.value = 0;
 });
@@ -102,7 +118,7 @@ function hide() {
 
 function go(t: ToolMeta) {
   prefs.pushRecent(t.id);
-  window.location.href = `/tools/${t.id}`;
+  window.location.href = `/${t.id}`;
 }
 
 function onKey(e: KeyboardEvent) {
@@ -142,7 +158,9 @@ function indexOf(tool: ToolMeta) {
   return flat.value.findIndex((x) => x.tool.id === tool.id);
 }
 
+const mounted = ref(false);
 onMounted(() => {
+  mounted.value = true;
   window.addEventListener('keydown', onKey);
   window.addEventListener('wetools:openPalette', show as EventListener);
 });
@@ -154,7 +172,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Teleport to="body">
+  <Teleport to="body" :disabled="!mounted">
     <Transition
       enter-active-class="transition duration-150 ease-out"
       enter-from-class="opacity-0"
@@ -173,20 +191,21 @@ onUnmounted(() => {
           role="dialog"
           aria-modal="true"
         >
-          <div class="flex items-center gap-2 border-b px-4">
-            <Search :size="16" class="text-muted-foreground" />
+          <div class="flex items-center gap-3 border-b px-4">
+            <Search :size="16" class="flex-none text-muted-foreground" />
             <input
               ref="inputRef"
               v-model="query"
               type="text"
-              class="h-12 flex-1 bg-transparent text-sm placeholder:text-muted-foreground focus:outline-none"
-              :placeholder="locale === 'en' ? 'Search tools…' : '搜索工具，名称 / 描述 / 关键词…'"
+              class="h-12 flex-1 bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus-visible:!ring-0 focus-visible:!ring-offset-0"
+              :placeholder="locale === 'en' ? 'Search tools…' : '搜索工具…'"
               autocomplete="off"
               spellcheck="false"
             />
+            <kbd class="hidden sm:inline-flex h-5 items-center rounded border bg-secondary/60 px-1.5 font-mono text-[10px] text-muted-foreground">esc</kbd>
             <button
               type="button"
-              class="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
+              class="inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-secondary hover:text-foreground"
               aria-label="关闭"
               @click="hide"
             >
@@ -195,53 +214,45 @@ onUnmounted(() => {
           </div>
 
           <ul ref="listRef" class="flex-1 overflow-y-auto p-2">
-            <template v-if="flat.length === 0">
-              <li class="px-3 py-8 text-center text-sm text-muted-foreground">
-                {{ locale === 'en' ? 'No matches' : '没有匹配的工具' }}
+            <li v-if="flat.length === 0" class="px-3 py-8 text-center text-sm text-muted-foreground">
+              {{ locale === 'en' ? 'No matches' : '没有匹配的工具' }}
+            </li>
+            <template v-for="(item, idx) in flatWithHeaders" :key="`${item.kind}-${idx}`">
+              <li
+                v-if="item.kind === 'header'"
+                class="mt-2 flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground first:mt-0"
+              >
+                <component v-if="item.icon" :is="ico(item.icon)" :size="11" />
+                {{ item.title }}
               </li>
-            </template>
-            <template v-else>
-              <template v-for="g in groups" :key="g.id">
-                <li
-                  class="mt-2 flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground first:mt-0"
-                >
-                  <component v-if="g.icon" :is="ico(g.icon)" :size="11" />
-                  {{ g.title }}
-                </li>
-                <li
-                  v-for="t in g.tools"
-                  :key="t.id"
-                  :data-idx="indexOf(t)"
-                  :class="[
-                    'flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
-                    indexOf(t) === activeIdx ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-secondary',
-                  ]"
-                  @mouseenter="activeIdx = indexOf(t)"
-                  @click="go(t)"
-                >
-                  <component :is="ico(t.icon)" :size="16" class="flex-none opacity-80" />
-                  <div class="min-w-0 flex-1">
-                    <p class="truncate font-medium">{{ t.i18n[locale].title }}</p>
-                    <p class="truncate text-xs text-muted-foreground">{{ t.i18n[locale].description }}</p>
-                  </div>
-                  <ArrowRight v-if="indexOf(t) === activeIdx" :size="14" class="flex-none text-primary" />
-                </li>
-              </template>
+              <li
+                v-else
+                :data-idx="item.idx"
+                :class="[
+                  'flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
+                  item.idx === activeIdx ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-secondary',
+                ]"
+                @mouseenter="activeIdx = item.idx"
+                @click="go(item.tool)"
+              >
+                <component :is="ico(item.tool.icon)" :size="16" class="flex-none opacity-80" />
+                <div class="min-w-0 flex-1">
+                  <p class="truncate font-medium">{{ item.tool.i18n[locale].title }}</p>
+                  <p class="truncate text-xs text-muted-foreground">{{ item.tool.i18n[locale].description }}</p>
+                </div>
+                <ArrowRight v-if="item.idx === activeIdx" :size="14" class="flex-none text-primary" />
+              </li>
             </template>
           </ul>
 
-          <div class="flex items-center gap-3 border-t px-4 py-2 text-xs text-muted-foreground">
-            <span class="inline-flex items-center gap-1">
-              <kbd class="rounded border bg-muted px-1 py-0.5 font-mono text-[10px]">↑↓</kbd>
+          <div class="flex items-center gap-3 border-t bg-secondary/30 px-4 py-2 text-xs text-muted-foreground">
+            <span class="inline-flex items-center gap-1.5">
+              <kbd class="rounded border bg-background px-1.5 py-0.5 font-mono text-[10px]">↑↓</kbd>
               <span>{{ locale === 'en' ? 'navigate' : '选择' }}</span>
             </span>
-            <span class="inline-flex items-center gap-1">
-              <kbd class="rounded border bg-muted px-1 py-0.5 font-mono text-[10px]"><CornerDownLeft :size="10" class="inline" /></kbd>
+            <span class="inline-flex items-center gap-1.5">
+              <kbd class="rounded border bg-background px-1.5 py-0.5 font-mono text-[10px]"><CornerDownLeft :size="10" class="inline" /></kbd>
               <span>{{ locale === 'en' ? 'open' : '打开' }}</span>
-            </span>
-            <span class="inline-flex items-center gap-1">
-              <kbd class="rounded border bg-muted px-1 py-0.5 font-mono text-[10px]">esc</kbd>
-              <span>{{ locale === 'en' ? 'close' : '关闭' }}</span>
             </span>
             <span class="ml-auto">{{ flat.length }} {{ locale === 'en' ? 'tools' : '项' }}</span>
           </div>

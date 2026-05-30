@@ -2,9 +2,11 @@
 import BaseLayout from './BaseLayout.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
+import ToolActions from '@/components/layout/ToolActions.vue';
 import { relatedTools } from '@/lib/registry';
 import type { ToolMeta } from '@/lib/types';
 import { getIcon } from '@/lib/icons';
+import { ShieldCheck, Globe2 } from 'lucide-vue-next';
 
 export interface Props {
   meta: ToolMeta;
@@ -15,15 +17,44 @@ const { meta, locale = 'zh' } = Astro.props;
 const related = relatedTools(meta);
 const i18n = meta.i18n[locale];
 const RelatedIcon = getIcon;
+const isExternal = meta.privacy === 'external';
 ---
 
 <BaseLayout title={`${i18n.title} · WeTools`} description={i18n.description}>
   <SiteHeader />
 
-  <div class="container py-6">
-    <!-- 主内容 -->
+  <div class="container pt-8 pb-6 flex-1">
     <main class="mx-auto max-w-4xl">
-      <slot name="header" />
+      <!-- 标题（纯静态，不闪烁） -->
+      <header class="flex flex-col gap-4 border-b pb-6">
+        <div class="flex items-start justify-between gap-4">
+          <div class="min-w-0 flex-1">
+            <h1 class="text-2xl font-bold tracking-tight">{i18n.title}</h1>
+            <p class="mt-2 max-w-2xl text-sm text-muted-foreground">{i18n.description}</p>
+            <div class="mt-3 flex flex-wrap items-center gap-2">
+              {!isExternal ? (
+                <span class="badge badge-success">
+                  <ShieldCheck size={12} />
+                  本地处理
+                </span>
+              ) : (
+                <span class="badge badge-warning">
+                  <Globe2 size={12} />
+                  调用外部 API
+                </span>
+              )}
+              {meta.tags?.includes('new') && (
+                <span class="inline-flex items-center rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-[11px] font-medium text-blue-600 dark:text-blue-400">NEW</span>
+              )}
+            </div>
+          </div>
+
+          <!-- 收藏/复制 — client:only 避免 hydration mismatch，外层 div 占位防止布局跳动 -->
+          <div class="flex flex-none items-center gap-2 w-[72px] h-8">
+            <ToolActions client:only="vue" toolId={meta.id} />
+          </div>
+        </div>
+      </header>
 
       <div class="mt-6">
         <slot />
@@ -33,16 +64,16 @@ const RelatedIcon = getIcon;
       {related.length > 0 && (
         <section class="mt-16">
           <h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            {locale === 'en' ? 'Related tools' : '相关工具'}
+            相关工具
           </h2>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((t) => {
               const Icon = RelatedIcon(t.icon);
               const ti = t.i18n[locale];
               return (
-                <a href={`/tools/${t.id}`} class="group tool-card">
+                <a href={`/${t.id}`} class="group tool-card cursor-pointer">
                   <div class="flex items-start gap-3">
-                    <span class="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-foreground/70 transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+                    <span class="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-foreground/70 transition-colors group-hover:text-primary">
                       <Icon size={16} />
                     </span>
                     <div class="min-w-0 flex-1">
@@ -58,6 +89,5 @@ const RelatedIcon = getIcon;
       )}
     </main>
   </div>
-
   <SiteFooter />
 </BaseLayout>

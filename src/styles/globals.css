@@ -15,31 +15,25 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings:
-      'cv02',
-      'cv03',
-      'cv04',
-      'cv11';
-  }
-
-  html,
-  body {
-    @apply min-h-full;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    scroll-padding-top: 4rem;
+    /* 强制始终显示纵向滚动条，避免不同页面长度切换时宽度跳动 */
+    overflow-y: scroll;
   }
 
   body {
-    @apply bg-background font-sans text-[14px] leading-6 text-foreground antialiased;
+    @apply bg-background font-sans text-sm leading-relaxed text-foreground antialiased;
   }
 
   ::selection {
-    @apply bg-primary/25 text-foreground;
+    @apply bg-primary/20 text-foreground;
   }
 
-  /* 滚动条（仅桌面端） */
+  /* 滚动条 */
   @media (pointer: fine) {
     ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
     }
     ::-webkit-scrollbar-track {
       background: transparent;
@@ -52,61 +46,40 @@
     }
   }
 
-  /* 焦点环统一 */
+  /* 焦点环 */
   :where(button, [role='button'], a, input, textarea, select):focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-ring/40 ring-offset-2 ring-offset-background;
   }
 }
 
 @layer components {
-  /* 通用 hairline 容器 */
-  .hairline {
-    @apply rounded-lg border bg-card;
-  }
-
   /* 工具卡片 */
   .tool-card {
-    @apply relative flex h-full flex-col gap-2 rounded-lg border bg-card p-4 transition-all duration-150;
-    @apply hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-soft;
+    @apply relative flex h-full flex-col gap-2 rounded-lg border border-transparent bg-card p-4 transition-all duration-200;
+    @apply hover:border-border hover:bg-secondary/50;
   }
 
-  /* 等宽代码区基础样式 */
+  /* 等宽代码区 */
   .code-area {
     @apply font-mono text-[13px] leading-[1.6] tracking-[-0.01em];
   }
 
-  /* 隐私 badge */
+  /* Badge */
   .badge {
-    @apply inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-medium;
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium;
   }
   .badge-success {
-    @apply border-primary/30 bg-primary/10 text-primary;
+    @apply border-primary/20 bg-primary/10 text-primary;
   }
   .badge-warning {
-    @apply border-warning/30 bg-warning/10 text-warning;
+    @apply border-warning/20 bg-warning/10 text-warning;
   }
   .badge-info {
-    @apply border-info/30 bg-info/10 text-info;
-  }
-
-  /* 极弱噪点 grid 背景，仅 hero 使用 */
-  .hero-grid {
-    background-image:
-      linear-gradient(to right, hsl(var(--border) / 0.6) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--border) / 0.6) 1px, transparent 1px);
-    background-size: 32px 32px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 70%);
+    @apply border-info/20 bg-info/10 text-info;
   }
 }
 
 @layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    scrollbar-width: none;
-  }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }

@@ -29,12 +29,15 @@ const ogImage = `${siteUrl}/og.png`;
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" as="image" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#10B981" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#FCFCFC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0D1117" media="(prefers-color-scheme: dark)" />
+
+    <!-- 字体使用系统字体栈（在 tailwind.config 中定义），避免 Google Fonts 异步加载造成布局跳动 -->
 
     <!-- Open Graph -->
     <meta property="og:type" content={home ? 'website' : 'article'} />
@@ -50,26 +53,40 @@ const ogImage = `${siteUrl}/og.png`;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- 主题防闪烁脚本：必须在 body 渲染前同步执行 -->
+    <!-- 主题防闪烁 + 卸载旧的 Service Worker（PWA 已移除） -->
     <script is:inline>
       (function () {
         try {
-          var stored = localStorage.getItem('wetools:theme'); // 'light' | 'dark' | 'system'
+          var stored = localStorage.getItem('wetools:theme');
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           var isDark = stored === 'dark' || ((stored === null || stored === 'system') && prefersDark);
           var root = document.documentElement;
           if (isDark) root.classList.add('dark');
           else root.classList.remove('dark');
           root.style.colorScheme = isDark ? 'dark' : 'light';
-        } catch (e) {
-          /* no-op */
+        } catch (e) {}
+
+        // 主动卸载之前 PWA 注册的 Service Worker，并清理 Workbox 缓存
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function (regs) {
+            regs.forEach(function (r) { r.unregister(); });
+          }).catch(function () {});
+        }
+        if (typeof caches !== 'undefined') {
+          caches.keys().then(function (keys) {
+            keys.forEach(function (k) {
+              if (k.indexOf('workbox') !== -1 || k.indexOf('wetools') !== -1) {
+                caches.delete(k);
+              }
+            });
+          }).catch(function () {});
         }
       })();
     </script>
 
     <slot name="head" />
   </head>
-  <body class="min-h-full bg-background text-foreground">
+  <body class="bg-background text-foreground min-h-screen flex flex-col">
     <slot />
     <CommandPalette client:idle allTools={allTools} categories={categories} />
   </body>
