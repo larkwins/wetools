@@ -77,6 +77,20 @@ module.exports = {
           'Consolas',
           'monospace',
         ],
+        // 用于站点 logo / 标题等需要"高级感"的位置。
+        // 优先使用系统中已存在的优雅几何 sans / 现代 grotesque 字体，零网络成本。
+        // 顺序：Inter（多数浏览器无）→ macOS 上的 SF Pro Display / Avenir Next → Windows 的 Segoe UI Variable → 兜底
+        display: [
+          'Inter',
+          'SF Pro Display',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Avenir Next',
+          'Segoe UI Variable',
+          'Segoe UI',
+          'PingFang SC',
+          'sans-serif',
+        ],
       },
       borderRadius: {
         lg: '8px',

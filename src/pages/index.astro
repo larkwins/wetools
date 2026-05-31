@@ -191,6 +191,43 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
           }
         }
 
+        // 把分类区里某张原始卡片中的 FavoriteButton 同步点亮/熄灭。
+        // 用于解决 SSR 输出 isFav=false → Vue island hydrate 后才变金色的延迟。
+        // toolCard: 原始 <a data-tool-id="..."> 元素（即分类网格里的卡片，非 clone）
+        function paintFavoriteOnCard(toolCard, isFav) {
+          if (!toolCard) return;
+          var btn = toolCard.querySelector('button');
+          if (!btn) return;
+          var svg = btn.querySelector('svg');
+          if (isFav) {
+            btn.classList.remove('text-muted-foreground/50', 'hover:text-muted-foreground');
+            btn.classList.add('text-amber-500', 'hover:text-amber-600');
+            if (svg) {
+              svg.setAttribute('fill', 'currentColor');
+              svg.setAttribute('stroke-width', '1.5');
+            }
+          } else {
+            btn.classList.remove('text-amber-500', 'hover:text-amber-600');
+            btn.classList.add('text-muted-foreground/50', 'hover:text-muted-foreground');
+            if (svg) {
+              svg.setAttribute('fill', 'none');
+              svg.setAttribute('stroke-width', '2');
+            }
+          }
+        }
+
+        // 把分类区所有 [data-tool-id] 卡片按当前收藏集合刷新点亮态。
+        // Vue hydrate 完成后 isFav computed 会重新计算，渲染结果与此处一致，
+        // 所以不会出现"先点亮再闪一下灰再回到金色"的视觉跳变。
+        function paintAllCategoryCards(idSet) {
+          var cards = document.querySelectorAll('[data-tool-id]');
+          for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            var id = card.getAttribute('data-tool-id');
+            paintFavoriteOnCard(card, !!id && idSet[id] === 1);
+          }
+        }
+
         function render() {
           var grid = document.getElementById('favorites-grid');
           var empty = document.getElementById('favorites-empty');
@@ -198,6 +235,11 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
           if (!grid || !empty) return;
 
           var ids = readFavoriteIds();
+          var idSet = {};
+          for (var k = 0; k < ids.length; k++) idSet[ids[k]] = 1;
+
+          // 先同步点亮分类区所有已收藏卡片的星标按钮
+          paintAllCategoryCards(idSet);
 
           // 清空当前收藏区
           while (grid.firstChild) grid.removeChild(grid.firstChild);

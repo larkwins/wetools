@@ -22,32 +22,74 @@
   }
 
   body {
-    @apply bg-background font-sans text-sm leading-relaxed text-foreground antialiased;
-    /* 顶部双色径向渐变（emerald 绿 + 蓝色 primary）+ 全局微点阵网格。
-       注意：SiteHeader 是 fixed 且 bg-background/95 backdrop-blur，
+    @apply relative bg-background font-sans text-sm leading-relaxed text-foreground antialiased;
+    /* 顶部三色径向渐变（emerald 绿 + primary 蓝 + 青绿）。
+       注意：SiteHeader 是 fixed 且 bg-background/95 backdrop-blur,
        会盖住 body 顶部约 56px。所以渐变中心需放到 header 之下，光晕才可见。
-       fixed 保证滚动时背景稳定。 */
+       fixed 保证滚动时背景稳定。
+       网格不放在这里 —— 由下面 body::before 单独处理（带顶端起始 + 底部渐变消失）。 */
     background-image:
       /* 主光晕：中央偏上的浅绿，覆盖 Hero 区 */
-      radial-gradient(ellipse 70% 50% at 50% 25%, hsl(150 70% 55% / 0.14), transparent 65%),
+      radial-gradient(ellipse 70% 50% at 50% 25%, hsl(150 70% 55% / 0.16), transparent 65%),
       /* 副光晕：左上的蓝色 primary */
-      radial-gradient(ellipse 45% 35% at 20% 18%, hsl(var(--primary) / 0.10), transparent 70%),
+      radial-gradient(ellipse 45% 35% at 20% 18%, hsl(var(--primary) / 0.12), transparent 70%),
       /* 副光晕：右上的青绿 */
-      radial-gradient(ellipse 45% 35% at 82% 20%, hsl(165 70% 50% / 0.10), transparent 70%),
-      /* 全局微点阵 */
-      radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.06) 1px, transparent 0);
-    background-size: 100% 900px, 100% 900px, 100% 900px, 22px 22px;
-    background-repeat: no-repeat, no-repeat, no-repeat, repeat;
-    background-attachment: fixed, fixed, fixed, fixed;
+      radial-gradient(ellipse 45% 35% at 82% 20%, hsl(165 70% 50% / 0.12), transparent 70%);
+    background-size:
+      100% 900px, 100% 900px, 100% 900px;
+    background-repeat:
+      no-repeat, no-repeat, no-repeat;
+    background-attachment: fixed, fixed, fixed;
+  }
+
+  /* 局部网格层：只在 SiteHeader 下方一段出现，向下平滑渐变消失。
+     - top: 56px → 紧贴 fixed 顶栏下方
+     - height: ~520px → 大致覆盖 Hero + 收藏区
+     - 用 mask-image 做 "从顶到底淡出" 效果，同时不影响主光晕
+     - pointer-events: none：不阻挡内容点击
+     - fixed：滚动时不跟随，与光晕背景一致，视觉稳定 */
+  body::before {
+    content: '';
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 56px;
+    height: 520px;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(to right, hsl(var(--foreground) / 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.03) 1px, transparent 1px);
+    background-size: 29px 29px, 29px 29px;
+    background-position: 0 0, 0 0;
+    /* 从顶部完全可见 → 底部 0；左右两侧也轻微淡出避免硬边 */
+    -webkit-mask-image:
+      linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+            mask-composite: intersect;
+  }
+
+  /* 保证 main / header 等正常内容浮在网格之上 */
+  body > * {
+    position: relative;
+    z-index: 1;
   }
 
   .dark body {
-    /* 暗色模式：渐变更克制、点阵更暗淡 */
+    /* 暗色模式：渐变更克制 */
     background-image:
-      radial-gradient(ellipse 70% 50% at 50% 25%, hsl(150 70% 55% / 0.10), transparent 65%),
-      radial-gradient(ellipse 45% 35% at 20% 18%, hsl(var(--primary) / 0.12), transparent 70%),
-      radial-gradient(ellipse 45% 35% at 82% 20%, hsl(165 70% 50% / 0.08), transparent 70%),
-      radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.05) 1px, transparent 0);
+      radial-gradient(ellipse 70% 50% at 50% 25%, hsl(150 70% 55% / 0.12), transparent 65%),
+      radial-gradient(ellipse 45% 35% at 20% 18%, hsl(var(--primary) / 0.14), transparent 70%),
+      radial-gradient(ellipse 45% 35% at 82% 20%, hsl(165 70% 50% / 0.10), transparent 70%);
+  }
+  .dark body::before {
+    background-image:
+      linear-gradient(to right, hsl(var(--foreground) / 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.025) 1px, transparent 1px);
   }
 
   ::selection {
@@ -78,6 +120,15 @@
 }
 
 @layer components {
+  /* Display 字体：用于 logo / 大标题等需要"高级感"的位置。
+     启用字体高级特性（连字、上下文备选字形、stylistic set 01）让 We / T 等字符更精致。
+     仅靠系统字体（SF Pro Display / Avenir Next / Segoe UI Variable / Inter）即可获得效果，无网络字体加载。 */
+  .font-display {
+    font-feature-settings: 'ss01' on, 'cv11' on, 'cv03' on, 'cv02' on, 'ss02' on, 'liga' on, 'calt' on;
+    font-variant-ligatures: contextual;
+    font-optical-sizing: auto;
+  }
+
   /* 工具卡片 */
   .tool-card {
     @apply relative flex h-full flex-col gap-2 rounded-lg border border-border bg-card p-4 transition-all duration-200;

@@ -32,6 +32,13 @@ const ogImage = `${siteUrl}/og.png`;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" as="image" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
+    <!-- PWA：manifest 由 @vite-pwa/astro 生成于 /manifest.webmanifest，
+         apple-touch-icon 让 iOS 添加到主屏幕时使用应用图标 -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="WeTools" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -112,21 +119,7 @@ const ogImage = `${siteUrl}/og.png`;
           }
         } catch (e) {}
 
-        // —— 卸载旧的 Service Worker（PWA 已移除） ——
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then(function (regs) {
-            regs.forEach(function (r) { r.unregister(); });
-          }).catch(function () {});
-        }
-        if (typeof caches !== 'undefined') {
-          caches.keys().then(function (keys) {
-            keys.forEach(function (k) {
-              if (k.indexOf('workbox') !== -1 || k.indexOf('wetools') !== -1) {
-                caches.delete(k);
-              }
-            });
-          }).catch(function () {});
-        }
+        // PWA Service Worker 由 @vite-pwa/astro 自动注入注册脚本，这里无需手动处理。
       })();
     </script>
 
