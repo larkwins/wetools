@@ -16,16 +16,26 @@ export const zhToEnDict: Record<string, string> = {
   // ============================================================
   // —— 站点 UI 与文案 ——
   // ============================================================
+  // 首页 Hero
+  '100% 本地运行 · 不上传任何数据': '100% local · zero data upload',
+  // 主标题被渐变 <span> 切成两段：'程序员的' + '浏览器工具箱'
+  '程序员的': "A Developer's ",
+  '浏览器工具箱': 'Browser Toolbox',
+  '常用开箱即用的开发者工具：JSON、Base64、加密哈希、二维码、时间戳、正则、图片压缩…… 全部在你的浏览器本地完成，开源、免费、无追踪。':
+    'Common ready-to-use developer tools: JSON, Base64, hash, QR, timestamp, regex, image compression… all in your browser, open-source, free, no tracking.',
+  // 旧 Hero 文案（保留向后兼容，避免其他地方残留时无法翻译）
   '数据 100% 本地处理': 'Data is 100% processed locally',
   '开发者浏览器工具箱': 'Developer Browser Toolbox',
   '开发者': 'Developer',
-  '浏览器工具箱': 'Browser Toolbox',
   '个常用工具，无需安装、无需注册、数据不离开你的设备。开源免费。':
     ' essential tools, no install, no signup, your data never leaves your device. Free & open source.',
   '我的收藏': 'My Favorites',
-  // 收藏空状态（图标会切断 <p> 内部文本节点）
-  '还没有收藏任何工具。点击工具卡片右上角的': 'No favorites yet. Click the',
-  '即可收藏，方便下次快速访问。': ' on a tool card to add it for quick access.',
+  '常用工具一键直达': 'Your most-used tools, one click away',
+  '快捷搜索': 'Quick search',
+  // 收藏空状态（两行结构，第二行图标会切断 <p> 内部文本节点）
+  '还没有收藏任何工具': 'No favorites yet',
+  '点击工具卡片右上角的': 'Click the',
+  '即可收藏': 'on a tool card to add it',
   '最近使用': 'Recent',
   '收藏': 'Favorites',
   '搜索工具…': 'Search tools…',

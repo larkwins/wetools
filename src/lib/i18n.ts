@@ -30,28 +30,30 @@ export function pickI18n(meta: ToolMeta, locale: Locale) {
 let converter: ((s: string) => string) | null = null;
 let loading: Promise<void> | null = null;
 
+/** 启动 OpenCC 异步加载（幂等） */
+function startLoadOpenCC(): Promise<void> {
+  if (loading) return loading;
+  if (typeof window === 'undefined') return Promise.resolve();
+  loading = import('opencc-js').then((mod) => {
+    const ConverterFactory = (mod as any).Converter ?? (mod as any).default?.Converter;
+    converter = ConverterFactory({ from: 'cn', to: 'twp' });
+  });
+  return loading;
+}
+
 export function toTraditional(text: string): string {
   if (!text) return text;
   if (converter) return converter(text);
-  // 客户端首次调用时启动加载，但本次先返回原文（next tick 会拿到转换后的）
-  if (typeof window !== 'undefined' && !loading) {
-    loading = import('opencc-js').then((mod) => {
-      const ConverterFactory = (mod as any).Converter ?? (mod as any).default?.Converter;
-      converter = ConverterFactory({ from: 'cn', to: 'twp' });
-    });
-  }
+  // 在客户端首次调用时启动加载；本次仍返回原文，调用方应通过 waitOpenCC() 等待后重试
+  startLoadOpenCC();
   return text;
 }
 
 /** 等待 OpenCC 加载完成（用于 mounted 后强制刷新一次显示） */
 export function waitOpenCC(): Promise<void> {
   if (converter) return Promise.resolve();
-  if (loading) return loading;
-  if (typeof window !== 'undefined') {
-    toTraditional(''); // 触发加载
-    return loading || Promise.resolve();
-  }
-  return Promise.resolve();
+  // 主动启动加载并等待它完成；之前依赖 toTraditional('') 触发会因为空串短路而失败
+  return startLoadOpenCC();
 }
 
 /** 站点级文案字典 */

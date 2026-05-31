@@ -14,6 +14,27 @@ export const usePrefsStore = defineStore('prefs', () => {
   const favorites = useStorage<string[]>(FAV_KEY, []);
   const recents = useStorage<string[]>(RECENT_KEY, []);
 
+  // 监听由非 Vue 代码（如首页 inline script 中"收藏区取消按钮"）派发的事件，
+  // 把最新 favorites 同步到 store —— 否则同一标签内 localStorage.setItem
+  // 不会触发 storage 事件，分类卡里的 FavoriteButton 不会自动取消点亮。
+  // 用 islandSync 标记避免每个 island 重复注册同名 listener。
+  if (typeof window !== 'undefined') {
+    const w = window as unknown as { __wetoolsPrefsListenerBound?: boolean };
+    if (!w.__wetoolsPrefsListenerBound) {
+      w.__wetoolsPrefsListenerBound = true;
+      window.addEventListener('wetools:favoritesChanged', ((e: Event) => {
+        const detail = (e as CustomEvent<{ favorites?: unknown }>).detail;
+        const next = detail?.favorites;
+        if (!Array.isArray(next)) return;
+        const onlyStrings = next.filter((x): x is string => typeof x === 'string');
+        // 仅当与当前不同才赋值，避免与 toggleFavorite 自派事件形成循环
+        const cur = favorites.value;
+        if (cur.length === onlyStrings.length && cur.every((v, i) => v === onlyStrings[i])) return;
+        favorites.value = onlyStrings;
+      }) as EventListener);
+    }
+  }
+
   function isFavorite(id: string): boolean {
     return favorites.value.includes(id);
   }

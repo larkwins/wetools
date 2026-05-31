@@ -23,6 +23,31 @@
 
   body {
     @apply bg-background font-sans text-sm leading-relaxed text-foreground antialiased;
+    /* 顶部双色径向渐变（emerald 绿 + 蓝色 primary）+ 全局微点阵网格。
+       注意：SiteHeader 是 fixed 且 bg-background/95 backdrop-blur，
+       会盖住 body 顶部约 56px。所以渐变中心需放到 header 之下，光晕才可见。
+       fixed 保证滚动时背景稳定。 */
+    background-image:
+      /* 主光晕：中央偏上的浅绿，覆盖 Hero 区 */
+      radial-gradient(ellipse 70% 50% at 50% 25%, hsl(150 70% 55% / 0.14), transparent 65%),
+      /* 副光晕：左上的蓝色 primary */
+      radial-gradient(ellipse 45% 35% at 20% 18%, hsl(var(--primary) / 0.10), transparent 70%),
+      /* 副光晕：右上的青绿 */
+      radial-gradient(ellipse 45% 35% at 82% 20%, hsl(165 70% 50% / 0.10), transparent 70%),
+      /* 全局微点阵 */
+      radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.06) 1px, transparent 0);
+    background-size: 100% 900px, 100% 900px, 100% 900px, 22px 22px;
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+    background-attachment: fixed, fixed, fixed, fixed;
+  }
+
+  .dark body {
+    /* 暗色模式：渐变更克制、点阵更暗淡 */
+    background-image:
+      radial-gradient(ellipse 70% 50% at 50% 25%, hsl(150 70% 55% / 0.10), transparent 65%),
+      radial-gradient(ellipse 45% 35% at 20% 18%, hsl(var(--primary) / 0.12), transparent 70%),
+      radial-gradient(ellipse 45% 35% at 82% 20%, hsl(165 70% 50% / 0.08), transparent 70%),
+      radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.05) 1px, transparent 0);
   }
 
   ::selection {

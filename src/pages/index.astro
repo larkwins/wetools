@@ -5,10 +5,9 @@ import SiteFooter from '@/components/layout/SiteFooter.astro';
 import FavoriteButton from '@/components/ui/FavoriteButton.vue';
 import { groupedByCategory, allTools } from '@/lib/registry';
 import { getIcon } from '@/lib/icons';
-import { Star, ClipboardList } from 'lucide-vue-next';
+import { Star, ClipboardList, Search, Coffee } from 'lucide-vue-next';
 
 const groups = groupedByCategory();
-const total = allTools.length;
 const Ico = getIcon;
 
 const categoryColors: Record<string, { icon: string; iconBg: string; hover: string }> = {
@@ -29,21 +28,52 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
   <SiteHeader />
 
   <main class="flex-1">
-    <!-- Hero -->
-    <section class="container pt-6 pb-8">
-      <div class="max-w-2xl">
-        <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          数据 100% 本地处理
+    <!-- Hero - 居中放大，作为首页视觉重点 -->
+    <section class="container pt-6 pb-10 sm:pt-10 sm:pb-14">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+          100% 本地运行 · 不上传任何数据
         </div>
-        <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">
-          开发者<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-500">浏览器工具箱</span>
+        <h1 class="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+          程序员的<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-400">浏览器工具箱</span>
         </h1>
-        <p class="mt-3 text-muted-foreground leading-relaxed">
-          {total} 个常用工具，无需安装、无需注册、数据不离开你的设备。开源免费。
+        <p class="mx-auto mt-5 max-w-2xl text-base text-muted-foreground leading-relaxed sm:text-[15px]">
+          常用开箱即用的开发者工具：JSON、Base64、加密哈希、二维码、时间戳、正则、图片压缩…… 全部在你的浏览器本地完成，开源、免费、无追踪。
         </p>
+
+        <!-- CTA 按钮组 -->
+        <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
+          <!-- 快捷搜索：点击触发 CommandPalette；快捷键提示由站点 ⌘K 一致 -->
+          <button
+            id="hero-search-trigger"
+            type="button"
+            class="inline-flex h-10 items-center gap-2 rounded-md bg-emerald-600 px-4 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow"
+          >
+            <Search size={15} />
+            快捷搜索
+            <kbd class="ml-1 hidden sm:inline-flex h-5 items-center rounded border border-white/30 bg-white/15 px-1.5 font-mono text-[10px] tracking-wider">⌘K</kbd>
+          </button>
+
+          <!-- Buy Me A Coffee：先占位，链接稍后替换为真实地址 -->
+          <a
+            href="#"
+            data-bmc-placeholder
+            class="inline-flex h-10 items-center gap-2 rounded-md border bg-card px-4 text-sm font-medium text-foreground transition-all hover:border-amber-500/60 hover:text-amber-600 hover:shadow-sm dark:hover:text-amber-400"
+          >
+            <Coffee size={15} class="text-amber-500" />
+            Buy Me A Coffee
+          </a>
+        </div>
       </div>
     </section>
+
+    <!-- Hero 内的快捷搜索按钮：客户端触发 ⌘K 命令面板 -->
+    <script is:inline>
+      document.getElementById('hero-search-trigger')?.addEventListener('click', function () {
+        window.dispatchEvent(new CustomEvent('wetools:openPalette'));
+      });
+    </script>
 
     <section class="container space-y-12 pb-20">
       <!-- 我的收藏 —— 完全静态预渲染，由内联同步脚本从 localStorage 填充 -->
@@ -58,27 +88,41 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
           4. 整个过程在浏览器解析 HTML 时同步完成，无需等 Vue / JS chunk 下载。
       -->
       <div class="favorites-shell">
-        <div class="mb-4 flex items-center gap-2.5">
-          <span class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-amber-500/10">
-            <Star size={14} class="text-amber-500" fill="currentColor" stroke-width={1.5} />
+        <!-- items-center 让文字组合（标题 + 简介）整体与图标垂直居中对齐 -->
+        <div class="mb-5 flex items-center gap-3">
+          <span class="inline-flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-amber-500/10">
+            <Star size={20} class="text-amber-500" fill="currentColor" stroke-width={1.5} />
           </span>
-          <h2 class="text-sm font-semibold text-foreground">我的收藏</h2>
-          <span id="favorites-count" style="display:none" class="ml-1 rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
-            0
-          </span>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <h2 class="text-base font-semibold text-foreground leading-tight sm:text-lg">我的收藏</h2>
+              <span id="favorites-count" style="display:none" class="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
+                0
+              </span>
+            </div>
+            <p class="mt-0.5 text-xs text-muted-foreground">常用工具一键直达</p>
+          </div>
         </div>
 
         <!-- 卡片网格容器（同步脚本会往里 clone 卡片） -->
         <div id="favorites-grid" style="display:none" class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
 
-        <!-- 空状态 -->
-        <div id="favorites-empty" class="flex items-center gap-3 rounded-lg border border-dashed bg-card/40 px-4 py-5 text-sm text-muted-foreground">
-          <ClipboardList size={20} class="flex-none text-muted-foreground/70" />
-          <p>
-            还没有收藏任何工具。点击工具卡片右上角的
-            <Star size={13} class="inline-block -mt-0.5 text-amber-500" />
-            即可收藏，方便下次快速访问。
-          </p>
+        <!-- 空状态：结构与 .tool-card 完全对齐（同样 p-4 + flex items-center gap-3 + h-8 图标 + 两行文字），
+             保证高度与工具卡片完全一致，避免点击收藏后产生纵向跳动 -->
+        <div id="favorites-empty" class="tool-card !cursor-default border-dashed bg-card/40 hover:!border-border hover:!bg-card/40 hover:!shadow-none">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-muted-foreground/70">
+              <ClipboardList size={15} />
+            </span>
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium text-foreground/70">还没有收藏任何工具</p>
+              <p class="truncate text-xs text-muted-foreground mt-0.5">
+                点击工具卡片右上角的
+                <Star size={11} class="inline-block -mt-0.5 text-amber-500" />
+                即可收藏
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -87,14 +131,24 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
         const colors = categoryColors[g.category.id] ?? defaultColor;
         return (
           <div id={g.category.id}>
-            <div class="mb-4 flex items-center gap-2.5">
-              <span class={`inline-flex h-7 w-7 items-center justify-center rounded-md ${colors.iconBg}`}>
-                <CatIcon size={14} class={colors.icon} />
+            <!-- items-center 让标题+简介整体与图标垂直居中对齐 -->
+            <div class="mb-5 flex items-center gap-3">
+              <span class={`inline-flex h-10 w-10 flex-none items-center justify-center rounded-lg ${colors.iconBg}`}>
+                <CatIcon size={20} class={colors.icon} />
               </span>
-              <h2 class="text-sm font-semibold text-foreground">{g.category.i18n.zh.title}</h2>
-              <span class="ml-1 rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
-                {g.tools.length}
-              </span>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <h2 class="text-base font-semibold text-foreground leading-tight sm:text-lg">
+                    {g.category.i18n.zh.title}
+                  </h2>
+                  <span class="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-muted-foreground">
+                    {g.tools.length}
+                  </span>
+                </div>
+                <p class="mt-0.5 text-xs text-muted-foreground">
+                  {g.category.i18n.zh.description}
+                </p>
+              </div>
             </div>
 
             <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -148,6 +202,53 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
           // 清空当前收藏区
           while (grid.firstChild) grid.removeChild(grid.firstChild);
 
+          // 把克隆卡片里的 FavoriteButton 强制改为"已收藏"点亮态，
+          // 并接管它的点击事件（克隆 DOM 不在 Vue 控制下）。
+          function markFavoritedInClone(cloneEl, toolId) {
+            var btn = cloneEl.querySelector('button');
+            if (!btn) return;
+            // 视觉：text-muted-foreground/50 hover:text-muted-foreground
+            //   → text-amber-500 hover:text-amber-600；svg fill 改实心
+            btn.classList.remove('text-muted-foreground/50', 'hover:text-muted-foreground');
+            btn.classList.add('text-amber-500', 'hover:text-amber-600');
+            var svg = btn.querySelector('svg');
+            if (svg) {
+              svg.setAttribute('fill', 'currentColor');
+              svg.setAttribute('stroke-width', '1.5');
+            }
+            // 接管点击：取消收藏（写 localStorage + 派发同标签 storage 事件，
+            // 让所有 Vue island 里的 useStorage 同步取消点亮）
+            btn.addEventListener('click', function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              try {
+                var KEY = 'wetools:favorites';
+                var raw = localStorage.getItem(KEY);
+                var arr = raw ? JSON.parse(raw) : [];
+                if (!Array.isArray(arr)) arr = [];
+                var prev = JSON.stringify(arr);
+                var next = arr.filter(function (x) { return x !== toolId; });
+                var nextStr = JSON.stringify(next);
+                localStorage.setItem(KEY, nextStr);
+                // 自定义事件：触发首页"我的收藏"区重新渲染
+                window.dispatchEvent(new CustomEvent('wetools:favoritesChanged', {
+                  detail: { favorites: next }
+                }));
+                // 同标签 storage 事件：触发所有 island 内 useStorage 同步
+                // 注意 StorageEvent 必须用 init 字典构造
+                try {
+                  window.dispatchEvent(new StorageEvent('storage', {
+                    key: KEY,
+                    oldValue: prev,
+                    newValue: nextStr,
+                    storageArea: localStorage,
+                    url: window.location.href,
+                  }));
+                } catch (_) { /* 老浏览器 ignore */ }
+              } catch (err) { /* ignore */ }
+            });
+          }
+
           var added = 0;
           for (var i = 0; i < ids.length; i++) {
             var id = ids[i];
@@ -156,6 +257,7 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
             if (!src) continue;
             var clone = src.cloneNode(true);
             clone.removeAttribute('data-tool-id'); // 避免下次再被选中、克隆嵌套
+            markFavoritedInClone(clone, id);
             grid.appendChild(clone);
             added++;
           }
