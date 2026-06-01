@@ -1128,6 +1128,80 @@ export const zhToEnDict: Record<string, string> = {
   '汇率获取失败：': 'Failed to fetch rates: ',
   '数据更新日期：': 'Data updated: ',
   '对应（参考）': ' equals (reference)',
+
+  // === 批4：4 个检测工具 ===
+  // 通用
+  '点击下方按钮启动摄像头预览': 'Click the button below to start camera preview',
+  '点击下方按钮启动麦克风': 'Click the button below to start the microphone',
+  '当前浏览器不支持 getUserMedia（请使用 HTTPS 或 localhost）':
+    'Your browser does not support getUserMedia (HTTPS or localhost required)',
+  '获取设备列表失败：': 'Failed to enumerate devices: ',
+  '启动摄像头失败：': 'Failed to start camera: ',
+  '启动麦克风失败：': 'Failed to start microphone: ',
+
+  // Camera
+  '启动摄像头': 'Start camera',
+  '拍照': 'Take photo',
+  '停止': 'Stop',
+  '拍摄结果': 'Snapshot',
+  '需要授权摄像头权限。视频流仅在浏览器本地处理，关闭页面后立即释放。仅 HTTPS / localhost 可用。':
+    'Requires camera permission. Video stream is processed locally and released on page close. HTTPS / localhost only.',
+
+  // Mic
+  '启动麦克风': 'Start microphone',
+  '录音': 'Record',
+  '停止录音': 'Stop recording',
+  '音量': 'Volume',
+  '录音回放': 'Playback',
+  '需要授权麦克风权限。音频数据仅在浏览器本地处理，关闭页面后立即释放。仅 HTTPS / localhost 可用。':
+    'Requires microphone permission. Audio is processed locally and released on page close. HTTPS / localhost only.',
+
+  // Gamepad
+  '未检测到手柄': 'No gamepad detected',
+  '请连接手柄后': 'Please connect a gamepad and ',
+  '按下任意按钮': 'press any button',
+  '以激活检测': ' to activate detection',
+  '手柄 #': 'Gamepad #',
+  '按键': 'Buttons',
+  '摇杆 / 扳机': 'Sticks / Triggers',
+  '左摇杆': 'Left stick',
+  '右摇杆': 'Right stick',
+  '✓ 支持震动': '✓ Vibration supported',
+  '使用 Gamepad API。注意：浏览器要求': 'Uses the Gamepad API. Note: browsers require ',
+  '后才会出现在 navigator.getGamepads()，这是出于隐私考虑。':
+    ' before gamepads appear in navigator.getGamepads(), for privacy.',
+
+  // Screen info
+  '屏幕物理': 'Screen (physical)',
+  '窗口 / 视口': 'Window / Viewport',
+  '浏览器 / 系统': 'Browser / OS',
+  '主题 / 偏好': 'Theme / Preferences',
+  '屏幕分辨率': 'Screen resolution',
+  '可用区域': 'Available area',
+  '色深': 'Color depth',
+  '像素深度': 'Pixel depth',
+  '方向': 'Orientation',
+  'DPR (设备像素比)': 'DPR (devicePixelRatio)',
+  '色域': 'Color gamut',
+  '文档视口': 'Document viewport',
+  '物理像素 (innerW × DPR)': 'Physical pixels (innerW × DPR)',
+  'User-Agent': 'User-Agent',
+  '平台': 'Platform',
+  '首选语言': 'Preferred language',
+  '所有语言': 'All languages',
+  '在线': 'Online',
+  '是': 'Yes',
+  '否': 'No',
+  'Cookie 启用': 'Cookie enabled',
+  'CPU 逻辑核心': 'CPU cores',
+  '设备内存': 'Device memory',
+  '未提供': 'N/A',
+  '网络': 'Network',
+  '偏好深色模式': 'Prefers dark',
+  '偏好减少动画': 'Prefers reduced motion',
+  '偏好对比度': 'Prefers contrast',
+  '调整浏览器窗口大小可实时更新视口数据。所有信息在浏览器本地读取，未上传。':
+    'Resize the browser window to update viewport data in real-time. All info is read locally, never uploaded.',
 };
 
 /**

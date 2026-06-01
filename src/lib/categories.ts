@@ -77,8 +77,8 @@ export const categories: CategoryMeta[] = [
     icon: 'ScanLine',
     order: 80,
     i18n: {
-      zh: { title: '检测', description: '摄像头、麦克风、游戏手柄等设备检测（开发中）' },
-      en: { title: 'Detect', description: 'Camera, microphone, gamepad device tests (in development)' },
+      zh: { title: '检测', description: '摄像头、麦克风、游戏手柄、屏幕等设备检测' },
+      en: { title: 'Detect', description: 'Camera, microphone, gamepad, screen device tests' },
     },
   },
 ];

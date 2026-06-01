@@ -90,6 +90,10 @@ import {
   Container,
   Tags,
   CircleDollarSign,
+  Camera,
+  Mic,
+  Gamepad2,
+  Monitor,
 } from 'lucide-vue-next';
 import type { Component } from 'vue';
 
@@ -175,6 +179,10 @@ export const iconMap: Record<string, Component> = {
   Container,
   Tags,
   CircleDollarSign,
+  Camera,
+  Mic,
+  Gamepad2,
+  Monitor,
 };
 
 /** 根据字符串名取图标组件，找不到时回退到 Wrench */
