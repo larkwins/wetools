@@ -289,11 +289,6 @@ const expiredGroups = computed(() => groups.value.filter((g) => g.notAfter <= Da
 
 <template>
   <div class="flex flex-col gap-4">
-    <!-- 说明 -->
-    <p class="rounded-md border border-blue-500/30 bg-blue-50/60 px-3 py-2 text-xs text-blue-700 dark:bg-blue-500/5 dark:text-blue-300">
-      ℹ️ 浏览器无法直接读取 TLS 证书与协议细节。本工具：① 提供一键跳转到 3 个权威在线检测平台；② 通过 Certificate Transparency Log（主源 certspotter，兜底 crt.sh）查询该域名的证书签发记录。
-    </p>
-
     <!-- 输入 -->
     <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
       <Input
@@ -442,5 +437,10 @@ const expiredGroups = computed(() => groups.value.filter((g) => g.notAfter <= Da
     <div v-else-if="!lastQueried && !loading" class="rounded-md border border-dashed bg-card/40 py-12 text-center text-sm text-muted-foreground">
       输入域名后可：① 一键查看 SSL Labs 等权威报告；② 查询 CT 日志中的所有证书签发记录
     </div>
+
+    <!-- 数据来源说明（次要信息放最下方） -->
+    <p class="text-xs text-muted-foreground">
+      数据来源：Certificate Transparency Log（主源 certspotter.com，兜底 crt.sh）；浏览器无法直接读取 TLS 证书与协议细节，故 SSL Labs / Mozilla Observatory / MySSL 等深度检测需跳转到对应站点。
+    </p>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { Sparkles, Minimize2, Quote, Trash2, AlertCircle } from 'lucide-vue-next';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
@@ -80,7 +80,7 @@ watchEffect(() => {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JSON 输入</label>
           <CopyButton :text="input" icon-only />
         </div>
-        <Textarea v-model="input" mono :rows="20" placeholder="粘贴 JSON…" />
+        <CodeEditor v-model="input" lang="json" :rows="20" placeholder="粘贴 JSON…" />
         <div v-if="error" class="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-xs">
           <p class="flex items-center gap-1.5 font-medium text-destructive">
             <AlertCircle :size="12" />解析失败
@@ -96,7 +96,8 @@ watchEffect(() => {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输出</label>
           <CopyButton :text="output" icon-only />
         </div>
-        <Textarea :model-value="output" mono :rows="20" readonly />
+        <!-- escape 模式输出的是 JSON 字符串字面量（外层是字符串），按 text 高亮更合理 -->
+        <CodeEditor :model-value="output" :lang="mode === 'escape' ? 'text' : 'json'" :rows="20" readonly />
       </div>
     </div>
   </div>

@@ -1126,11 +1126,29 @@ export const zhToEnDict: Record<string, string> = {
   '⚠️ 本工具会调用第三方汇率 API 获取数据（按顺序尝试 exchangerate-api、fawazahmed0、open.er-api），会向其服务器发送 GET 请求。':
     '⚠️ This tool calls third-party rate APIs (tries exchangerate-api, fawazahmed0, open.er-api in order); GET requests are sent to their servers.',
   '所有汇率源均不可用：': 'All rate sources unavailable: ',
+  '数据来源：依次尝试 exchangerate-api.com / fawazahmed0 / open.er-api.com 三个第三方公开汇率 API，会向其服务器发送 GET 请求。':
+    'Data source: tries exchangerate-api.com / fawazahmed0 / open.er-api.com in order — public third-party rate APIs; GET requests are sent to their servers.',
+  // 常用币种中文名
+  '人民币': 'Chinese Yuan',
+  '美元': 'US Dollar',
+  '欧元': 'Euro',
+  '英镑': 'British Pound',
+  '日元': 'Japanese Yen',
+  '港币': 'Hong Kong Dollar',
+  '新台币': 'New Taiwan Dollar',
+  '韩元': 'South Korean Won',
+  '新加坡元': 'Singapore Dollar',
+  '澳元': 'Australian Dollar',
+  '加元': 'Canadian Dollar',
   '从': 'From',
   '到': 'To',
   '金额': 'amount',
   '汇率获取失败：': 'Failed to fetch rates: ',
   '数据更新日期：': 'Data updated: ',
+  '数据更新于': 'Updated at',
+  '约等于': 'is approximately',
+  '刷新汇率': 'Refresh rates',
+  '交换币种': 'Swap currencies',
   '对应（参考）': ' equals (reference)',
 
   // === 批4：4 个检测工具 ===
@@ -1243,6 +1261,10 @@ export const zhToEnDict: Record<string, string> = {
   '正在查询 certspotter…': 'Querying certspotter…',
   'certspotter 失败，切换 crt.sh 兜底（最长 60s）…': 'certspotter failed, falling back to crt.sh (up to 60s)…',
   '未在 CT 日志中找到': 'No CT log records found for',
+  '数据来源：Certificate Transparency Log（主源 certspotter.com，兜底 crt.sh）；浏览器无法直接读取 TLS 证书与协议细节，故 SSL Labs / Mozilla Observatory / MySSL 等深度检测需跳转到对应站点。':
+    'Data source: Certificate Transparency Log (primary certspotter.com, fallback crt.sh). Browsers cannot directly read TLS certificate/protocol details, so deep scanning via SSL Labs / Mozilla Observatory / MySSL requires jumping to those sites.',
+  '数据来源：Cloudflare 官方测速 SDK（@cloudflare/speedtest），测速到 Cloudflare 边缘节点，结果反映国际/区域出口带宽，不等于本地宽带真实速度。':
+    'Data source: official Cloudflare Speed Test SDK (@cloudflare/speedtest). Speeds measured to Cloudflare edge nodes reflect international/regional egress bandwidth, not local ISP throughput.',
   '的证书': '',
   '两个数据源都超时了，请稍后重试': 'Both data sources timed out, please retry',
   '已吊销': 'Revoked',

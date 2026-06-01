@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { ArrowLeftRight, Trash2 } from 'lucide-vue-next';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
@@ -84,14 +84,14 @@ function swap() {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输入</label>
           <CopyButton :text="input" icon-only />
         </div>
-        <Textarea v-model="input" mono :rows="14" />
+        <CodeEditor v-model="input" lang="html" :rows="14" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输出</label>
           <CopyButton :text="output" icon-only />
         </div>
-        <Textarea :model-value="output" mono :rows="14" readonly />
+        <CodeEditor :model-value="output" lang="html" :rows="14" readonly />
       </div>
     </div>
   </div>

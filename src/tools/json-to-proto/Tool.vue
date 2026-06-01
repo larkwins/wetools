@@ -2,7 +2,7 @@
 import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import Input from '@/components/ui/Input.vue';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
 const rootName = ref('Root');
@@ -139,14 +139,14 @@ watchEffect(() => {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JSON 输入</label>
           <CopyButton :text="jsonText" icon-only />
         </div>
-        <Textarea v-model="jsonText" mono :rows="20" placeholder="粘贴 JSON…" />
+        <CodeEditor v-model="jsonText" lang="json" :rows="20" placeholder="粘贴 JSON…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Protobuf 3</label>
           <CopyButton :text="proto" icon-only />
         </div>
-        <Textarea :model-value="proto" mono :rows="20" readonly />
+        <CodeEditor :model-value="proto" lang="proto" :rows="20" readonly />
         <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive">
           <AlertCircle :size="12" />{{ error }}
         </p>

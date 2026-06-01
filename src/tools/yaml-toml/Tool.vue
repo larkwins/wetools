@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { ArrowRight, ArrowLeft, AlertCircle } from 'lucide-vue-next';
 import TOML from '@iarna/toml';
 import jsYaml from 'js-yaml';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
@@ -57,14 +57,14 @@ function tomlToYaml() {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">YAML</label>
           <CopyButton :text="yamlText" icon-only />
         </div>
-        <Textarea v-model="yamlText" mono :rows="18" placeholder="粘贴 YAML…" />
+        <CodeEditor v-model="yamlText" lang="yaml" :rows="18" placeholder="粘贴 YAML…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">TOML</label>
           <CopyButton :text="tomlText" icon-only />
         </div>
-        <Textarea v-model="tomlText" mono :rows="18" placeholder="粘贴 TOML…" />
+        <CodeEditor v-model="tomlText" lang="toml" :rows="18" placeholder="粘贴 TOML…" />
       </div>
     </div>
 

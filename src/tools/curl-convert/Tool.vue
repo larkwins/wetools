@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 import { parseCurl, toFetch, toAxios, toNodeFetch } from './logic';
 
@@ -12,6 +12,9 @@ const input = ref(`curl -X POST 'https://api.example.com/users' \\
   -H 'Content-Type: application/json' \\
   -H 'Authorization: Bearer eyJ...' \\
   -d '{"name":"WeTools","tags":["dev"]}'`);
+
+// 输出语言：当前 3 个 target 都是 JS 代码
+const curlOutLang = computed(() => 'javascript' as const);
 
 const result = computed(() => {
   if (!input.value.trim()) return { ok: false as const, error: '请输入 cURL 命令' };
@@ -33,7 +36,7 @@ const result = computed(() => {
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
       <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">cURL 命令</label>
-      <Textarea v-model="input" mono :rows="8" />
+      <CodeEditor v-model="input" lang="shell" :rows="8" />
     </div>
 
     <div class="flex flex-wrap items-center gap-3">
@@ -54,7 +57,7 @@ const result = computed(() => {
         <span class="text-xs uppercase tracking-wider text-muted-foreground">{{ target }} 代码</span>
         <CopyButton :text="result.code" />
       </div>
-      <Textarea :model-value="result.code" mono :rows="14" readonly />
+      <CodeEditor :model-value="result.code" :lang="curlOutLang" :rows="14" readonly />
 
       <details class="rounded-lg border bg-card/40 p-3 text-xs">
         <summary class="cursor-pointer font-medium text-muted-foreground">解析结果</summary>

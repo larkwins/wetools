@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { ArrowRight, ArrowLeft, AlertCircle } from 'lucide-vue-next';
 import TOML from '@iarna/toml';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
@@ -51,14 +51,14 @@ function tomlToJson() {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JSON</label>
           <CopyButton :text="jsonText" icon-only />
         </div>
-        <Textarea v-model="jsonText" mono :rows="18" placeholder="粘贴 JSON…" />
+        <CodeEditor v-model="jsonText" lang="json" :rows="18" placeholder="粘贴 JSON…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">TOML</label>
           <CopyButton :text="tomlText" icon-only />
         </div>
-        <Textarea v-model="tomlText" mono :rows="18" placeholder="粘贴 TOML…" />
+        <CodeEditor v-model="tomlText" lang="toml" :rows="18" placeholder="粘贴 TOML…" />
       </div>
     </div>
 

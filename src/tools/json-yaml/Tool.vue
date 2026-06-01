@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { ArrowLeftRight, AlertCircle } from 'lucide-vue-next';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 import yaml from 'js-yaml';
@@ -66,14 +66,14 @@ function swap() {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">{{ mode === 'j2y' ? 'JSON' : 'YAML' }} 输入</label>
           <CopyButton :text="input" icon-only />
         </div>
-        <Textarea v-model="input" mono :rows="20" />
+        <CodeEditor v-model="input" :lang="mode === 'j2y' ? 'json' : 'yaml'" :rows="20" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">{{ mode === 'j2y' ? 'YAML' : 'JSON' }} 输出</label>
           <CopyButton :text="output" icon-only />
         </div>
-        <Textarea :model-value="output" mono :rows="20" readonly />
+        <CodeEditor :model-value="output" :lang="mode === 'j2y' ? 'yaml' : 'json'" :rows="20" readonly />
         <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive">
           <AlertCircle :size="12" />{{ error }}
         </p>

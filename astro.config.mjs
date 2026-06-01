@@ -124,6 +124,26 @@ export default defineConfig({
         'otpauth',
         'xml-formatter',
         'mathjs',
+        // CodeMirror 核心（CodeEditor 静态依赖）—— 显式预构建，避免 dev 模式
+        // 浏览器对 26 个 @codemirror/* 与 @lezer/* 子包并发请求导致 1~2s 延迟
+        '@codemirror/state',
+        '@codemirror/view',
+        '@codemirror/commands',
+        '@codemirror/language',
+        '@codemirror/theme-one-dark',
+        // 各语言扩展（CodeEditor 动态 import，按需加载）—— 同样预构建，避免
+        // 首次切换/打开工具时的 200~500ms 即时下载
+        '@codemirror/lang-json',
+        '@codemirror/lang-yaml',
+        '@codemirror/lang-xml',
+        '@codemirror/lang-html',
+        '@codemirror/lang-sql',
+        '@codemirror/lang-go',
+        '@codemirror/lang-javascript',
+        '@codemirror/legacy-modes/mode/toml',
+        '@codemirror/legacy-modes/mode/protobuf',
+        '@codemirror/legacy-modes/mode/shell',
+        '@codemirror/legacy-modes/mode/properties',
       ],
     },
   },

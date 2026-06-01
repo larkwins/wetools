@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
 const useGorm = ref(true);
@@ -222,14 +222,14 @@ watchEffect(() => {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">CREATE TABLE 语句</label>
           <CopyButton :text="sqlText" icon-only />
         </div>
-        <Textarea v-model="sqlText" mono :rows="20" placeholder="粘贴 CREATE TABLE…" />
+        <CodeEditor v-model="sqlText" lang="sql" :rows="20" placeholder="粘贴 CREATE TABLE…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Go Struct</label>
           <CopyButton :text="goCode" icon-only />
         </div>
-        <Textarea :model-value="goCode" mono :rows="20" readonly />
+        <CodeEditor :model-value="goCode" lang="go" :rows="20" readonly />
         <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive">
           <AlertCircle :size="12" />{{ error }}
         </p>

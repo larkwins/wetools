@@ -36,7 +36,9 @@ onMounted(() => {
     <!-- 两个 kbd 都渲染，由 BaseLayout 注入的 <html data-platform="mac|pc"> 通过 CSS
          决定显示哪一个。这样 SSR HTML 加载完成、inline 脚本同步执行后，浏览器首次
          绘制就已显示正确快捷键，不会有 ⌘K → Ctrl K 的闪烁 -->
-    <kbd class="kbd-mac hidden sm:inline-flex h-5 w-10 items-center justify-center rounded border bg-background font-mono text-[10px]">⌘K</kbd>
+    <kbd class="kbd-mac hidden sm:inline-flex h-5 w-10 items-center justify-center gap-0.5 rounded border bg-background text-[11px] font-medium leading-none">
+      <span class="text-[14px] leading-none">⌘</span><span class="font-mono">K</span>
+    </kbd>
     <kbd class="kbd-pc hidden sm:inline-flex h-5 w-10 items-center justify-center rounded border bg-background font-mono text-[10px]">Ctrl K</kbd>
   </button>
 </template>

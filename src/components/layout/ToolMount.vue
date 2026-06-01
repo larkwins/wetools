@@ -11,6 +11,15 @@ useToolI18n({ container: '[data-tool-content]' });
 // 收集所有工具组件，由 Vite 自动按工具拆分 chunk
 const components = import.meta.glob<{ default: Component }>('/src/tools/*/Tool.vue');
 
+// 预热 CodeEditor 大 chunk（CodeMirror ~150KB gzip）。
+// 大量格式化/转换类工具都依赖它，提前与 Tool.vue chunk 并行下载，
+// 把"组件 chunk 解析完才发现要加载 CodeMirror"的串行等待变成并行，可省 ~1s。
+// 对没用到 CodeEditor 的工具仅多一次 HTTP，命中长缓存代价极低。
+if (typeof window !== 'undefined') {
+  // 用 link rel=modulepreload 触发，比 import() 更轻（不会执行模块工厂，仅下载+解析）
+  import('@/components/ui/CodeEditor.vue').catch(() => { /* 静默：纯预热 */ });
+}
+
 const Comp = computed(() => {
   const path = `/src/tools/${props.meta.id}/Tool.vue`;
   const importer = components[path];

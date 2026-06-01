@@ -185,12 +185,7 @@ const running = computed(() => phase.value === 'running');
 
 <template>
   <div class="flex flex-col gap-4">
-    <!-- 说明 -->
-    <p class="rounded-md border border-amber-500/30 bg-amber-50/60 px-3 py-2 text-xs text-amber-700 dark:bg-amber-500/5 dark:text-amber-300">
-      ⚠️ 本工具基于 Cloudflare 官方测速 SDK（@cloudflare/speedtest），测速到 Cloudflare 边缘节点。<strong>结果反映的是国际/区域出口带宽，不等于您本地宽带的真实速度</strong>——国内用户通常接入到香港 (HKG)。若想测本地宽带真实速度，请使用工信部认证的 <a href="https://www.speedtest.cn" target="_blank" rel="noopener" class="underline">speedtest.cn</a> 或运营商官方测速。
-    </p>
-
-    <!-- 接入节点警告 -->
+    <!-- 接入节点警告（运行时关键反馈，保留在显眼位置） -->
     <p
       v-if="serverInfo.country && !isChinaMainland"
       class="rounded-md border border-orange-500/30 bg-orange-50/60 px-3 py-2 text-xs text-orange-700 dark:bg-orange-500/5 dark:text-orange-300"
@@ -284,5 +279,10 @@ const running = computed(() => phase.value === 'running');
         或运营商官方测速。
       </p>
     </div>
+
+    <!-- 数据来源说明（次要信息放最下方） -->
+    <p class="text-xs text-muted-foreground">
+      数据来源：Cloudflare 官方测速 SDK（@cloudflare/speedtest），测速到 Cloudflare 边缘节点，结果反映国际/区域出口带宽，不等于本地宽带真实速度。
+    </p>
   </div>
 </template>

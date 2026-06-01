@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue';
 import { AlertCircle, Plus, Minus, Pencil } from 'lucide-vue-next';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 
 const left = ref(JSON.stringify({
   name: 'Alice',
@@ -98,11 +98,11 @@ function fmt(v: unknown): string {
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">原 JSON (A)</label>
-        <Textarea v-model="left" mono :rows="14" />
+        <CodeEditor v-model="left" lang="json" :rows="14" />
       </div>
       <div class="flex flex-col gap-2">
         <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">新 JSON (B)</label>
-        <Textarea v-model="right" mono :rows="14" />
+        <CodeEditor v-model="right" lang="json" :rows="14" />
       </div>
     </div>
 

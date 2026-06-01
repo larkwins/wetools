@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import { format, type SqlLanguage } from 'sql-formatter';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
@@ -94,14 +94,14 @@ watch([dialect, indent, kwCase], doFormat, { immediate: true });
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输入</label>
           <CopyButton :text="input" icon-only />
         </div>
-        <Textarea v-model="input" mono :rows="18" placeholder="粘贴 SQL…" />
+        <CodeEditor v-model="input" lang="sql" :rows="18" placeholder="粘贴 SQL…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输出</label>
           <CopyButton :text="output" icon-only />
         </div>
-        <Textarea :model-value="output" mono :rows="18" readonly />
+        <CodeEditor :model-value="output" lang="sql" :rows="18" readonly />
         <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive">
           <AlertCircle :size="12" />{{ error }}
         </p>

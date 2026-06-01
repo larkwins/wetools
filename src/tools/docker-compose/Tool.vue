@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
 const dockerCmd = ref(`docker run -d \\
@@ -174,14 +174,14 @@ const examples = [
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">docker run 命令</label>
-        <Textarea v-model="dockerCmd" mono :rows="14" placeholder="粘贴 docker run 命令…" />
+        <CodeEditor v-model="dockerCmd" lang="shell" :rows="14" placeholder="粘贴 docker run 命令…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">docker-compose.yml</label>
           <CopyButton :text="compose" icon-only />
         </div>
-        <Textarea :model-value="compose" mono :rows="14" readonly />
+        <CodeEditor :model-value="compose" lang="yaml" :rows="14" readonly />
         <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive">
           <AlertCircle :size="12" />{{ error }}
         </p>

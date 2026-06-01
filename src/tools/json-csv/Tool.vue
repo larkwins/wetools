@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { ArrowLeftRight, AlertCircle } from 'lucide-vue-next';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
@@ -119,14 +119,14 @@ function swap() {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">{{ mode === 'j2c' ? 'JSON' : 'CSV' }} 输入</label>
           <CopyButton :text="input" icon-only />
         </div>
-        <Textarea v-model="input" mono :rows="18" />
+        <CodeEditor v-model="input" :lang="mode === 'j2c' ? 'json' : 'text'" :rows="18" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">{{ mode === 'j2c' ? 'CSV' : 'JSON' }} 输出</label>
           <CopyButton :text="output" icon-only />
         </div>
-        <Textarea :model-value="output" mono :rows="18" readonly />
+        <CodeEditor :model-value="output" :lang="mode === 'j2c' ? 'text' : 'json'" :rows="18" readonly />
         <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive"><AlertCircle :size="12" />{{ error }}</p>
       </div>
     </div>

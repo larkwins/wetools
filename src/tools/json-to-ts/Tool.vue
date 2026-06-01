@@ -2,7 +2,7 @@
 import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import Input from '@/components/ui/Input.vue';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/CodeEditor.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 import JsonToTS from 'json-to-ts';
 
@@ -46,7 +46,7 @@ watchEffect(() => {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JSON</label>
           <CopyButton :text="input" icon-only />
         </div>
-        <Textarea v-model="input" mono :rows="20" />
+        <CodeEditor v-model="input" lang="json" :rows="20" />
         <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive"><AlertCircle :size="12" />{{ error }}</p>
       </div>
       <div class="flex flex-col gap-2">
@@ -54,7 +54,7 @@ watchEffect(() => {
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">TypeScript</label>
           <CopyButton :text="output" icon-only />
         </div>
-        <Textarea :model-value="output" mono :rows="20" readonly />
+        <CodeEditor :model-value="output" lang="typescript" :rows="20" readonly />
       </div>
     </div>
   </div>
