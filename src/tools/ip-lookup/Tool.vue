@@ -80,8 +80,11 @@ function fields(d: Record<string, any>) {
       </ul>
 
       <div class="rounded-lg border bg-card p-4">
-        <p class="text-xs font-medium text-muted-foreground">原始 JSON</p>
-        <pre class="code-area mt-2 max-h-72 overflow-auto text-[11px] leading-5">{{ JSON.stringify(data, null, 2) }}</pre>
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-medium text-muted-foreground">原始 JSON</p>
+          <CopyButton :text="JSON.stringify(data, null, 2)" icon-only />
+        </div>
+        <pre class="code-area mt-2 overflow-auto text-[11px] leading-5">{{ JSON.stringify(data, null, 2) }}</pre>
       </div>
     </div>
   </div>

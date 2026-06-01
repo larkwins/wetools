@@ -29,10 +29,10 @@ onMounted(() => {
       :aria-label="copied ? dict.tool.copied : dict.tool.copyLink"
       :title="copied ? dict.tool.copied : dict.tool.copyLink"
       :class="[
-        'inline-flex h-8 w-8 items-center justify-center rounded-md border transition-colors',
+        'inline-flex h-9 w-9 items-center justify-center rounded-md border shadow-sm transition-all active:scale-95',
         copied
-          ? 'border-emerald-500/60 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-          : 'text-muted-foreground hover:text-foreground hover:border-border',
+          ? 'border-emerald-500/60 bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400'
+          : 'border-border bg-card text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-primary/5',
       ]"
       @click="copyLink"
     >
@@ -45,8 +45,8 @@ onMounted(() => {
         leave-to-class="opacity-0 scale-50"
         mode="out-in"
       >
-        <Check v-if="copied" :size="15" :stroke-width="2.5" key="check" />
-        <LinkIcon v-else :size="14" key="link" />
+        <Check v-if="copied" :size="16" :stroke-width="2.5" key="check" />
+        <LinkIcon v-else :size="15" key="link" />
       </Transition>
     </button>
   </div>

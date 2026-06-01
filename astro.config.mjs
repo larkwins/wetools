@@ -12,6 +12,11 @@ export default defineConfig({
     prefetchAll: false,
     defaultStrategy: 'hover',
   },
+  // 工具合并/改名后的旧链接重定向，保持收藏夹与外链兼容
+  redirects: {
+    '/qr-generate': '/qr-code',
+    '/qr-decode': '/qr-code',
+  },
   integrations: [
     vue({ appEntrypoint: '/src/app.ts' }),
     tailwind({ applyBaseStyles: false }),

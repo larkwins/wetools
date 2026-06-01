@@ -41,10 +41,6 @@ function swap() {
 function clearAll() {
   input.value = '';
 }
-
-watch(mode, () => {
-  // 切换模式时不立即清空，让用户能基于已有结果做反向验证
-});
 </script>
 
 <template>

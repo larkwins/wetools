@@ -57,21 +57,21 @@ const fetchSnippet = computed(() => {
       <div class="break-all rounded-md border bg-card px-3 py-2 font-mono text-sm">{{ headerLine || '—' }}</div>
     </div>
 
-    <div class="grid gap-3 lg:grid-cols-2">
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">cURL</label>
-          <CopyButton :text="curlSnippet" icon-only />
-        </div>
-        <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ curlSnippet || '—' }}</code></pre>
+    <!-- 上下两行：cURL 与 fetch 单独一行展示，避免在窄屏挤成一行难读 -->
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">cURL</label>
+        <CopyButton :text="curlSnippet" icon-only />
       </div>
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JavaScript fetch</label>
-          <CopyButton :text="fetchSnippet" icon-only />
-        </div>
-        <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ fetchSnippet || '—' }}</code></pre>
+      <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ curlSnippet || '—' }}</code></pre>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JavaScript fetch</label>
+        <CopyButton :text="fetchSnippet" icon-only />
       </div>
+      <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ fetchSnippet || '—' }}</code></pre>
     </div>
 
     <p class="text-xs text-muted-foreground">

@@ -94,6 +94,7 @@ import {
   Mic,
   Gamepad2,
   Monitor,
+  Gauge,
 } from 'lucide-vue-next';
 import type { Component } from 'vue';
 
@@ -183,6 +184,7 @@ export const iconMap: Record<string, Component> = {
   Mic,
   Gamepad2,
   Monitor,
+  Gauge,
 };
 
 /** 根据字符串名取图标组件，找不到时回退到 Wrench */

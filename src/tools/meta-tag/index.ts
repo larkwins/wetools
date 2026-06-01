@@ -5,8 +5,8 @@ export const meta: ToolMeta = {
   category: 'generator',
   icon: 'Tags',
   i18n: {
-    zh: { title: 'Meta Tag 生成', description: '生成 SEO / Open Graph / Twitter Card meta 标签。' },
-    en: { title: 'Meta Tag Generator', description: 'Generate SEO / Open Graph / Twitter Card meta tags.' },
+    zh: { title: 'HTML Meta Tag 生成', description: '生成 SEO / Open Graph / Twitter Card meta 标签。' },
+    en: { title: 'HTML Meta Tag Generator', description: 'Generate SEO / Open Graph / Twitter Card meta tags.' },
   },
   keywords: ['meta', 'seo', 'og', 'opengraph', 'twitter', 'social'],
   privacy: 'local',

@@ -5,7 +5,7 @@ import Textarea from '@/components/ui/Textarea.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
 const title = ref('WeTools — 程序员的浏览器工具箱');
-const description = ref('80+ 个开发者常用工具，全部在浏览器本地运行，开源免费。');
+const description = ref('100+ 个开发者常用工具，全部在浏览器本地运行，开源免费。');
 const url = ref('https://wetools.cc');
 const image = ref('https://wetools.cc/og.png');
 const author = ref('');

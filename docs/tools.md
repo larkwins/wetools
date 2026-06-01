@@ -46,7 +46,7 @@
 
 ---
 
-## 3. 生成 (`generator`) — 16 ✅
+## 3. 生成 (`generator`) — 15 ✅
 
 > 各类内容生成器
 
@@ -55,8 +55,7 @@
 | ✅ | `uuid` | UUID / NanoID | UUID / NanoID | |
 | ✅ | `password` | 随机密码 | Random Password | |
 | ✅ | `random` | 随机数 | Random Number | |
-| ✅ | `qr-generate` | 二维码生成 | QR Generate | |
-| ✅ | `qr-decode` | 二维码识别 | QR Decode | |
+| ✅ | `qr-code` | 二维码生成/识别 | QR Code | 生成 / 识别 二合一（旧 `/qr-generate` `/qr-decode` 自动重定向） |
 | ✅ | `lorem` | Lorem Ipsum | Lorem Ipsum | |
 | ✅ | `mock-data` | Mock 假数据 | Mock Data | |
 | ✅ | `placeholder-image` | 占位图生成 | Placeholder Image | SVG + PNG，仿 dummyimage |
@@ -109,7 +108,7 @@
 
 ---
 
-## 6. Web/网络 (`web`) — 8 ✅
+## 6. Web/网络 (`web`) — 10 ✅
 
 > Web 开发与网络调试
 
@@ -123,6 +122,8 @@
 | 🆕✅ | `ipv4-subnet` | IPv4 子网计算器 | IPv4 Subnet Calculator | 网络工程师高频 |
 | 🆕✅ | `mac-lookup` | MAC 地址查询 (OUI) | MAC Address Lookup | 内置 OUI 表 |
 | 🆕✅ | `mac-generate` | MAC 地址生成 | MAC Address Generator | |
+| 🆕✅ | `ssl-check` | SSL 证书检测 | SSL Certificate Checker | CT 日志查询（certspotter + crt.sh）+ 一键跳转 SSL Labs / Mozilla Observatory / MySSL |
+| 🆕✅ | `speed-test` | 网络测速 | Network Speed Test | Cloudflare Speed Test 端点，测延迟/抖动/下载/上传 |
 
 ---
 
@@ -169,13 +170,13 @@
 |---|---:|
 | 常用 | 6 |
 | 编码/加密 | 12 |
-| 生成 | 16 |
+| 生成 | 15 |
 | 转换/格式化 | 14 |
 | 文本处理 | 6 |
-| Web/网络 | 8 |
+| Web/网络 | 10 |
 | 速查 | 15 |
 | 检测 | 4 |
-| **合计** | **81** |
+| **合计** | **82** |
 
 ---
 
