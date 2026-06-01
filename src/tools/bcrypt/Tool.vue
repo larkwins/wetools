@@ -12,6 +12,7 @@ const rounds = ref(10);
 const genHash = ref('');
 const genBusy = ref(false);
 const genError = ref('');
+const genProgress = ref(0); // 0-100
 
 // 校验
 const verifyPassword = ref('hunter2');
@@ -20,16 +21,32 @@ const verifyResult = ref<null | boolean>(null);
 const verifyBusy = ref(false);
 const verifyError = ref('');
 
-async function generate() {
+function generate() {
   genBusy.value = true;
   genError.value = '';
+  genProgress.value = 0;
+  const r = Math.max(4, Math.min(15, Number(rounds.value) || 10));
+  // bcryptjs 的 hash(pw, rounds, cb, progressCb) 同时提供完成回调与进度回调（0-1）
   try {
-    const salt = await bcrypt.genSalt(Math.max(4, Math.min(15, Number(rounds.value) || 10)));
-    genHash.value = await bcrypt.hash(genPassword.value, salt);
+    bcrypt.hash(
+      genPassword.value,
+      r,
+      (err, hash) => {
+        genBusy.value = false;
+        if (err) {
+          genError.value = (err as Error).message || String(err);
+          return;
+        }
+        genHash.value = hash ?? '';
+        genProgress.value = 100;
+      },
+      (p: number) => {
+        genProgress.value = Math.round(p * 100);
+      },
+    );
   } catch (e) {
-    genError.value = (e as Error).message || String(e);
-  } finally {
     genBusy.value = false;
+    genError.value = (e as Error).message || String(e);
   }
 }
 
@@ -68,9 +85,12 @@ function useGenHash() {
         </div>
         <div class="flex items-end">
           <Button variant="primary" :disabled="genBusy" @click="generate">
-            <Lock :size="14" />{{ genBusy ? '计算中…' : '生成 hash' }}
+            <Lock :size="14" />{{ genBusy ? `计算中… ${genProgress}%` : '生成 hash' }}
           </Button>
         </div>
+      </div>
+      <div v-if="genBusy" class="h-1 overflow-hidden rounded-full bg-secondary">
+        <div class="h-full bg-primary transition-[width] duration-100" :style="{ width: genProgress + '%' }"></div>
       </div>
       <div v-if="genHash" class="flex items-center gap-2 rounded-md border bg-background px-3 py-2">
         <code class="flex-1 break-all font-mono text-xs">{{ genHash }}</code>

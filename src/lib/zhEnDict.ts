@@ -23,6 +23,9 @@ export const zhToEnDict: Record<string, string> = {
   '浏览器工具箱': 'Browser Toolbox',
   '常用开箱即用的开发者工具：JSON、Base64、加密哈希、二维码、时间戳、正则、图片压缩…… 全部在你的浏览器本地完成，开源、免费、无追踪。':
     'Common ready-to-use developer tools: JSON, Base64, hash, QR, timestamp, regex, image compression… all in your browser, open-source, free, no tracking.',
+  // 新版 Hero 子标题（拆开避免 100+ 被嵌入 <span> 后 zh 模板节点不连续）
+  '开箱即用的开发者工具：JSON、Base64、加密哈希、二维码、时间戳、正则、图片压缩…… 全部在你的浏览器本地完成，开源、免费、无追踪。':
+    'ready-to-use developer tools: JSON, Base64, hash, QR, timestamp, regex, image compression… all in your browser, open-source, free, no tracking.',
   // 旧 Hero 文案（保留向后兼容，避免其他地方残留时无法翻译）
   '数据 100% 本地处理': 'Data is 100% processed locally',
   '开发者浏览器工具箱': 'Developer Browser Toolbox',
@@ -1120,8 +1123,9 @@ export const zhToEnDict: Record<string, string> = {
   '社交分享预览': 'Social share preview',
 
   // Rate FX
-  '⚠️ 本工具会调用第三方 API（exchangerate-api.com）获取汇率数据，会向其服务器发送一次 GET 请求。':
-    '⚠️ This tool calls a third-party API (exchangerate-api.com) to fetch rates; one GET request is sent to their server.',
+  '⚠️ 本工具会调用第三方汇率 API 获取数据（按顺序尝试 exchangerate-api、fawazahmed0、open.er-api），会向其服务器发送 GET 请求。':
+    '⚠️ This tool calls third-party rate APIs (tries exchangerate-api, fawazahmed0, open.er-api in order); GET requests are sent to their servers.',
+  '所有汇率源均不可用：': 'All rate sources unavailable: ',
   '从': 'From',
   '到': 'To',
   '金额': 'amount',

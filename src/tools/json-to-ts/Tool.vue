@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import Input from '@/components/ui/Input.vue';
 import Textarea from '@/components/ui/Textarea.vue';
@@ -19,15 +19,16 @@ const input = ref(`{
 
 const error = ref<string | null>(null);
 
-const output = computed(() => {
-  error.value = null;
-  if (!input.value.trim()) return '';
+const output = ref('');
+watchEffect(() => {
+  if (!input.value.trim()) { output.value = ''; error.value = null; return; }
   try {
     const obj = JSON.parse(input.value);
-    return JsonToTS(obj, { rootName: root.value || 'Root' }).join('\n\n');
+    output.value = JsonToTS(obj, { rootName: root.value || 'Root' }).join('\n\n');
+    error.value = null;
   } catch (e) {
     error.value = (e as Error).message;
-    return '';
+    output.value = '';
   }
 });
 </script>

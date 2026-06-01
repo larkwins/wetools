@@ -24,7 +24,11 @@ function onKey(e: KeyboardEvent) {
   // 忽略页面内输入框聚焦时的输入
   const t = e.target as HTMLElement;
   if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
-  e.preventDefault();
+  // 只阻止 Tab / 方向键 / 空格 / Enter 的默认行为（防止页面滚动/焦点跳出工具页），
+  // 其他键（F5 / Ctrl+R / Ctrl+L / Ctrl+T 等浏览器快捷键）一律放行
+  if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Enter'].includes(e.code) && !e.ctrlKey && !e.metaKey) {
+    e.preventDefault();
+  }
   const info: KeyInfo = {
     key: e.key,
     code: e.code,

@@ -20,6 +20,7 @@ interface SubnetInfo {
   hostCount: number;
   totalCount: number;
   binary: string;
+  maskBinary: string;
   ipClass: string;
   isPrivate: boolean;
   cidrNotation: string;
@@ -89,6 +90,7 @@ const info = computed<SubnetInfo | null>(() => {
       hostCount,
       totalCount,
       binary: intToBinary(ipInt),
+      maskBinary: intToBinary(maskInt),
       ipClass: ipClass(ipInt),
       isPrivate: isPrivate(ipInt),
       cidrNotation: `${intToIp(network)}/${prefix}`,
@@ -147,7 +149,7 @@ const presets = ['192.168.1.0/24', '10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/1
       <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">二进制</label>
       <div class="grid grid-cols-1 gap-1 rounded-lg border bg-card p-3 font-mono text-xs">
         <div class="flex items-center gap-3"><span class="w-16 text-muted-foreground">IP</span><span class="flex-1">{{ info.binary }}</span></div>
-        <div class="flex items-center gap-3"><span class="w-16 text-muted-foreground">Mask</span><span class="flex-1">{{ (function(){var n=info.maskInt;return [(n>>>24)&0xff,(n>>>16)&0xff,(n>>>8)&0xff,n&0xff].map(b=>b.toString(2).padStart(8,'0')).join('.')})() }}</span></div>
+        <div class="flex items-center gap-3"><span class="w-16 text-muted-foreground">Mask</span><span class="flex-1">{{ info.maskBinary }}</span></div>
       </div>
     </div>
   </div>

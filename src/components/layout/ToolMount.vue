@@ -27,13 +27,30 @@ const Comp = computed(() => {
   }
   return defineAsyncComponent({
     loader: () => importer(),
-    delay: 80,
+    // delay=200ms：依赖小、几乎瞬时 import 完的工具直接显示真实组件，不闪 Loading；
+    //              依赖大（marked/opencc/mathjs/figlet 等）的工具超过 200ms 才显示转圈，符合用户感知阈值
+    delay: 200,
     loadingComponent: {
       render() {
         return h(
           'div',
-          { class: 'flex items-center justify-center rounded-lg border bg-card/50 py-16 text-sm text-muted-foreground' },
-          '加载工具中…'
+          { class: 'flex min-h-[200px] flex-col items-center justify-center gap-2 text-muted-foreground' },
+          [
+            h(
+              'svg',
+              {
+                class: 'h-5 w-5 animate-spin text-primary/70',
+                viewBox: '0 0 24 24',
+                fill: 'none',
+                xmlns: 'http://www.w3.org/2000/svg',
+              },
+              [
+                h('circle', { cx: 12, cy: 12, r: 10, stroke: 'currentColor', 'stroke-opacity': 0.2, 'stroke-width': 3 }),
+                h('path', { d: 'M22 12a10 10 0 0 1-10 10', stroke: 'currentColor', 'stroke-width': 3, 'stroke-linecap': 'round' }),
+              ]
+            ),
+            h('p', { class: 'text-xs' }, 'Loading…'),
+          ]
         );
       },
     } as Component,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import Input from '@/components/ui/Input.vue';
 import Textarea from '@/components/ui/Textarea.vue';
@@ -108,27 +108,28 @@ function renderStruct(s: Generated): string {
   return `type ${s.name} struct {\n${lines.join('\n')}\n}`;
 }
 
-const goCode = computed<string>(() => {
-  error.value = '';
+const goCode = ref('');
+watchEffect(() => {
   try {
     const data = JSON.parse(jsonText.value);
     const structs: Generated[] = [];
     const seen = new Set<string>();
     const topName = toPascalCase(rootName.value || 'Root');
+    let out: string;
     if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
       generate(data, topName, structs, seen);
+      out = structs.map(renderStruct).join('\n\n');
     } else if (Array.isArray(data)) {
       const inner = generate(data, topName, structs, seen);
-      // 顶层数组：用 type alias
-      const out = structs.map(renderStruct).join('\n\n');
-      return `${out}\n\ntype ${topName}List ${inner}`;
+      out = `${structs.map(renderStruct).join('\n\n')}\n\ntype ${topName}List ${inner}`;
     } else {
-      return `// 顶层不是对象或数组：${typeof data}`;
+      out = `// 顶层不是对象或数组：${typeof data}`;
     }
-    return structs.map(renderStruct).join('\n\n');
+    goCode.value = out;
+    error.value = '';
   } catch (e) {
     error.value = (e as Error).message || String(e);
-    return '';
+    goCode.value = '';
   }
 });
 </script>

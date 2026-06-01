@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import Input from '@/components/ui/Input.vue';
 import Textarea from '@/components/ui/Textarea.vue';
@@ -91,27 +91,31 @@ function renderMsg(m: Msg): string {
   return `message ${m.name} {\n${lines.join('\n')}\n}`;
 }
 
-const proto = computed<string>(() => {
-  error.value = '';
+const proto = ref('');
+watchEffect(() => {
   try {
     const data = JSON.parse(jsonText.value);
     const msgs: Msg[] = [];
     const seen = new Set<string>();
+    let out: string;
     if (Array.isArray(data)) {
       const r = build(data, rootName.value, msgs, seen);
-      // 顶层是数组：用一个包装 message
       const wrap: Msg = { name: ensureUnique(toPascal(rootName.value), seen), fields: [{ name: 'items', type: r.type, repeated: true, tag: 1 }] };
       msgs.push(wrap);
+      const pkg = packageName.value ? `package ${packageName.value};\n\n` : '';
+      out = `syntax = "proto3";\n\n${pkg}${msgs.map(renderMsg).join('\n\n')}`;
     } else if (typeof data === 'object' && data !== null) {
       buildObj(data as Record<string, unknown>, ensureUnique(toPascal(rootName.value), seen), msgs, seen);
+      const pkg = packageName.value ? `package ${packageName.value};\n\n` : '';
+      out = `syntax = "proto3";\n\n${pkg}${msgs.map(renderMsg).join('\n\n')}`;
     } else {
-      return `// 顶层不是对象或数组：${typeof data}`;
+      out = `// 顶层不是对象或数组：${typeof data}`;
     }
-    const pkg = packageName.value ? `package ${packageName.value};\n\n` : '';
-    return `syntax = "proto3";\n\n${pkg}${msgs.map(renderMsg).join('\n\n')}`;
+    proto.value = out;
+    error.value = '';
   } catch (e) {
     error.value = (e as Error).message || String(e);
-    return '';
+    proto.value = '';
   }
 });
 </script>

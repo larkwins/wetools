@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { AlertCircle, Plus, Minus, Pencil } from 'lucide-vue-next';
 import Textarea from '@/components/ui/Textarea.vue';
 
@@ -68,15 +68,16 @@ function diff(a: unknown, b: unknown, base = ''): DiffEntry[] {
   return out;
 }
 
-const entries = computed<DiffEntry[]>(() => {
-  error.value = '';
+const entries = ref<DiffEntry[]>([]);
+watchEffect(() => {
   try {
     const a = JSON.parse(left.value);
     const b = JSON.parse(right.value);
-    return diff(a, b).filter((e) => e.type !== 'unchanged');
+    entries.value = diff(a, b).filter((e) => e.type !== 'unchanged');
+    error.value = '';
   } catch (e) {
     error.value = 'JSON 解析失败：' + ((e as Error).message || String(e));
-    return [];
+    entries.value = [];
   }
 });
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { Sparkles, Minimize2, Quote, Trash2, AlertCircle } from 'lucide-vue-next';
 import Textarea from '@/components/ui/Textarea.vue';
 import Button from '@/components/ui/Button.vue';
@@ -23,23 +23,27 @@ function parsePosition(msg: string, src: string): { line?: number; col?: number 
   return { line, col };
 }
 
-const output = computed(() => {
-  error.value = null;
-  if (!input.value.trim()) return '';
+// 用 watchEffect 计算 output + error，避免在 computed 内做副作用
+const output = ref('');
+watchEffect(() => {
+  if (!input.value.trim()) {
+    output.value = '';
+    error.value = null;
+    return;
+  }
   try {
     const obj = JSON.parse(input.value);
-    if (mode.value === 'minify') return JSON.stringify(obj);
-    if (mode.value === 'escape') return JSON.stringify(JSON.stringify(obj, null, indent.value));
-    return JSON.stringify(obj, null, indent.value);
+    if (mode.value === 'minify') output.value = JSON.stringify(obj);
+    else if (mode.value === 'escape') output.value = JSON.stringify(JSON.stringify(obj, null, indent.value));
+    else output.value = JSON.stringify(obj, null, indent.value);
+    error.value = null;
   } catch (e) {
     const msg = (e as Error).message;
     const pos = parsePosition(msg, input.value);
     error.value = { msg, ...pos };
-    return '';
+    output.value = '';
   }
 });
-
-watch(input, () => {});
 </script>
 
 <template>

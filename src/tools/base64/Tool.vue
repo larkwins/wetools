@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { ArrowLeftRight, Trash2, AlertCircle } from 'lucide-vue-next';
 import type { ToolMeta } from '@/lib/types';
 import Textarea from '@/components/ui/Textarea.vue';
@@ -16,19 +16,20 @@ const urlSafe = ref(false);
 const input = ref('Hello, WeTools 👋');
 const error = ref<string | null>(null);
 
-const output = computed(() => {
-  error.value = null;
-  if (!input.value) return '';
+const output = ref('');
+watchEffect(() => {
+  if (!input.value) { output.value = ''; error.value = null; return; }
   try {
-    return mode.value === 'encode'
+    output.value = mode.value === 'encode'
       ? utf8ToBase64(input.value, urlSafe.value)
       : base64ToUtf8(input.value, urlSafe.value);
+    error.value = null;
   } catch (e) {
     error.value =
       mode.value === 'decode'
         ? '输入不是合法的 Base64 字符串'
         : (e as Error)?.message ?? '编码失败';
-    return '';
+    output.value = '';
   }
 });
 

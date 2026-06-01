@@ -32,13 +32,17 @@ onMounted(() => {
 });
 onBeforeUnmount(() => cancelAnimationFrame(raf));
 
-// 标准手柄按钮名（Xbox 风格）
+// 标准手柄按钮名（Xbox 风格），扩展到 21 个以覆盖 PS5 / 部分 Xbox 增强按键
 const BUTTON_NAMES = [
-  'A', 'B', 'X', 'Y',
-  'LB', 'RB', 'LT', 'RT',
-  'Back', 'Start', 'LS', 'RS',
-  'D↑', 'D↓', 'D←', 'D→',
-  'Home',
+  'A', 'B', 'X', 'Y',          // 0-3 ABXY (PS: × ○ □ △)
+  'LB', 'RB', 'LT', 'RT',      // 4-7 肩键 + 扳机
+  'Back', 'Start', 'LS', 'RS', // 8-11 选择/开始/摇杆按下
+  'D↑', 'D↓', 'D←', 'D→',      // 12-15 方向键
+  'Home',                       // 16 Xbox/PS 主键
+  'Share',                      // 17 PS Share / Xbox Capture
+  'Touch',                      // 18 PS 触控板按下
+  'Mic',                        // 19 PS5 麦克风键
+  'F1',                         // 20 部分手柄自定义键
 ];
 </script>
 

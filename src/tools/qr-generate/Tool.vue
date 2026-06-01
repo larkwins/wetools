@@ -72,11 +72,11 @@ function download() {
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-[11px] uppercase tracking-wider text-muted-foreground">尺寸 (px)</label>
-          <Input v-model="size" type="number" />
+          <Input v-model.number="size" type="number" />
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-[11px] uppercase tracking-wider text-muted-foreground">边距</label>
-          <Input v-model="margin" type="number" />
+          <Input v-model.number="margin" type="number" />
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div class="flex flex-col gap-1.5">

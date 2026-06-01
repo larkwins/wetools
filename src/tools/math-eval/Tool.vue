@@ -15,7 +15,7 @@ sqrt(2)
 const error = ref('');
 
 const lines = computed(() => {
-  error.value = '';
+  // 错误是行级的（each line 的 err），不需要全局 error
   const out: Array<{ src: string; result: string; err?: boolean }> = [];
   const scope: Record<string, unknown> = {};
   const all = expr.value.split('\n');

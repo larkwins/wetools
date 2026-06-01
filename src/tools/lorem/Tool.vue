@@ -10,6 +10,8 @@ const lang = ref<'lorem' | 'zh'>('lorem');
 const unit = ref<'paragraph' | 'sentence' | 'word'>('paragraph');
 const count = ref(3);
 const startWithLorem = ref(true);
+// 显式 seed：computed 依赖它，regen 通过 seed++ 触发重算，避免改 count 的 hacky 写法
+const seed = ref(0);
 
 const LOREM = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa officia deserunt mollit anim id est laborum'.split(/\s+/);
 
@@ -50,6 +52,7 @@ function paragraphZh() {
 }
 
 const text = computed(() => {
+  void seed.value; // 显式依赖：seed 变 → 重算
   const n = Math.max(1, Math.min(50, Number(count.value) || 1));
   const out: string[] = [];
   if (unit.value === 'word') {
@@ -66,10 +69,7 @@ const text = computed(() => {
 });
 
 function regen() {
-  // 触发重算 —— 由于 computed 内引用 Math.random，简单办法是改 count 再恢复
-  const v = count.value;
-  count.value = 0;
-  count.value = v;
+  seed.value++;
 }
 </script>
 
@@ -90,7 +90,7 @@ function regen() {
       </div>
       <div class="flex flex-col gap-1.5">
         <label class="text-[11px] uppercase tracking-wider text-muted-foreground">数量</label>
-        <Input v-model="count" type="number" class="w-24" />
+        <Input v-model.number="count" type="number" class="w-24" />
       </div>
       <label v-if="lang === 'lorem' && unit !== 'word'" class="inline-flex cursor-pointer items-center gap-1.5 self-end pb-2 text-sm text-muted-foreground">
         <input v-model="startWithLorem" type="checkbox" class="accent-[hsl(var(--primary))]" />首段以 Lorem ipsum 起头

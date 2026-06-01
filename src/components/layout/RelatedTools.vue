@@ -7,13 +7,15 @@
  */
 import type { ToolMeta } from '@/lib/types';
 import { getIcon } from '@/lib/icons';
+import { LayoutGrid } from 'lucide-vue-next';
 
 defineProps<{ related: ToolMeta[] }>();
 </script>
 
 <template>
-  <section v-if="related.length > 0" class="mt-8">
-    <h2 class="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+  <section v-if="related.length > 0" class="mt-10 border-t pt-6">
+    <h2 class="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      <LayoutGrid :size="13" class="text-primary/70" />
       相关工具
     </h2>
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">

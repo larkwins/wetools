@@ -15,21 +15,65 @@ const updatedAt = ref('');
 const error = ref('');
 const loading = ref(false);
 
+// 多个免费汇率源，按顺序尝试，第一个成功即返回。
+// 各源响应格式不同，用 normalize 函数统一为 { base, date, rates }。
+interface NormalizedRates { base: string; date: string; rates: Record<string, number> }
+const RATE_SOURCES: Array<{ name: string; url: string; normalize: (data: unknown) => NormalizedRates }> = [
+  {
+    name: 'exchangerate-api.com',
+    url: 'https://api.exchangerate-api.com/v4/latest/USD',
+    normalize: (d) => {
+      const data = d as { base: string; date: string; rates: Record<string, number> };
+      return { base: data.base, date: data.date, rates: data.rates };
+    },
+  },
+  {
+    // 开源镜像，无需 key，支持 CDN（jsdelivr）
+    name: 'fawazahmed0 currency-api',
+    url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+    normalize: (d) => {
+      const data = d as { date: string; usd: Record<string, number> };
+      // 该源 key 全小写，需要转大写以与现有 UI 兼容
+      const upperRates: Record<string, number> = {};
+      for (const [k, v] of Object.entries(data.usd)) upperRates[k.toUpperCase()] = v;
+      return { base: 'USD', date: data.date, rates: upperRates };
+    },
+  },
+  {
+    name: 'open.er-api.com',
+    url: 'https://open.er-api.com/v6/latest/USD',
+    normalize: (d) => {
+      const data = d as { base_code: string; time_last_update_utc: string; rates: Record<string, number> };
+      return {
+        base: data.base_code,
+        date: data.time_last_update_utc?.slice(0, 16) ?? '',
+        rates: data.rates,
+      };
+    },
+  },
+];
+
 async function fetchRates() {
   loading.value = true;
   error.value = '';
-  try {
-    const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    rates.value = data.rates;
-    base.value = data.base;
-    updatedAt.value = data.date;
-  } catch (e) {
-    error.value = '汇率获取失败：' + ((e as Error).message || String(e));
-  } finally {
-    loading.value = false;
+  const errs: string[] = [];
+  for (const src of RATE_SOURCES) {
+    try {
+      const res = await fetch(src.url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const n = src.normalize(data);
+      rates.value = n.rates;
+      base.value = n.base;
+      updatedAt.value = n.date;
+      loading.value = false;
+      return;
+    } catch (e) {
+      errs.push(`${src.name}: ${(e as Error).message || String(e)}`);
+    }
   }
+  error.value = '所有汇率源均不可用：\n' + errs.join('\n');
+  loading.value = false;
 }
 
 onMounted(fetchRates);
@@ -65,7 +109,7 @@ const popularRates = computed(() => {
 <template>
   <div class="flex flex-col gap-4">
     <div class="rounded-md border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-xs text-amber-700 dark:text-amber-400">
-      ⚠️ 本工具会调用第三方 API（exchangerate-api.com）获取汇率数据，会向其服务器发送一次 GET 请求。
+      ⚠️ 本工具会调用第三方汇率 API 获取数据（按顺序尝试 exchangerate-api、fawazahmed0、open.er-api），会向其服务器发送 GET 请求。
     </div>
 
     <div class="grid gap-3 sm:grid-cols-[1fr_auto_1fr_auto]">

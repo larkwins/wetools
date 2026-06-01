@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount, watch } from 'vue';
+import { ref, onBeforeUnmount, onMounted, watch } from 'vue';
 import { Mic, MicOff, Play, Pause, Download, AlertCircle, Circle, Square } from 'lucide-vue-next';
 import Button from '@/components/ui/Button.vue';
 
@@ -110,8 +110,12 @@ function loop() {
 
 function startRecord() {
   if (!stream) return;
+  // 释放上一次录音的 blob URL，避免每次重新录音都泄漏
+  if (recordedUrl.value) {
+    URL.revokeObjectURL(recordedUrl.value);
+    recordedUrl.value = '';
+  }
   chunks.value = [];
-  recordedUrl.value = '';
   recorder = new MediaRecorder(stream);
   recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.value.push(e.data); };
   recorder.onstop = () => {
@@ -137,11 +141,20 @@ function downloadRecord() {
   document.body.removeChild(a);
 }
 
-onBeforeUnmount(stop);
+onBeforeUnmount(() => {
+  stop();
+  // 卸载时释放录音 blob URL
+  if (recordedUrl.value) {
+    URL.revokeObjectURL(recordedUrl.value);
+    recordedUrl.value = '';
+  }
+});
 watch(deviceId, () => { if (running.value) { stop(); start(); } });
 
-// 进入时尝试列出设备
-loadDevices();
+// 进入时尝试列出设备（放进 onMounted 防 SSR 出错；同时 catch Promise）
+onMounted(() => {
+  void loadDevices().catch(() => {/* loadDevices 内部已写 error.value */});
+});
 </script>
 
 <template>

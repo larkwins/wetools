@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { ArrowLeftRight, Trash2, AlertCircle } from 'lucide-vue-next';
 import Textarea from '@/components/ui/Textarea.vue';
 import Button from '@/components/ui/Button.vue';
@@ -28,14 +28,15 @@ function hexToStr(s: string) {
   return new TextDecoder('utf-8', { fatal: false }).decode(bytes);
 }
 
-const output = computed(() => {
-  error.value = null;
-  if (!input.value) return '';
+const output = ref('');
+watchEffect(() => {
+  if (!input.value) { output.value = ''; error.value = null; return; }
   try {
-    return mode.value === 'toHex' ? strToHex(input.value) : hexToStr(input.value);
+    output.value = mode.value === 'toHex' ? strToHex(input.value) : hexToStr(input.value);
+    error.value = null;
   } catch (e) {
     error.value = (e as Error).message;
-    return '';
+    output.value = '';
   }
 });
 

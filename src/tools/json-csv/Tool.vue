@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { ArrowLeftRight, AlertCircle } from 'lucide-vue-next';
 import Textarea from '@/components/ui/Textarea.vue';
 import Button from '@/components/ui/Button.vue';
@@ -72,15 +72,17 @@ function csvToJson(text: string, s: string) {
   });
 }
 
-const output = computed(() => {
-  error.value = null;
-  if (!input.value.trim()) return '';
+const output = ref('');
+watchEffect(() => {
+  if (!input.value.trim()) { output.value = ''; error.value = null; return; }
   try {
-    if (mode.value === 'j2c') return jsonToCsv(JSON.parse(input.value), sep.value);
-    return JSON.stringify(csvToJson(input.value, sep.value), null, 2);
+    output.value = mode.value === 'j2c'
+      ? jsonToCsv(JSON.parse(input.value), sep.value)
+      : JSON.stringify(csvToJson(input.value, sep.value), null, 2);
+    error.value = null;
   } catch (e) {
     error.value = (e as Error).message;
-    return '';
+    output.value = '';
   }
 });
 

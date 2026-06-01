@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import Textarea from '@/components/ui/Textarea.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
@@ -112,8 +112,8 @@ function indent(s: string, n: number): string {
   return s.split('\n').map((l) => pad + l).join('\n');
 }
 
-const compose = computed<string>(() => {
-  error.value = '';
+const compose = ref('');
+watchEffect(() => {
   try {
     const p = parse(dockerCmd.value);
     const serviceName = p.name ?? p.image.split('/').pop()!.split(':')[0];
@@ -145,10 +145,11 @@ const compose = computed<string>(() => {
       }
     }
     if (p.cmd) lines.push(`    command: ${p.cmd}`);
-    return lines.join('\n');
+    compose.value = lines.join('\n');
+    error.value = '';
   } catch (e) {
     error.value = (e as Error).message || String(e);
-    return '';
+    compose.value = '';
   }
 });
 

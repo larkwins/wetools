@@ -58,19 +58,19 @@ const text = computed(() => {
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <div class="flex flex-col gap-1.5">
         <label class="text-[11px] uppercase tracking-wider text-muted-foreground">最小值</label>
-        <Input v-model="min" type="number" />
+        <Input v-model.number="min" type="number" />
       </div>
       <div class="flex flex-col gap-1.5">
         <label class="text-[11px] uppercase tracking-wider text-muted-foreground">最大值</label>
-        <Input v-model="max" type="number" />
+        <Input v-model.number="max" type="number" />
       </div>
       <div class="flex flex-col gap-1.5">
         <label class="text-[11px] uppercase tracking-wider text-muted-foreground">数量</label>
-        <Input v-model="count" type="number" />
+        <Input v-model.number="count" type="number" />
       </div>
       <div v-if="!isInt" class="flex flex-col gap-1.5">
         <label class="text-[11px] uppercase tracking-wider text-muted-foreground">小数位</label>
-        <Input v-model="decimals" type="number" />
+        <Input v-model.number="decimals" type="number" />
       </div>
     </div>
 

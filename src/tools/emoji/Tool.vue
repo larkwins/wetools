@@ -7,6 +7,7 @@ import { EMOJI_GROUPS } from './data';
 const keyword = ref('');
 const activeGroup = ref('all');
 const copied = ref('');
+const copyError = ref(''); // 复制失败时的临时提示
 
 const allItems = computed(() => EMOJI_GROUPS.flatMap((g) => g.items));
 
@@ -25,12 +26,37 @@ const filtered = computed(() => {
   return pool;
 });
 
-async function copy(c: string) {
+// 兜底复制：旧浏览器 / 非 HTTPS 下 navigator.clipboard 不可用，回退 execCommand
+function fallbackCopy(text: string): boolean {
   try {
-    await navigator.clipboard.writeText(c);
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
+async function copy(c: string) {
+  let ok = false;
+  if (navigator.clipboard?.writeText) {
+    try { await navigator.clipboard.writeText(c); ok = true; } catch { /* try fallback */ }
+  }
+  if (!ok) ok = fallbackCopy(c);
+  if (ok) {
     copied.value = c;
+    copyError.value = '';
     setTimeout(() => { if (copied.value === c) copied.value = ''; }, 1200);
-  } catch {/* ignore */}
+  } else {
+    copyError.value = '复制失败：浏览器拒绝访问剪贴板（请检查是否 HTTPS 或允许剪贴板权限）';
+    setTimeout(() => { copyError.value = ''; }, 3000);
+  }
 }
 </script>
 
@@ -78,6 +104,10 @@ async function copy(c: string) {
         </span>
       </button>
     </div>
+
+    <p v-if="copyError" class="rounded-md border border-destructive/40 bg-destructive/5 px-3 py-2 text-xs text-destructive">
+      {{ copyError }}
+    </p>
 
     <p class="text-xs text-muted-foreground">
       点击任意 emoji 即复制到剪贴板。共收录 {{ allItems.length }} 个常用 emoji，覆盖日常使用 95%+。

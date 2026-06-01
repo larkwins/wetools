@@ -5,7 +5,8 @@ import Input from '@/components/ui/Input.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 import cronstrue from 'cronstrue';
 import 'cronstrue/locales/zh_CN';
-import cronParser from 'cron-parser';
+// cron-parser v5 改用 CronExpressionParser 类（v4 的顶层 parseExpression 已废弃）
+import { CronExpressionParser } from 'cron-parser';
 
 const expr = ref('*/15 9-18 * * MON-FRI');
 const lang = ref<'zh_CN' | 'en'>('zh_CN');
@@ -20,11 +21,11 @@ const human = computed(() => {
 
 const upcoming = computed(() => {
   try {
-    const it = cronParser.parseExpression(expr.value);
+    const it = CronExpressionParser.parse(expr.value);
     const arr: string[] = [];
     for (let i = 0; i < 8; i++) arr.push(it.next().toDate().toLocaleString());
     return arr;
-  } catch (e) {
+  } catch {
     return null;
   }
 });

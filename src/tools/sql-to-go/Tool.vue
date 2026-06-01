@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import Textarea from '@/components/ui/Textarea.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
@@ -71,13 +71,29 @@ interface Table {
 
 function parseSQL(sql: string): Table[] {
   const tables: Table[] = [];
-  // 匹配 CREATE TABLE [IF NOT EXISTS] `name` ( ... );
-  const re = /create\s+table\s+(?:if\s+not\s+exists\s+)?[`"]?(\w+)[`"]?\s*\(([\s\S]*?)\)\s*(?:engine\s*=\s*\w+)?\s*(?:default\s+charset\s*=\s*\w+)?\s*;/gi;
+  // 匹配 CREATE TABLE [IF NOT EXISTS] [schema.]`name` ( ... ) [table options]
+  // 关键点：
+  //  - 只匹配到列体 ")"，不强制要求末尾 ";"（许多用户粘贴的 DDL 不带分号）
+  //  - schema.table 形式也支持
+  //  - 列体用 \([\s\S]*?\)，结合下方"括号平衡修正"避免列里嵌套 ()（如 DECIMAL(10,2)）误截断
+  const re = /create\s+table\s+(?:if\s+not\s+exists\s+)?(?:[`"]?\w+[`"]?\.)?[`"]?(\w+)[`"]?\s*\(/gi;
   let m: RegExpExecArray | null;
   while ((m = re.exec(sql)) !== null) {
     const name = m[1];
-    const body = m[2];
+    // 从 "(" 之后开始按括号深度扫描，找出与之匹配的 ")"
+    let depth = 1;
+    let i = re.lastIndex;
+    while (i < sql.length && depth > 0) {
+      const ch = sql[i];
+      if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      i++;
+    }
+    if (depth !== 0) continue; // 括号不闭合，跳过
+    const body = sql.slice(re.lastIndex, i - 1);
+    re.lastIndex = i; // 推进游标，避免下次匹配落在列体内
     const cols = parseColumns(body);
+    if (cols.length === 0) continue;
     tables.push({ name, goName: toPascal(name).replace(/s$/, ''), cols });
   }
   return tables;
@@ -168,18 +184,20 @@ function renderTable(t: Table): string {
   return `type ${t.goName} struct {\n${lines.join('\n')}\n}`;
 }
 
-const goCode = computed<string>(() => {
-  error.value = '';
+const goCode = ref('');
+watchEffect(() => {
   try {
     const tables = parseSQL(sqlText.value);
     if (tables.length === 0) {
       error.value = '没有解析到 CREATE TABLE 语句';
-      return '';
+      goCode.value = '';
+      return;
     }
-    return tables.map(renderTable).join('\n\n');
+    goCode.value = tables.map(renderTable).join('\n\n');
+    error.value = '';
   } catch (e) {
     error.value = (e as Error).message || String(e);
-    return '';
+    goCode.value = '';
   }
 });
 </script>

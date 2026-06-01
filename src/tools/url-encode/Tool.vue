@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { ArrowLeftRight, Trash2, AlertCircle } from 'lucide-vue-next';
 import Textarea from '@/components/ui/Textarea.vue';
 import Button from '@/components/ui/Button.vue';
@@ -10,17 +10,19 @@ const fullUri = ref(false);
 const input = ref('https://example.com/搜索?q=hello world&lang=zh');
 const error = ref<string | null>(null);
 
-const output = computed(() => {
-  error.value = null;
-  if (!input.value) return '';
+const output = ref('');
+watchEffect(() => {
+  if (!input.value) { output.value = ''; error.value = null; return; }
   try {
     if (mode.value === 'encode') {
-      return fullUri.value ? encodeURI(input.value) : encodeURIComponent(input.value);
+      output.value = fullUri.value ? encodeURI(input.value) : encodeURIComponent(input.value);
+    } else {
+      output.value = fullUri.value ? decodeURI(input.value) : decodeURIComponent(input.value);
     }
-    return fullUri.value ? decodeURI(input.value) : decodeURIComponent(input.value);
+    error.value = null;
   } catch (e) {
     error.value = (e as Error).message;
-    return '';
+    output.value = '';
   }
 });
 

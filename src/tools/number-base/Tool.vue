@@ -65,11 +65,11 @@ const extras = computed(() => {
       </div>
       <div class="flex flex-col gap-1.5">
         <label class="text-[11px] uppercase tracking-wider text-muted-foreground">输入进制</label>
-        <Input v-model="fromBase" type="number" class="w-32" />
+        <Input v-model.number="fromBase" type="number" class="w-32" />
       </div>
       <div class="flex flex-col gap-1.5">
         <label class="text-[11px] uppercase tracking-wider text-muted-foreground">自定义输出进制</label>
-        <Input v-model="customBase" type="number" class="w-32" />
+        <Input v-model.number="customBase" type="number" class="w-32" />
       </div>
     </div>
 

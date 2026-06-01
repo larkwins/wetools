@@ -19,5 +19,7 @@ const { meta } = Astro.props as Props;
 ---
 
 <ToolLayout meta={meta}>
-  <ToolMount client:visible meta={meta} />
+  <!-- client:load：进入页面立刻 hydrate（之前的 client:visible 在打开页面后还要等 IntersectionObserver
+       触发才开始下载/执行 chunk，工具区会有明显空白；改 load 后 SSR 骨架立即被替换） -->
+  <ToolMount client:load meta={meta} />
 </ToolLayout>
