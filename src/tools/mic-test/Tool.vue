@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount, onMounted, watch } from 'vue';
+import { ref, onBeforeUnmount, onMounted, watch, nextTick } from 'vue';
 import { Mic, MicOff, Play, Pause, Download, AlertCircle, Circle, Square } from 'lucide-vue-next';
 import Button from '@/components/ui/Button.vue';
 
@@ -48,6 +48,8 @@ async function start() {
     analyser.fftSize = 2048;
     source.connect(analyser);
     running.value = true;
+    // 等 Vue 渲染 canvas 元素，否则 loop() 里 canvas.value 为 null 直接退出，波形不画
+    await nextTick();
     loop();
     await loadDevices();
   } catch (e) {

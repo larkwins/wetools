@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { Camera, Video, VideoOff, Download, AlertCircle } from 'lucide-vue-next';
 import Button from '@/components/ui/Button.vue';
 
@@ -35,21 +35,27 @@ async function start() {
       audio: false,
     };
     stream.value = await navigator.mediaDevices.getUserMedia(constraints);
-    if (videoEl.value) {
+    // 关键：先设 running=true 触发模板从 v-if 切到 v-else，让 <video> 进入 DOM，
+    // 然后 await nextTick 等 Vue 完成渲染、videoEl ref 拿到真实元素，再 attach srcObject。
+    // 否则首次启动时 videoEl.value === null，画面永远黑屏。
+    running.value = true;
+    await nextTick();
+    if (videoEl.value && stream.value) {
       videoEl.value.srcObject = stream.value;
       videoEl.value.onloadedmetadata = () => {
-        if (videoEl.value) {
-          const track = stream.value!.getVideoTracks()[0];
+        if (videoEl.value && stream.value) {
+          const track = stream.value.getVideoTracks()[0];
           const settings = track.getSettings();
           info.value = {
             w: settings.width || videoEl.value.videoWidth,
             h: settings.height || videoEl.value.videoHeight,
             label: track.label,
           };
+          // 某些浏览器（特别是带 autoplay 限制时）需要显式调用 play()
+          videoEl.value.play().catch(() => {/* autoplay 策略已被 ref 绑定满足，忽略 */});
         }
       };
     }
-    running.value = true;
     // 授权后再列设备（之前 label 为空）
     await loadDevices();
   } catch (e) {

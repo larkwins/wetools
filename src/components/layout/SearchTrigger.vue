@@ -21,10 +21,6 @@ onMounted(() => {
       open();
     }
   });
-
-  const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
-  const el = document.getElementById('search-shortcut');
-  if (el) el.textContent = isMac ? '⌘K' : 'Ctrl K';
 });
 </script>
 
@@ -37,9 +33,17 @@ onMounted(() => {
   >
     <Search :size="13" />
     <span class="hidden sm:inline">搜索工具…</span>
-    <kbd
-      id="search-shortcut"
-      class="hidden sm:inline-flex h-5 w-10 items-center justify-center rounded border bg-background font-mono text-[10px]"
-    >⌘K</kbd>
+    <!-- 两个 kbd 都渲染，由 BaseLayout 注入的 <html data-platform="mac|pc"> 通过 CSS
+         决定显示哪一个。这样 SSR HTML 加载完成、inline 脚本同步执行后，浏览器首次
+         绘制就已显示正确快捷键，不会有 ⌘K → Ctrl K 的闪烁 -->
+    <kbd class="kbd-mac hidden sm:inline-flex h-5 w-10 items-center justify-center rounded border bg-background font-mono text-[10px]">⌘K</kbd>
+    <kbd class="kbd-pc hidden sm:inline-flex h-5 w-10 items-center justify-center rounded border bg-background font-mono text-[10px]">Ctrl K</kbd>
   </button>
 </template>
+
+<style>
+/* 全局样式（非 scoped）：依赖 <html data-platform="mac|pc">（由 BaseLayout inline 脚本同步设置）。
+   未设置 data-platform 时默认显示 mac 版本（不影响功能，命中率最高的开发者环境是 mac）。 */
+html:not([data-platform='pc']) .kbd-pc { display: none !important; }
+html[data-platform='pc'] .kbd-mac { display: none !important; }
+</style>

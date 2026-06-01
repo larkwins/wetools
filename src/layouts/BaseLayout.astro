@@ -119,6 +119,13 @@ const ogImage = `${siteUrl}/og.png`;
           }
         } catch (e) {}
 
+        // —— 平台检测（用于 ⌘K / Ctrl K 等键盘快捷键徽章在 SSR HTML 里就显示正确值，避免 hydrate 时闪烁）——
+        try {
+          var ua = navigator.userAgent || '';
+          var isMac = /Mac|iPhone|iPad|iPod/.test(ua);
+          document.documentElement.setAttribute('data-platform', isMac ? 'mac' : 'pc');
+        } catch (e) {}
+
         // PWA Service Worker 由 @vite-pwa/astro 自动注入注册脚本，这里无需手动处理。
       })();
     </script>
