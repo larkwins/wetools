@@ -664,6 +664,127 @@ export const zhToEnDict: Record<string, string> = {
     'Parse Cron expressions, preview next N runs.',
   '查询当前公网 IP 与归属地（调用第三方公开 API）。':
     'Look up your public IP via ipapi (calls a third-party API).',
+
+  // ============================================================
+  // —— 新增 11 个工具 ——
+  // ============================================================
+  // HTTP 状态码
+  '搜索状态码 / 名称 / 描述…': 'Search code / name / description…',
+  '没有匹配的状态码': 'No matching status codes',
+  '1xx 信息': '1xx Informational',
+  '2xx 成功': '2xx Success',
+  '3xx 重定向': '3xx Redirection',
+  '4xx 客户端错误': '4xx Client Error',
+  '5xx 服务端错误': '5xx Server Error',
+  '全部': 'All',
+
+  // ASCII
+  '搜索：10、0A、LF、A、Tab…': 'Search: 10, 0A, LF, A, Tab…',
+  '控制字符': 'Control chars',
+  '可打印': 'Printable',
+  '没有匹配的字符': 'No matching characters',
+
+  // HMAC
+  '输入 HMAC 密钥…': 'Enter HMAC key…',
+  '输入要签名的消息…': 'Message to sign…',
+  '消息': 'Message',
+  'HMAC 输出': 'HMAC output',
+  '使用 Web Crypto API 计算，密钥与消息均按 UTF-8 编码，全部在浏览器本地完成。':
+    'Computed via Web Crypto API; key & message in UTF-8; all done locally in your browser.',
+
+  // DES
+  '密钥（DES 需 8 字节，3DES 需 16 或 24 字节）':
+    'Key (DES requires 8 bytes, 3DES requires 16 or 24 bytes)',
+  'IV（CBC 模式必填，8 字节）': 'IV (required for CBC, 8 bytes)',
+  'UTF-8 字节': 'UTF-8 bytes',
+  'DES / 3DES 已被 NIST 标记为遗留算法（不再推荐用于新系统）。本工具仅用于兼容老接口调试，强加密请使用 AES。':
+    'DES / 3DES are NIST-deprecated legacy algorithms. Use this only for compatibility; prefer AES for new systems.',
+
+  // RSA
+  '生成密钥对': 'Generate keypair',
+  '使用公钥加密': 'Encrypt with public key',
+  '使用私钥解密': 'Decrypt with private key',
+  '公钥 (SPKI / PEM)': 'Public key (SPKI / PEM)',
+  '私钥 (PKCS8 / PEM)': 'Private key (PKCS8 / PEM)',
+  '明文': 'Plaintext',
+  '密文 (Base64)': 'Ciphertext (Base64)',
+  '使用 Web Crypto API RSA-OAEP。注意：RSA 加密长度受密钥长度限制（2048 位约 200 字节明文），适合加密小数据或对称密钥。':
+    'Uses Web Crypto RSA-OAEP. Note: RSA encrypt length is limited by key size (~200 bytes for 2048-bit); best for small data or symmetric keys.',
+
+  // JSON ↔ XML
+  '根元素名（JSON → XML）': 'Root element (JSON → XML)',
+  '粘贴 XML…': 'Paste XML…',
+
+  // JSON → Go
+  '根 struct 名': 'Root struct name',
+  '嵌套用指针': 'Pointer for nested',
+  '添加 omitempty': 'Add omitempty',
+  'Go Struct': 'Go Struct',
+  '类型推断：整数 → int64，小数 → float64，对象数组取首元素结构，空数组退化为 []interface{}。':
+    'Inference: int → int64, float → float64, object arrays use the first element, empty arrays fall back to []interface{}.',
+
+  // JSON → Proto
+  '根 message 名': 'Root message name',
+  'Protobuf 3': 'Protobuf 3',
+  '类型映射：整数 → int64，小数 → double，对象数组取首元素结构。字段名自动转 snake_case，tag 顺序生成。':
+    'Mapping: int → int64, float → double, object arrays use the first element. Field names auto-convert to snake_case; tags are sequential.',
+
+  // SQL 格式化
+  '方言': 'Dialect',
+  '关键字': 'Keywords',
+  '保留': 'Preserve',
+  '粘贴 SQL…': 'Paste SQL…',
+
+  // SQL → Go
+  'CREATE TABLE 语句': 'CREATE TABLE statements',
+  '粘贴 CREATE TABLE…': 'Paste CREATE TABLE…',
+  '添加 json tag': 'Add json tag',
+  'json omitempty': 'json omitempty',
+  '添加 gorm tag': 'Add gorm tag',
+  '没有解析到 CREATE TABLE 语句': 'No CREATE TABLE statements parsed',
+  '支持 MySQL 主流类型与 PostgreSQL 常见类型。tinyint(1) 视为 bool；nullable 列默认用指针；DATE/DATETIME 映射 time.Time。':
+    'Supports common MySQL & PostgreSQL types. tinyint(1) → bool; nullable columns use pointers; DATE/DATETIME → time.Time.',
+
+  // WebSocket
+  '子协议（逗号分隔，可选）': 'Subprotocols (comma separated, optional)',
+  '连接': 'Connect',
+  '断开': 'Disconnect',
+  '条日志': ' logs',
+  '自动滚动': 'Auto scroll',
+  '日志为空，连接后收发消息会出现在这里': 'No logs yet — send/receive messages after connecting',
+  '发送消息': 'Send message',
+  '要发送的文本…': 'Text to send…',
+  '发送': 'Send',
+  '使用浏览器原生 WebSocket，连接与消息全部在客户端处理，不经任何中转。':
+    'Uses native browser WebSocket; all messages handled client-side with no relay.',
+  '连接失败常见原因：① HTTPS 页面只能连 wss://（不能连 ws://）；② 远端服务暂时不可用；③ 公司网络/防火墙拦截 WebSocket；④ 跨域 CSP 限制。':
+    'Common failure reasons: (1) HTTPS pages can only connect to wss:// (not ws://); (2) remote service temporarily down; (3) corporate network/firewall blocking WebSocket; (4) CSP restrictions.',
+  '常用：': 'Presets: ',
+  '连接错误（浏览器出于安全考虑不会暴露具体原因，常见情况见下方说明）':
+    'Connection error (browsers do not expose the exact reason for security; see notes below)',
+  '正常关闭': 'Normal closure',
+  '端点离开': 'Endpoint going away',
+  '协议错误': 'Protocol error',
+  '数据类型不支持': 'Unsupported data',
+  '未给出状态码': 'No status received',
+  '异常关闭（TLS/网络断开或对端未发送 Close 帧）':
+    'Abnormal closure (TLS/network dropped or no Close frame from peer)',
+  '数据不一致（非 UTF-8）': 'Invalid frame payload (non-UTF-8)',
+  '违反策略': 'Policy violation',
+  '消息过大': 'Message too big',
+  '需要扩展': 'Mandatory extension',
+  '服务端内部错误': 'Internal server error',
+  '服务重启中': 'Service restart',
+  '稍后重试': 'Try again later',
+  '网关错误': 'Bad gateway',
+  'TLS 握手失败': 'TLS handshake failure',
+  'URL 不能为空': 'URL cannot be empty',
+  '只支持 ws:// 或 wss:// 协议': 'Only ws:// or wss:// is supported',
+  '未连接，无法发送': 'Not connected, cannot send',
+  '已连接': 'Connected',
+  '连接中': 'Connecting',
+  '已关闭': 'Closed',
+  '未连接': 'Disconnected',
 };
 
 /**

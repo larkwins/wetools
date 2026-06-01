@@ -111,6 +111,8 @@ export default defineConfig({
         'browser-image-compression',
         'fuse.js',
         'opencc-js',
+        'crypto-js',
+        'sql-formatter',
       ],
     },
   },
