@@ -38,7 +38,10 @@ async function copy(c: string) {
   <div class="flex flex-col gap-4">
     <div class="relative">
       <Search :size="14" class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-      <Input v-model="keyword" placeholder="搜索 emoji（中英文关键词）…" class="pl-9" />
+      <Input v-model="keyword" placeholder="搜索 emoji（中英文关键词）…" class="pl-9 pr-24" />
+      <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs tabular-nums text-muted-foreground">
+        {{ filtered.length }} / {{ allItems.length }}
+      </span>
     </div>
 
     <div class="flex flex-wrap gap-1.5">
@@ -60,9 +63,10 @@ async function copy(c: string) {
       没有匹配的 emoji
     </div>
 
-    <div v-else class="grid grid-cols-8 gap-1.5 sm:grid-cols-10 lg:grid-cols-14 xl:grid-cols-16">
+    <!-- key 绑定关键字+分类，确保切换搜索/分类时 grid 完整重渲染，避免 v-for 复用导致看似"未刷新" -->
+    <div v-else :key="`${keyword}-${activeGroup}`" class="grid grid-cols-8 gap-1.5 sm:grid-cols-10 lg:grid-cols-14 xl:grid-cols-16">
       <button
-        v-for="(item, i) in filtered" :key="i" type="button"
+        v-for="(item, i) in filtered" :key="`${activeGroup}-${item.c}-${i}`" type="button"
         :title="`${item.c} ${item.n}${item.k ? ' · ' + item.k.join(' / ') : ''}`"
         :class="['relative flex aspect-square items-center justify-center rounded-md border bg-card text-2xl transition-all hover:scale-110 hover:border-primary/60 hover:bg-secondary',
           copied === item.c && 'ring-2 ring-primary']"
