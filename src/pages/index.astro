@@ -5,21 +5,20 @@ import SiteFooter from '@/components/layout/SiteFooter.astro';
 import FavoriteButton from '@/components/ui/FavoriteButton.vue';
 import { groupedByCategory, allTools } from '@/lib/registry';
 import { getIcon } from '@/lib/icons';
-import { Star, ClipboardList, Search, Coffee } from 'lucide-vue-next';
+import { Star, ClipboardList, Search, Coffee, Hammer } from 'lucide-vue-next';
 
 const groups = groupedByCategory();
 const Ico = getIcon;
 
 const categoryColors: Record<string, { icon: string; iconBg: string; hover: string }> = {
-  encoding:  { icon: 'text-blue-500',    iconBg: 'bg-blue-500/10',    hover: 'group-hover:text-blue-500' },
-  json:      { icon: 'text-emerald-500', iconBg: 'bg-emerald-500/10', hover: 'group-hover:text-emerald-500' },
-  crypto:    { icon: 'text-purple-500',  iconBg: 'bg-purple-500/10',  hover: 'group-hover:text-purple-500' },
-  datetime:  { icon: 'text-orange-500',  iconBg: 'bg-orange-500/10',  hover: 'group-hover:text-orange-500' },
-  generator: { icon: 'text-cyan-500',    iconBg: 'bg-cyan-500/10',    hover: 'group-hover:text-cyan-500' },
-  image:     { icon: 'text-pink-500',    iconBg: 'bg-pink-500/10',    hover: 'group-hover:text-pink-500' },
-  text:      { icon: 'text-amber-500',   iconBg: 'bg-amber-500/10',   hover: 'group-hover:text-amber-500' },
-  network:   { icon: 'text-teal-500',    iconBg: 'bg-teal-500/10',    hover: 'group-hover:text-teal-500' },
-  dev:       { icon: 'text-indigo-500',  iconBg: 'bg-indigo-500/10',  hover: 'group-hover:text-indigo-500' },
+  common:     { icon: 'text-amber-500',   iconBg: 'bg-amber-500/10',   hover: 'group-hover:text-amber-500' },
+  encoding:   { icon: 'text-purple-500',  iconBg: 'bg-purple-500/10',  hover: 'group-hover:text-purple-500' },
+  generator:  { icon: 'text-pink-500',    iconBg: 'bg-pink-500/10',    hover: 'group-hover:text-pink-500' },
+  converter:  { icon: 'text-emerald-500', iconBg: 'bg-emerald-500/10', hover: 'group-hover:text-emerald-500' },
+  text:       { icon: 'text-orange-500',  iconBg: 'bg-orange-500/10',  hover: 'group-hover:text-orange-500' },
+  web:        { icon: 'text-teal-500',    iconBg: 'bg-teal-500/10',    hover: 'group-hover:text-teal-500' },
+  cheatsheet: { icon: 'text-indigo-500',  iconBg: 'bg-indigo-500/10',  hover: 'group-hover:text-indigo-500' },
+  detect:     { icon: 'text-cyan-500',    iconBg: 'bg-cyan-500/10',    hover: 'group-hover:text-cyan-500' },
 };
 const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'group-hover:text-primary' };
 ---
@@ -151,27 +150,44 @@ const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'gr
               </div>
             </div>
 
-            <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {g.tools.map((t) => {
-                const ToolIco = Ico(t.icon);
-                return (
-                  <a href={`/${t.id}`} data-tool-id={t.id} class="group tool-card relative cursor-pointer">
-                    <div class="flex items-center gap-3">
-                      <span class={`inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-muted-foreground transition-colors ${colors.hover}`}>
-                        <ToolIco size={15} />
-                      </span>
-                      <div class="min-w-0 flex-1 pr-7">
-                        <p class="truncate text-sm font-medium text-foreground">{t.i18n.zh.title}</p>
-                        <p class="truncate text-xs text-muted-foreground mt-0.5">{t.i18n.zh.description}</p>
+            {g.tools.length > 0 ? (
+              <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {g.tools.map((t) => {
+                  const ToolIco = Ico(t.icon);
+                  return (
+                    <a href={`/${t.id}`} data-tool-id={t.id} class="group tool-card relative cursor-pointer">
+                      <div class="flex items-center gap-3">
+                        <span class={`inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-muted-foreground transition-colors ${colors.hover}`}>
+                          <ToolIco size={15} />
+                        </span>
+                        <div class="min-w-0 flex-1 pr-7">
+                          <p class="truncate text-sm font-medium text-foreground">{t.i18n.zh.title}</p>
+                          <p class="truncate text-xs text-muted-foreground mt-0.5">{t.i18n.zh.description}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div class="absolute right-2 top-2">
-                      <FavoriteButton client:load toolId={t.id} size="sm" />
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
+                      <div class="absolute right-2 top-2">
+                        <FavoriteButton client:load toolId={t.id} size="sm" />
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            ) : (
+              // 空分类（如「检测」）：显示开发中占位卡，结构与 .tool-card 完全一致以保持高度
+              <div class="tool-card !cursor-default border-dashed bg-card/40 hover:!border-border hover:!bg-card/40 hover:!shadow-none">
+                <div class="flex items-center gap-3">
+                  <span class={`inline-flex h-8 w-8 flex-none items-center justify-center rounded-md bg-secondary text-muted-foreground/70`}>
+                    <Hammer size={15} />
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <p class="truncate text-sm font-medium text-foreground/70">开发中</p>
+                    <p class="truncate text-xs text-muted-foreground mt-0.5">
+                      此分类即将上线，敬请期待
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         );
       })}

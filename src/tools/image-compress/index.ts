@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'image-compress',
-  category: 'image',
+  category: 'common',
   icon: 'ImageDown',
   i18n: {
     zh: { title: '图片压缩', description: '本地压缩图片（基于 Web Worker），可指定最大边长与质量。' },

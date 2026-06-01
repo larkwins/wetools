@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'json-to-ts',
-  category: 'json',
+  category: 'converter',
   icon: 'Code2',
   i18n: {
     zh: { title: 'JSON → TypeScript', description: '从任意 JSON 生成 TypeScript Interface / Type 定义。' },

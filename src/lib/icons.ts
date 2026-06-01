@@ -33,6 +33,7 @@ import {
   Type,
   Globe,
   Code2,
+  BookOpen,
 
   // 工具图标
   Hash,
@@ -66,6 +67,20 @@ import {
   Ruler,
   Calculator,
   Layers,
+  FileCode,
+  FileCode2,
+  FileWarning,
+  Plug,
+  Table,
+  Thermometer,
+  Percent,
+  Shield,
+  Keyboard,
+  UserCog,
+  Megaphone,
+  FileType2,
+  ListChecks,
+  GitBranch,
 } from 'lucide-vue-next';
 import type { Component } from 'vue';
 
@@ -94,6 +109,7 @@ export const iconMap: Record<string, Component> = {
   Type,
   Globe,
   Code2,
+  BookOpen,
 
   // 工具
   Hash,
@@ -127,6 +143,20 @@ export const iconMap: Record<string, Component> = {
   Ruler,
   Calculator,
   Layers,
+  FileCode,
+  FileCode2,
+  FileWarning,
+  Plug,
+  Table,
+  Thermometer,
+  Percent,
+  Shield,
+  Keyboard,
+  UserCog,
+  Megaphone,
+  FileType2,
+  ListChecks,
+  GitBranch,
 };
 
 /** 根据字符串名取图标组件，找不到时回退到 Wrench */

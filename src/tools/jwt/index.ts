@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'jwt',
-  category: 'crypto',
+  category: 'encoding',
   icon: 'FileKey2',
   i18n: {
     zh: { title: 'JWT 解析', description: '解析 JWT 三段：Header / Payload / Signature，本地完成。' },

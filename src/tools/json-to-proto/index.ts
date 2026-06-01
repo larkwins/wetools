@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'json-to-proto',
-  category: 'json',
+  category: 'converter',
   icon: 'FileCode2',
   i18n: {
     zh: { title: 'JSON → Protobuf', description: '从任意 JSON 推导出 Protobuf 3 message 定义。' },

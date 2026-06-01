@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'curl-convert',
-  category: 'network',
+  category: 'web',
   icon: 'TerminalSquare',
   i18n: {
     zh: { title: 'cURL 转代码', description: '把 cURL 命令转成 fetch / axios 代码。' },

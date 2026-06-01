@@ -53,14 +53,21 @@ const groups = groupedByCategory();
             </svg>
           </button>
           <div class="nav-dropdown-menu absolute left-0 top-full hidden min-w-[200px] animate-pop-in rounded-lg border bg-popover p-1.5 shadow-lg">
-            {g.tools.map((t) => (
-              <a
-                href={`/${t.id}`}
-                class="flex items-center rounded-md px-2.5 py-1.5 text-[13px] text-popover-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                {t.i18n.zh.title}
-              </a>
-            ))}
+            {g.tools.length > 0 ? (
+              g.tools.map((t) => (
+                <a
+                  href={`/${t.id}`}
+                  class="flex items-center rounded-md px-2.5 py-1.5 text-[13px] text-popover-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  {t.i18n.zh.title}
+                </a>
+              ))
+            ) : (
+              <div class="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-[13px] text-muted-foreground/70">
+                <span class="h-1.5 w-1.5 rounded-full bg-muted-foreground/40"></span>
+                开发中
+              </div>
+            )}
           </div>
         </div>
       ))}
@@ -103,14 +110,18 @@ const groups = groupedByCategory();
             {g.category.i18n.zh.title}
           </div>
           <div class="grid grid-cols-2 gap-1 sm:grid-cols-3">
-            {g.tools.map((t) => (
-              <a
-                href={`/${t.id}`}
-                class="block truncate rounded-md px-2 py-1.5 text-[13px] text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                {t.i18n.zh.title}
-              </a>
-            ))}
+            {g.tools.length > 0 ? (
+              g.tools.map((t) => (
+                <a
+                  href={`/${t.id}`}
+                  class="block truncate rounded-md px-2 py-1.5 text-[13px] text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  {t.i18n.zh.title}
+                </a>
+              ))
+            ) : (
+              <span class="block px-2 py-1.5 text-[13px] text-muted-foreground/70">开发中</span>
+            )}
           </div>
         </div>
       ))}

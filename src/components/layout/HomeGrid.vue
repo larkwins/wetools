@@ -15,15 +15,14 @@ const { locale, t } = useI18n();
 
 // 每个分类分配一个辅助色
 const categoryColors: Record<string, { icon: string; iconBg: string; hover: string }> = {
-  encoding:  { icon: 'text-blue-500',    iconBg: 'bg-blue-500/10',    hover: 'group-hover:text-blue-500' },
-  json:      { icon: 'text-emerald-500', iconBg: 'bg-emerald-500/10', hover: 'group-hover:text-emerald-500' },
-  crypto:    { icon: 'text-purple-500',  iconBg: 'bg-purple-500/10',  hover: 'group-hover:text-purple-500' },
-  datetime:  { icon: 'text-orange-500',  iconBg: 'bg-orange-500/10',  hover: 'group-hover:text-orange-500' },
-  generator: { icon: 'text-cyan-500',    iconBg: 'bg-cyan-500/10',    hover: 'group-hover:text-cyan-500' },
-  image:     { icon: 'text-pink-500',    iconBg: 'bg-pink-500/10',    hover: 'group-hover:text-pink-500' },
-  text:      { icon: 'text-amber-500',   iconBg: 'bg-amber-500/10',   hover: 'group-hover:text-amber-500' },
-  network:   { icon: 'text-teal-500',    iconBg: 'bg-teal-500/10',    hover: 'group-hover:text-teal-500' },
-  dev:       { icon: 'text-indigo-500',  iconBg: 'bg-indigo-500/10',  hover: 'group-hover:text-indigo-500' },
+  common:     { icon: 'text-amber-500',   iconBg: 'bg-amber-500/10',   hover: 'group-hover:text-amber-500' },
+  encoding:   { icon: 'text-purple-500',  iconBg: 'bg-purple-500/10',  hover: 'group-hover:text-purple-500' },
+  generator:  { icon: 'text-pink-500',    iconBg: 'bg-pink-500/10',    hover: 'group-hover:text-pink-500' },
+  converter:  { icon: 'text-emerald-500', iconBg: 'bg-emerald-500/10', hover: 'group-hover:text-emerald-500' },
+  text:       { icon: 'text-orange-500',  iconBg: 'bg-orange-500/10',  hover: 'group-hover:text-orange-500' },
+  web:        { icon: 'text-teal-500',    iconBg: 'bg-teal-500/10',    hover: 'group-hover:text-teal-500' },
+  cheatsheet: { icon: 'text-indigo-500',  iconBg: 'bg-indigo-500/10',  hover: 'group-hover:text-indigo-500' },
+  detect:     { icon: 'text-cyan-500',    iconBg: 'bg-cyan-500/10',    hover: 'group-hover:text-cyan-500' },
 };
 const defaultColor = { icon: 'text-primary', iconBg: 'bg-primary/10', hover: 'group-hover:text-primary' };
 

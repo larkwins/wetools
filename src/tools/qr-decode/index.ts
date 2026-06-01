@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'qr-decode',
-  category: 'image',
+  category: 'generator',
   icon: 'ScanLine',
   i18n: {
     zh: { title: '二维码识别', description: '上传或拖入图片，识别其中的二维码内容。' },

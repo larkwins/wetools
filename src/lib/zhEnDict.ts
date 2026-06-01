@@ -110,6 +110,8 @@ export const zhToEnDict: Record<string, string> = {
   // 工具中文 title 由 registry 自动注入字典完成替换。
   '相关工具': 'Related tools',
   '开源 · 本地运行': 'Open source · Runs locally',
+  '开发中': 'In development',
+  '此分类即将上线，敬请期待': 'This category is coming soon — stay tuned',
   '复制链接': 'Copy link',
   '已复制': 'Copied',
   '复制': 'Copy',
@@ -581,14 +583,28 @@ export const zhToEnDict: Record<string, string> = {
   // ============================================================
   // —— 分类名 ——
   // ============================================================
+  // 当前 8 大分类（runtime dict 也会自动从 categories 注入，这里作为兜底）
+  '常用': 'Popular',
+  '编码/加密': 'Encoding & Crypto',
+  '生成': 'Generators',
+  '转换/格式化': 'Converter & Formatter',
+  '文本处理': 'Text',
+  'Web/网络': 'Web & Network',
+  '速查': 'Cheatsheets',
+  '检测': 'Detect',
+  // 旧分类名（保留向后兼容，避免历史 Sidebar / 收藏中残留时无法翻译）
   '编码转换': 'Encoding',
   'JSON 与数据': 'JSON & Data',
   '加密哈希': 'Crypto & Hash',
   '时间日期': 'Date & Time',
   '生成器': 'Generators',
   '图像': 'Image',
-  '网络': 'Network',
   '开发速查': 'Dev Cheatsheet',
+  '编码 & 加密': 'Encoding & Crypto',
+  'JSON & 数据格式': 'JSON & Data',
+  '文本工具': 'Text',
+  'Web & 网络': 'Web & Network',
+  '时间 & 数学': 'Time & Math',
 
   // ============================================================
   // —— 工具名（37 个）——
@@ -785,6 +801,166 @@ export const zhToEnDict: Record<string, string> = {
   '连接中': 'Connecting',
   '已关闭': 'Closed',
   '未连接': 'Disconnected',
+
+  // Placeholder Image
+  '宽度 (px)': 'Width (px)',
+  '高度 (px)': 'Height (px)',
+  '字号 (0 = 自动)': 'Font size (0 = auto)',
+  '渐变': 'Gradient',
+  '背景色 ①': 'Background ①',
+  '背景色 ②': 'Background ②',
+  '文字色': 'Text color',
+  '文字（留空使用尺寸）': 'Text (empty = use size)',
+  '正方': 'Square',
+  '横版': 'Landscape',
+  '竖版': 'Portrait',
+  '横幅': 'Banner',
+  '头像': 'Avatar',
+  '社交分享': 'Social share',
+  '浅灰': 'Light gray',
+  '深灰': 'Dark gray',
+  '翠绿': 'Emerald',
+  '海蓝': 'Blue',
+  '玫红': 'Pink',
+  '琥珀': 'Amber',
+  '紫罗兰': 'Violet',
+  '下载 SVG': 'Download SVG',
+  '生成中…': 'Generating…',
+  '重新渲染': 'Re-render',
+  'SVG 源码': 'SVG source',
+  'Data URL（<img src> / CSS background）': 'Data URL (<img src> / CSS background)',
+  'CSS：': 'CSS: ',
+  '在浏览器本地用 SVG 生成，PNG 由 Canvas 实时栅格化下载。无网络请求，无水印。':
+    'Generated locally as SVG; PNG is rasterized via Canvas. No network requests, no watermark.',
+
+  // === 批1：10 个工具 ===
+  // 罗马数字
+  '阿拉伯数字': 'Arabic numeral',
+  '罗马数字': 'Roman numeral',
+  '请输入 1 - 3999 之间的整数': 'Please enter an integer between 1 and 3999',
+  '只能包含 M D C L X V I': 'Only M D C L X V I are allowed',
+  '不是规范的罗马数字写法': 'Not a canonical Roman numeral',
+  '常用示例': 'Common examples',
+  '3999 (最大)': '3999 (max)',
+  '罗马数字使用 7 个字母：I(1) V(5) X(10) L(50) C(100) D(500) M(1000)。支持范围 1 - 3999。':
+    'Roman numerals use 7 letters: I(1) V(5) X(10) L(50) C(100) D(500) M(1000). Range: 1 - 3999.',
+
+  // 温度
+  '摄氏度': 'Celsius',
+  '华氏度': 'Fahrenheit',
+  '开尔文': 'Kelvin',
+  '兰金度': 'Rankine',
+  '列氏度': 'Réaumur',
+  '牛顿度': 'Newton',
+  '水的冰点 0 °C / 沸点 100 °C': 'Water freezes at 0 °C / boils at 100 °C',
+  '人体体温 ≈ 98.6 °F': 'Human body ≈ 98.6 °F',
+  '绝对零度 = 0 K': 'Absolute zero = 0 K',
+  '美国工程界使用': 'Used in US engineering',
+  '历史用，主要在欧洲': 'Historical, mainly Europe',
+  '牛顿提出，已不常用': 'Proposed by Newton, rarely used',
+  '常用温度': 'Common temperatures',
+  '绝对零度': 'Absolute zero',
+  '水冰点': 'Water freezing',
+  '冰箱冷藏': 'Fridge',
+  '室温': 'Room temp',
+  '人体体温': 'Body temp',
+  '水沸点': 'Water boiling',
+
+  // 百分比
+  '占比': 'Ratio',
+  '涨跌幅': 'Change',
+  '增减后值': 'Increase/decrease',
+  '折扣': 'Discount',
+  'A 是 B 的百分之几？': 'A is what percent of B?',
+  '从 A 到 B 的变化幅度（正数=上涨，负数=下跌）': 'Change from A to B (positive = up, negative = down)',
+  '数值 增加 / 减少 N% 后的结果': 'Value after increase / decrease by N%',
+  '原价 - 折扣百分比 = 折后价 + 节省金额': 'Original - discount % = final price + savings',
+  '原价': 'Original',
+  '折扣 (%)': 'Discount (%)',
+  '折后价': 'Final price',
+  '节省': 'You save',
+
+  // Chmod
+  '所有者 (u)': 'Owner (u)',
+  '所属组 (g)': 'Group (g)',
+  '其他人 (o)': 'Other (o)',
+  '读 read': 'read',
+  '写 write': 'write',
+  '执行 execute': 'execute',
+  '常用预设': 'Common presets',
+  '可执行文件 / 公共目录（rwxr-xr-x）': 'Executables / public dirs (rwxr-xr-x)',
+  '普通文件（rw-r--r--）': 'Regular files (rw-r--r--)',
+  '私密文件（rw-------）': 'Private files (rw-------)',
+  '私密目录（rwx------）': 'Private dirs (rwx------)',
+  '完全开放（不推荐）': 'Fully open (not recommended)',
+  '只读（r--------）': 'Read-only (r--------)',
+
+  // Keycode
+  '按下键盘上的任意按键': 'Press any key on the keyboard',
+  '历史记录': 'History',
+  '标准': 'Standard',
+  '左侧': 'Left',
+  '右侧': 'Right',
+  '数字键盘': 'Numpad',
+  '注意：现代代码应使用': 'Note: modern code should use',
+  '（语义）或': '(semantic) or',
+  '（物理位置），': '(physical), ',
+  '已废弃。': 'are deprecated.',
+
+  // Basic Auth
+  '用户名': 'Username',
+  'Base64 凭证': 'Base64 credential',
+  'Authorization 请求头': 'Authorization header',
+  'JavaScript fetch': 'JavaScript fetch',
+  'Basic Auth 仅做 Base64 编码（不是加密），必须配合 HTTPS 使用，避免凭证在网络中明文传输。':
+    'Basic Auth is only Base64-encoded (not encrypted). Always use over HTTPS to prevent credential leaks.',
+
+  // NATO
+  'NATO 字母': 'NATO alphabet',
+  '输入英文字母或数字…': 'Enter letters or digits…',
+  '完整字母表': 'Full alphabet',
+  'NATO 音标字母（ICAO 拼读字母表），用于无线电通讯避免相似字母混淆，如 B / D、M / N。':
+    'NATO phonetic alphabet (ICAO), used in radio comms to disambiguate similar letters like B/D, M/N.',
+
+  // MIME
+  '搜索后缀或 MIME（如 png / json / application/pdf）…': 'Search extension or MIME (png / json / application/pdf)…',
+  '视频': 'Video',
+  '音频': 'Audio',
+  '字体': 'Font',
+  '没有匹配的类型': 'No matching MIME types',
+  '后缀': 'Extension',
+  'MIME 类型': 'MIME Type',
+  '分类': 'Category',
+  '个常见 MIME 类型。后缀名不带点（如': ' common MIME types. Extensions without dot (e.g. ',
+  '而非': ', not ',
+
+  // HTTP Headers
+  '搜索头名称或说明…': 'Search header name or description…',
+  '通用': 'General',
+  '认证': 'Auth',
+  '缓存': 'Cache',
+  '条件': 'Conditional',
+  'Cookie': 'Cookie',
+  '安全': 'Security',
+  '请求 + 响应': 'Request + Response',
+  '仅请求': 'Request only',
+  '仅响应': 'Response only',
+  '没有匹配的请求头': 'No matching headers',
+  '请求': 'Request',
+  '响应': 'Response',
+
+  // Git Cheatsheet
+  '搜索命令或说明…': 'Search command or description…',
+  '没有匹配的命令': 'No matching commands',
+  '初始化 & 克隆': 'Init & Clone',
+  '查看状态 & 历史': 'Status & History',
+  '暂存 & 提交': 'Stage & Commit',
+  '分支': 'Branch',
+  '远程仓库': 'Remote',
+  '变基 & 樱桃挑选': 'Rebase & Cherry-pick',
+  '撤销 & 救命': 'Undo & Recover',
+  '标签': 'Tag',
+  '配置 & 别名': 'Config & Alias',
 };
 
 /**

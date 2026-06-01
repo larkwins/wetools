@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'image-base64',
-  category: 'image',
+  category: 'common',
   icon: 'FileImage',
   i18n: {
     zh: { title: '图片 ↔ Base64', description: '图片与 Data URL 互转，方便嵌入 CSS / HTML。' },

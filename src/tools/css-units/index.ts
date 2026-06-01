@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'css-units',
-  category: 'dev',
+  category: 'cheatsheet',
   icon: 'Ruler',
   i18n: {
     zh: { title: 'CSS 单位换算', description: 'px / rem / em / vw / vh / pt 互转，可设根字号与视口宽。' },

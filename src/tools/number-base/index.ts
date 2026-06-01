@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'number-base',
-  category: 'dev',
+  category: 'cheatsheet',
   icon: 'Calculator',
   i18n: {
     zh: { title: '进制转换', description: '二/八/十/十六进制及任意 2–36 进制互转。' },

@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'json-csv',
-  category: 'json',
+  category: 'converter',
   icon: 'Database',
   i18n: {
     zh: { title: 'JSON ↔ CSV', description: '对象数组与 CSV 互转，可选分隔符与首列字段顺序。' },

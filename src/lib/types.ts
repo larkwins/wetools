@@ -2,15 +2,14 @@
  * 工具元信息契约 —— 所有 src/tools/<id>/index.ts 必须导出 `meta: ToolMeta`
  */
 export type ToolCategory =
-  | 'encoding'
-  | 'json'
-  | 'crypto'
-  | 'datetime'
-  | 'generator'
-  | 'image'
-  | 'text'
-  | 'network'
-  | 'dev';
+  | 'common'       // 常用
+  | 'encoding'     // 编码/加密
+  | 'generator'    // 生成
+  | 'converter'    // 转换/格式化
+  | 'text'         // 文本处理
+  | 'web'          // Web/网络
+  | 'cheatsheet'   // 速查
+  | 'detect';      // 检测
 
 export type ToolTag = 'new' | 'hot' | 'beta';
 

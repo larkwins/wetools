@@ -58,7 +58,12 @@ export function toolsByCategory(category: ToolCategory): ToolMeta[] {
   return allTools.filter((t) => t.category === category);
 }
 
-/** 按分类聚合并排序，用于首页 / Sidebar 渲染 */
+/** 按分类聚合并排序，用于首页 / Sidebar 渲染
+ *
+ * 注意：空分类（tools.length === 0）也会保留并渲染 ——
+ * 用于让"检测"等正在筹备的分类先以"开发中"占位的方式出现，
+ * 让用户知道未来会有什么。具体空状态 UI 由调用方自行处理。
+ */
 export function groupedByCategory(): Array<{
   category: (typeof categories)[number];
   tools: ToolMeta[];
@@ -70,8 +75,7 @@ export function groupedByCategory(): Array<{
       tools: toolsByCategory(category.id).sort((a, b) =>
         a.id.localeCompare(b.id)
       ),
-    }))
-    .filter((g) => g.tools.length > 0);
+    }));
 }
 
 /** 同分类下随机相关工具（用于工具页底部"相关推荐"） */

@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'tailwind-cheatsheet',
-  category: 'dev',
+  category: 'cheatsheet',
   icon: 'ListOrdered',
   i18n: {
     zh: { title: 'Tailwind 速查', description: '搜索 Tailwind 常用 utility 类，复制即用。' },

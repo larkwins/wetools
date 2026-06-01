@@ -13,7 +13,7 @@ import type { ToolMeta } from '@/lib/types';
  */
 export const meta: ToolMeta = {
   id: '_template',
-  category: 'dev',
+  category: 'common',
   icon: 'Sparkles',
   i18n: {
     zh: { title: '工具模板', description: '复制此目录即可新增一个工具。' },

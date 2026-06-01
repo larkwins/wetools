@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'json-format',
-  category: 'json',
+  category: 'converter',
   icon: 'Braces',
   i18n: {
     zh: { title: 'JSON 格式化 / 校验', description: '美化、压缩、转义 JSON，错误位置精确提示。' },

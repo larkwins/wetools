@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'sql-to-go',
-  category: 'dev',
+  category: 'converter',
   icon: 'Database',
   i18n: {
     zh: { title: 'SQL → Go Struct', description: '从 CREATE TABLE 语句生成 Go 结构体，支持 gorm / db tag。' },

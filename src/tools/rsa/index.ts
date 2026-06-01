@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'rsa',
-  category: 'crypto',
+  category: 'encoding',
   icon: 'KeyRound',
   i18n: {
     zh: { title: 'RSA 加解密 / 生成密钥', description: '浏览器生成 RSA 密钥对（2048/3072/4096），RSA-OAEP 加解密。' },

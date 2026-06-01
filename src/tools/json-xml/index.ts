@@ -2,7 +2,7 @@ import type { ToolMeta } from '@/lib/types';
 
 export const meta: ToolMeta = {
   id: 'json-xml',
-  category: 'json',
+  category: 'converter',
   icon: 'FileCode',
   i18n: {
     zh: { title: 'JSON ↔ XML', description: '在 JSON 与 XML 之间互转，可调缩进、根元素名。' },
