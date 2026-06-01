@@ -1230,6 +1230,8 @@ export const zhToEnDict: Record<string, string> = {
   '简体中文': 'Simplified Chinese',
   '繁体中文': 'Traditional Chinese',
   '日本語': 'Japanese',
+  '文本（支持多行）': 'Text (multiline supported)',
+  '输入英文字符…（Enter 换行，每行独立渲染）': 'Enter ASCII text… (Enter for newline; each line rendered separately)',
 };
 
 /**

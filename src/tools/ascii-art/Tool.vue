@@ -2,7 +2,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import figlet from 'figlet';
-import Input from '@/components/ui/Input.vue';
+import Textarea from '@/components/ui/Textarea.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
 const text = ref('WeTools');
@@ -18,41 +18,61 @@ const FONTS = [
   'Speed', 'Star Wars', '3-D', '3D-ASCII', 'ANSI Shadow',
 ] as const;
 
+// figlet 字体 CDN。备用：jsdelivr 失败时回退 unpkg。
+// 注意：必须 pin 一个明确版本号，避免请求 latest 重定向时 CORS 异常。
+const FONT_CDN_PRIMARY = 'https://cdn.jsdelivr.net/npm/figlet@1.11.0/fonts';
+const FONT_CDN_FALLBACK = 'https://unpkg.com/figlet@1.11.0/fonts';
+
+// 缓存已加载字体（parseFont 已注册到 figlet 内部，这里仅做幂等标记）
 const loadedFonts = new Set<string>();
 
-async function loadFont(name: string): Promise<void> {
+async function fetchFont(name: string): Promise<string> {
+  const path = `/${encodeURIComponent(name)}.flf`;
+  // 先试主 CDN
+  try {
+    const res = await fetch(FONT_CDN_PRIMARY + path);
+    if (res.ok) return await res.text();
+  } catch {/* fallthrough */}
+  // 回退备用 CDN
+  const res2 = await fetch(FONT_CDN_FALLBACK + path);
+  if (!res2.ok) throw new Error(`字体加载失败 (HTTP ${res2.status})：${name}`);
+  return await res2.text();
+}
+
+async function ensureFont(name: string): Promise<void> {
   if (loadedFonts.has(name)) return;
-  // figlet 浏览器版默认 fontPath 是 'fonts/'，需配置或预加载
-  // 简单方案：从 jsdelivr 加载
-  const url = `https://cdn.jsdelivr.net/npm/figlet@1.7.0/fonts/${encodeURIComponent(name)}.flf`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`字体加载失败：${name}`);
-  const data = await res.text();
-  // @ts-expect-error figlet 浏览器 API
-  figlet.parseFont(name, data);
+  const data = await fetchFont(name);
+  // figlet.parseFont 是公开 API（v1.11+），把 .flf 文本注册到内部字体表
+  (figlet as unknown as { parseFont: (n: string, d: string) => unknown }).parseFont(name, data);
   loadedFonts.add(name);
 }
 
-function render() {
-  if (!text.value) { result.value = ''; return; }
+async function render() {
+  const t = text.value;
+  if (!t) { result.value = ''; error.value = ''; return; }
   busy.value = true;
   error.value = '';
-  loadFont(font.value)
-    .then(() => {
-      figlet.text(text.value, { font: font.value as figlet.Fonts }, (err, data) => {
-        if (err) {
-          error.value = err.message || String(err);
-          result.value = '';
-        } else {
-          result.value = data ?? '';
-        }
-        busy.value = false;
-      });
-    })
-    .catch((e) => {
-      error.value = (e as Error).message || String(e);
-      busy.value = false;
-    });
+  try {
+    await ensureFont(font.value);
+    // textSync 在字体已注册后可同步渲染。
+    // figlet 单次调用对换行符的处理是"折行"而不是"分别渲染"，
+    // 因此手动按 \n 拆分输入逐行渲染、再用空行分隔拼回，效果和多行书写一致。
+    const textSync = (figlet as unknown as {
+      textSync: (txt: string, opts: { font: string }) => string;
+    }).textSync;
+    const lines = t.split(/\r?\n/);
+    const rendered = lines.map((line) => textSync(line || ' ', { font: font.value }));
+    result.value = rendered.join('\n');
+  } catch (e) {
+    const msg = (e as Error)?.message || String(e);
+    error.value = msg;
+    result.value = '';
+    // 帮助排查：把详细错误打到 console，方便用户截图反馈
+    // eslint-disable-next-line no-console
+    console.error('[ascii-art] render failed:', e);
+  } finally {
+    busy.value = false;
+  }
 }
 
 onMounted(render);
@@ -61,12 +81,12 @@ watch([text, font], render);
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="grid gap-3 sm:grid-cols-[1fr_auto]">
+    <div class="grid items-start gap-3 sm:grid-cols-[1fr_auto]">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">文本</label>
-        <Input v-model="text" placeholder="输入英文字符…" />
+        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">文本（支持多行）</label>
+        <Textarea v-model="text" placeholder="输入英文字符…（Enter 换行，每行独立渲染）" :rows="3" class="font-mono" />
       </div>
-      <div class="flex flex-col gap-1">
+      <div class="flex flex-col gap-1 sm:w-44">
         <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">字体</label>
         <select v-model="font" class="h-9 rounded-md border bg-background px-3 text-sm">
           <option v-for="f in FONTS" :key="f" :value="f">{{ f }}</option>
