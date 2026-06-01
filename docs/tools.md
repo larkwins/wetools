@@ -46,7 +46,7 @@
 
 ---
 
-## 3. 生成 (`generator`) — 15 ✅
+## 3. 生成 (`generator`) — 16 ✅
 
 > 各类内容生成器
 
@@ -67,6 +67,7 @@
 | 🆕✅ | `basic-auth` | Basic Auth 生成 | Basic Auth Generator | user:pass → base64 |
 | 🆕✅ | `meta-tag` | Meta Tag 生成 | Meta Tag Generator | SEO/OG/Twitter |
 | 🆕✅ | `docker-compose` | Docker run → Compose | Docker → Compose | DevOps 神器 |
+| 🆕✅ | `otp` | OTP / TOTP | OTP / TOTP | 2FA 验证码生成，RFC 6238 |
 
 ---
 
@@ -108,7 +109,7 @@
 
 ---
 
-## 6. Web/网络 (`web`) — 9 ✅
+## 6. Web/网络 (`web`) — 8 ✅
 
 > Web 开发与网络调试
 
@@ -122,7 +123,6 @@
 | 🆕✅ | `ipv4-subnet` | IPv4 子网计算器 | IPv4 Subnet Calculator | 网络工程师高频 |
 | 🆕✅ | `mac-lookup` | MAC 地址查询 (OUI) | MAC Address Lookup | 内置 OUI 表 |
 | 🆕✅ | `mac-generate` | MAC 地址生成 | MAC Address Generator | |
-| 🆕✅ | `otp` | OTP / TOTP | OTP / TOTP | 2FA 调试 |
 
 ---
 
@@ -169,10 +169,10 @@
 |---|---:|
 | 常用 | 6 |
 | 编码/加密 | 12 |
-| 生成 | 15 |
+| 生成 | 16 |
 | 转换/格式化 | 14 |
 | 文本处理 | 6 |
-| Web/网络 | 9 |
+| Web/网络 | 8 |
 | 速查 | 15 |
 | 检测 | 4 |
 | **合计** | **81** |
