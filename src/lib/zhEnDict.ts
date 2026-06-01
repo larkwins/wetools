@@ -1021,6 +1021,113 @@ export const zhToEnDict: Record<string, string> = {
   '渲染中…': 'Rendering…',
   'iOS 11+ / Android 10+ 直接扫码即可连接。生成的二维码完全离线，无任何上传。':
     'Scan on iOS 11+ / Android 10+ to auto-connect. The QR is generated entirely offline, no upload.',
+
+  // === 批3：10 个工具 ===
+  // Math eval
+  '逐行结果': 'Line-by-line results',
+  '基本运算': 'Basic',
+  '函数': 'Functions',
+  '单位换算': 'Units',
+  '复数': 'Complex',
+  '矩阵': 'Matrix',
+  '统计': 'Statistics',
+  '基于 mathjs。支持：基础运算、内置函数（sin/cos/log/sqrt 等）、变量、单位换算、复数、矩阵、统计函数。# 或 // 开头的行作注释。':
+    'Powered by mathjs. Supports basic arithmetic, functions (sin/cos/log/sqrt …), variables, unit conversion, complex numbers, matrices, statistics. Lines starting with # or // are comments.',
+
+  // IPv4 subnet
+  '请输入 CIDR 格式，如 192.168.1.0/24': 'Please enter CIDR format, e.g. 192.168.1.0/24',
+  '前缀必须在 0-32 之间': 'Prefix must be 0-32',
+  '无效 CIDR：请输入 IP/前缀 格式，如 192.168.1.0/24': 'Invalid CIDR: use IP/prefix format, e.g. 192.168.1.0/24',
+  '网络地址': 'Network',
+  '广播地址': 'Broadcast',
+  '子网掩码': 'Netmask',
+  '通配符掩码': 'Wildcard',
+  '可用主机起': 'First usable',
+  '可用主机止': 'Last usable',
+  '前缀长度': 'Prefix length',
+  '总地址数': 'Total addresses',
+  '可用主机数': 'Usable hosts',
+  'IP 类别': 'IP class',
+  '（私有）': ' (private)',
+  '（公网）': ' (public)',
+
+  // MAC lookup
+  '请至少输入 MAC 地址的前 6 位（OUI）': 'Please enter at least the first 6 hex digits (OUI)',
+  '厂商': 'Vendor',
+  '完整 MAC': 'Full MAC',
+  '组播 (multicast)': 'Multicast',
+  '单播 (unicast)': 'Unicast',
+  '本地管理 (locally administered)': 'Locally administered',
+  '全局唯一 (globally unique)': 'Globally unique',
+
+  // MAC generate
+  'OUI 前缀（可选）': 'OUI prefix (optional)',
+  '. (思科)': '. (Cisco)',
+  '单播（unicast，bit0=0）': 'Unicast (bit0=0)',
+  '全局唯一（global，bit1=0）': 'Globally unique (bit1=0)',
+
+  // OTP
+  'Secret（Base32）': 'Secret (Base32)',
+  '随机生成': 'Random',
+  'Issuer': 'Issuer',
+  'Account': 'Account',
+  '位数': 'Digits',
+  '6 位': '6 digits',
+  '8 位': '8 digits',
+  '周期 (秒)': 'Period (sec)',
+  '当前验证码': 'Current code',
+  '下一个验证码': 'Next code',
+  '秒后刷新': ' sec until refresh',
+  'otpauth:// URI（导入到 Authenticator）': 'otpauth:// URI (import into Authenticator)',
+  '密钥无效（必须是 Base32）：': 'Invalid secret (must be Base32): ',
+  '基于 RFC 6238 (TOTP)。和 Google Authenticator / 1Password / Authy 等兼容。Secret 必须是 Base32 字符（A-Z, 2-7）。':
+    'Based on RFC 6238 (TOTP). Compatible with Google Authenticator / 1Password / Authy. Secret must be Base32 (A-Z, 2-7).',
+
+  // Emoji
+  '搜索 emoji（中英文关键词）…': 'Search emoji (Chinese / English keywords)…',
+  '表情 & 情绪': 'Smileys & Emotion',
+  '手势 & 人物': 'Gestures & People',
+  '物件 & 符号': 'Objects & Symbols',
+  '科技 & 办公': 'Tech & Office',
+  '符号 & 标记': 'Symbols & Marks',
+  '没有匹配的 emoji': 'No matching emojis',
+  '点击任意 emoji 即复制到剪贴板。共收录': 'Click any emoji to copy. Included: ',
+  '个常用 emoji，覆盖日常使用 95%+。': ' common emojis (covers 95%+ everyday usage).',
+
+  // ASCII art
+  '字符画': 'ASCII art',
+  '· 渲染中…': '· Rendering…',
+  '请输入文本': 'Please enter text',
+  '基于 figlet。字体按需从 CDN 加载，首次使用某字体需联网（之后会缓存）。仅支持英文字符。':
+    'Powered by figlet. Fonts are loaded on demand from CDN (network needed first time, cached afterwards). English only.',
+  '字体加载失败：': 'Font load failed: ',
+
+  // Docker compose
+  'docker run 命令': 'docker run command',
+  '粘贴 docker run 命令…': 'Paste a docker run command…',
+  '未找到镜像名': 'Image name not found',
+  '支持识别 -d / -p / -v / -e / --name / --network / --restart / --hostname / -w / -u / --privileged 等常见参数。未识别参数会被跳过。':
+    'Recognizes common flags: -d / -p / -v / -e / --name / --network / --restart / --hostname / -w / -u / --privileged. Unknown flags are skipped.',
+
+  // Meta tag
+  '站点 URL': 'Site URL',
+  '分享图 URL': 'Share image URL',
+  '站点名': 'Site name',
+  'Twitter 账号': 'Twitter handle',
+  '作者': 'Author',
+  '主题色': 'Theme color',
+  'Meta 标签代码': 'Meta tags code',
+  '社交分享预览': 'Social share preview',
+
+  // Rate FX
+  '⚠️ 本工具会调用第三方 API（exchangerate-api.com）获取汇率数据，会向其服务器发送一次 GET 请求。':
+    '⚠️ This tool calls a third-party API (exchangerate-api.com) to fetch rates; one GET request is sent to their server.',
+  '从': 'From',
+  '到': 'To',
+  '金额': 'amount',
+  '汇率获取失败：': 'Failed to fetch rates: ',
+  '数据更新日期：': 'Data updated: ',
+  '对应（参考）': ' equals (reference)',
 };
 
 /**

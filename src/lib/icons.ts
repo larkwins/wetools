@@ -84,6 +84,12 @@ import {
   GitCompare,
   Link2,
   Wifi,
+  SearchCheck,
+  Shuffle,
+  Smile,
+  Container,
+  Tags,
+  CircleDollarSign,
 } from 'lucide-vue-next';
 import type { Component } from 'vue';
 
@@ -163,6 +169,12 @@ export const iconMap: Record<string, Component> = {
   GitCompare,
   Link2,
   Wifi,
+  SearchCheck,
+  Shuffle,
+  Smile,
+  Container,
+  Tags,
+  CircleDollarSign,
 };
 
 /** 根据字符串名取图标组件，找不到时回退到 Wrench */
