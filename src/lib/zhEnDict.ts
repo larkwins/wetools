@@ -1202,6 +1202,34 @@ export const zhToEnDict: Record<string, string> = {
   '偏好对比度': 'Prefers contrast',
   '调整浏览器窗口大小可实时更新视口数据。所有信息在浏览器本地读取，未上传。':
     'Resize the browser window to update viewport data in real-time. All info is read locally, never uploaded.',
+
+  // === Review 补漏：扫描发现的零散硬编码中文 ===
+  '计算中…': 'Computing…',
+  '粘贴 TOML…': 'Paste TOML…',
+  '粘贴 YAML…': 'Paste YAML…',
+  '输入文本…': 'Enter text…',
+  '输入英文字符…': 'Enter ASCII text…',
+  '分隔符：': 'Separator: ',
+  '名称 (SSID)': 'Name (SSID)',
+  '编码字符串': 'Encoded string',
+  '输入表达式，每行一个，支持变量、函数、单位、矩阵…':
+    'Enter one expression per line — supports variables, functions, units, matrices…',
+  '标题': 'Title',
+  '描述': 'Description',
+  '账号': 'Account',
+  '命令': 'Command',
+  '请求头': 'Header',
+  '凭证': 'Credential',
+  '字母': 'Letter',
+  '配色': 'Palette',
+  '文字': 'Text',
+  '代码片段': 'Code snippet',
+  '源码': 'Source',
+  '类别': 'Class',
+  '名称': 'Name',
+  '简体中文': 'Simplified Chinese',
+  '繁体中文': 'Traditional Chinese',
+  '日本語': 'Japanese',
 };
 
 /**
