@@ -961,6 +961,66 @@ export const zhToEnDict: Record<string, string> = {
   '撤销 & 救命': 'Undo & Recover',
   '标签': 'Tag',
   '配置 & 别名': 'Config & Alias',
+
+  // === 批2：8 个工具 ===
+  // Bcrypt（'校验' '计算中…' 与通用按钮重复，依赖既有翻译）
+  '生成哈希': 'Generate hash',
+  '校验密码': 'Verify password',
+  '明文密码': 'Plaintext password',
+  '要哈希的密码': 'Password to hash',
+  '轮数 (4-15)': 'Rounds (4-15)',
+  '生成 hash': 'Generate hash',
+  '校验中…': 'Verifying…',
+  '匹配：密码正确': 'Match: password correct',
+  '不匹配：密码错误或 hash 无效': 'No match: wrong password or invalid hash',
+  '→ 用这个 hash 去校验区测试': '→ Use this hash in the verify section',
+  'Bcrypt 用于密码哈希。轮数越高越安全也越慢（10 ≈ 100ms，12 ≈ 400ms）。生产建议 10-12 轮。':
+    'Bcrypt is for password hashing. Higher rounds = more secure but slower (10 ≈ 100ms, 12 ≈ 400ms). Production: use 10-12.',
+
+  // JSON Diff（'新增' '删除' 与通用按钮共用「Add/Delete」，差异类别用「Added/Removed」会更好，
+  // 但避免重复键，这里复用通用值；表格里显示 "+ 新增"/"- 删除" 已带符号区分）
+  '原 JSON (A)': 'Original JSON (A)',
+  '新 JSON (B)': 'New JSON (B)',
+  '✓ 两段 JSON 完全相同': '✓ The two JSON values are identical',
+  '修改': 'Changed',
+  '路径': 'Path',
+  '原值 (A)': 'Old value (A)',
+  '新值 (B)': 'New value (B)',
+  'TOML 顶层必须是对象': 'TOML root must be an object',
+
+  // Slug
+  '横线 (kebab)': 'Hyphen (kebab)',
+  '下划线 (snake)': 'Underscore (snake)',
+  '点号': 'Dot',
+  '无分隔': 'None',
+  '转小写': 'Lowercase',
+  'Slug 结果': 'Slug result',
+  '规则：去除变音符号 / 标点 / emoji，CJK 字符原样保留（适合中文 URL）。如需音译为拼音可在后端单独处理。':
+    'Rules: strip diacritics / punctuation / emoji; CJK characters preserved as-is (works well for Chinese URLs). Pinyin transliteration should be done server-side.',
+
+  // Text-Binary
+  '字节间分隔：': 'Byte separator: ',
+  '文本 → 二进制': 'Text → Binary',
+  '二进制 → 文本': 'Binary → Text',
+  '文本 (UTF-8)': 'Text (UTF-8)',
+  '二进制': 'Binary',
+  '只能包含 0 / 1 和分隔符': 'Only 0 / 1 and separators are allowed',
+  '总长度必须是 8 的倍数': 'Total length must be a multiple of 8',
+  '每个字节 8 bit，UTF-8 编码。中文字符通常占 3 个字节 = 24 bit。':
+    'Each byte is 8 bits, UTF-8 encoded. CJK characters typically take 3 bytes = 24 bits.',
+
+  // WiFi QR
+  'WiFi 名称 (SSID)': 'WiFi name (SSID)',
+  'WiFi 密码': 'WiFi password',
+  '加密方式': 'Security',
+  'WPA / WPA2 / WPA3': 'WPA / WPA2 / WPA3',
+  'WEP（已淘汰）': 'WEP (deprecated)',
+  '无密码': 'No password',
+  '隐藏网络': 'Hidden network',
+  'WiFi 编码字符串': 'WiFi encoded string',
+  '渲染中…': 'Rendering…',
+  'iOS 11+ / Android 10+ 直接扫码即可连接。生成的二维码完全离线，无任何上传。':
+    'Scan on iOS 11+ / Android 10+ to auto-connect. The QR is generated entirely offline, no upload.',
 };
 
 /**

@@ -81,6 +81,9 @@ import {
   FileType2,
   ListChecks,
   GitBranch,
+  GitCompare,
+  Link2,
+  Wifi,
 } from 'lucide-vue-next';
 import type { Component } from 'vue';
 
@@ -157,6 +160,9 @@ export const iconMap: Record<string, Component> = {
   FileType2,
   ListChecks,
   GitBranch,
+  GitCompare,
+  Link2,
+  Wifi,
 };
 
 /** 根据字符串名取图标组件，找不到时回退到 Wrench */
