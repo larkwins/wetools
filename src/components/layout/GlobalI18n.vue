@@ -31,11 +31,32 @@ let pending = false;
 const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'CODE', 'PRE', 'TEXTAREA', 'INPUT', 'KBD']);
 const I18N_ATTRS = ['placeholder', 'title', 'aria-label', 'alt'] as const;
 
+/**
+ * 跳过 CodeMirror 编辑器子树。
+ *
+ * CodeMirror 把每行渲染成 <div class="cm-line">，内部 Text 节点会被复用：
+ * 同一个 Text 对象的 nodeValue 会随 doc/语法高亮变化而被 CodeMirror 改写。
+ *
+ * 如果 GlobalI18n 把这些 Text 节点的"原始值"缓存到 WeakMap，
+ * 之后 CodeMirror 改了它们 —— GlobalI18n observer 触发，会把 nodeValue
+ * 强行改回缓存值；CodeMirror 的 contentEditable 监听器看到 DOM 突变，
+ * 又把这次改动当成用户输入回写到 doc，最终内容指数式雪球。
+ *
+ * 因此 .cm-editor 整个子树必须从 i18n 扫描中排除。
+ */
+const SKIP_SELECTOR = '.cm-editor, [data-no-i18n]';
+
 function hasCJK(s: string): boolean {
   return /[\u4e00-\u9fff]/.test(s);
 }
 
 function shouldSkip(node: Node): boolean {
+  // 检查 closest('.cm-editor, [data-no-i18n]')：CodeMirror 子树和业务声明的跳过容器
+  let probe: Node | null = node.nodeType === Node.ELEMENT_NODE ? node : node.parentNode;
+  if (probe && probe.nodeType === Node.ELEMENT_NODE) {
+    if ((probe as Element).closest(SKIP_SELECTOR)) return true;
+  }
+  // 兜底：祖先链查 SKIP_TAGS / data-no-i18n
   let cur: Node | null = node.nodeType === 1 ? node : node.parentNode;
   while (cur && cur !== document.body) {
     if (cur.nodeType === 1) {

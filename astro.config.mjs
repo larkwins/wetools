@@ -21,11 +21,12 @@ export default defineConfig({
     vue({ appEntrypoint: '/src/app.ts' }),
     tailwind({ applyBaseStyles: false }),
     AstroPWA({
-      // dev 也启用，方便本地（127.0.0.1 / localhost）验证 PWA
+      // 生产启用 PWA；dev 模式默认关闭：
+      // SW 会拦截/缓存 chunk，开发改代码后浏览器拿到的可能是旧脚本，
+      // 出现"代码已修但行为仍旧"的疑难现象。开发只在需要验证 PWA 时临时打开。
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: true,
-        // dev 模式下生成简化 SW（不预缓存所有资源，只做基本注册）
+        enabled: false,
         navigateFallback: '/',
       },
       // 生成位置：根目录 /sw.js
@@ -92,6 +93,12 @@ export default defineConfig({
     }),
   ],
   vite: {
+    // Node CJS 包（如 @iarna/toml）在内部使用 `global` 全局，
+    // 浏览器环境无 global，会抛 `ReferenceError: global is not defined`。
+    // 这里把 `global` 编译期替换成 `globalThis`，浏览器/Node 都能用。
+    define: {
+      global: 'globalThis',
+    },
     resolve: {
       alias: {
         '@': new URL('./src', import.meta.url).pathname,
@@ -145,6 +152,14 @@ export default defineConfig({
         '@codemirror/legacy-modes/mode/shell',
         '@codemirror/legacy-modes/mode/properties',
       ],
+      // 同样让预构建阶段的 esbuild 把 `global` 替换成 `globalThis`，
+      // 否则 @iarna/toml 等使用 Node `global` 的 CJS 包预构建后仍会
+      // 在浏览器抛 `ReferenceError: global is not defined`。
+      esbuildOptions: {
+        define: {
+          global: 'globalThis',
+        },
+      },
     },
   },
   build: {

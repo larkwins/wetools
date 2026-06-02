@@ -589,7 +589,8 @@ export const zhToEnDict: Record<string, string> = {
   // 当前 8 大分类（runtime dict 也会自动从 categories 注入，这里作为兜底）
   '常用': 'Popular',
   '编码/加密': 'Encoding & Crypto',
-  '生成': 'Generators',
+  // 注：分类名"生成"与上面按钮动作"生成"冲突；运行时由 categories 注入精确翻译，
+  // 此处不再重复声明（保留同义的"生成器"作为兜底）
   '转换/格式化': 'Converter & Formatter',
   '文本处理': 'Text',
   'Web/网络': 'Web & Network',

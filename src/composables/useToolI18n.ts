@@ -28,6 +28,23 @@ interface Options {
 /** 需要扫描翻译的属性名 */
 const I18N_ATTRS = ['placeholder', 'title', 'aria-label', 'alt'] as const;
 
+/**
+ * 跳过翻译的子树 selector。
+ * - `.cm-editor`：CodeMirror 编辑器 —— 内部 DOM 高频变更（输入/滚动/光标），
+ *   且行内全是用户代码，绝不能翻译；如不跳过，observer 会被打爆导致页面卡死
+ * - `[data-no-i18n]`：业务侧主动声明跳过的容器
+ */
+const SKIP_SELECTOR = '.cm-editor, [data-no-i18n]';
+
+/** 判断节点是否在跳过翻译的子树内 */
+function isInSkipped(node: Node): boolean {
+  let el: Node | null = node;
+  // 文本节点没有 closest，用父元素
+  if (el.nodeType === Node.TEXT_NODE) el = el.parentElement;
+  if (!el || el.nodeType !== Node.ELEMENT_NODE) return false;
+  return !!(el as Element).closest(SKIP_SELECTOR);
+}
+
 export function useToolI18n(opts: Options = {}) {
   const store = useLocaleStore();
   const { locale } = storeToRefs(store);
@@ -61,6 +78,8 @@ export function useToolI18n(opts: Options = {}) {
       acceptNode: (node) => {
         const t = node.nodeValue;
         if (!t || !t.trim()) return NodeFilter.FILTER_REJECT;
+        // 跳过 CodeMirror 等高频变更子树
+        if (isInSkipped(node)) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       },
     });
@@ -84,6 +103,8 @@ export function useToolI18n(opts: Options = {}) {
     for (const attr of I18N_ATTRS) {
       const list = root.querySelectorAll<HTMLElement>(`[${attr}]`);
       list.forEach((el) => {
+        // 跳过 CodeMirror 等子树
+        if (isInSkipped(el)) return;
         let cache = originalsAttr.get(el);
         if (!cache) {
           cache = {};
@@ -113,7 +134,11 @@ export function useToolI18n(opts: Options = {}) {
 
   function setupObserver(root: HTMLElement) {
     observer?.disconnect();
-    observer = new MutationObserver(() => {
+    observer = new MutationObserver((mutations) => {
+      // 全部 mutation 都来自跳过子树（如 CodeMirror 频繁变更）则直接 return，
+      // 避免无效的微任务调度
+      const hasRelevant = mutations.some((m) => !isInSkipped(m.target));
+      if (!hasRelevant) return;
       if (pending) return;
       pending = true;
       Promise.resolve().then(() => {
