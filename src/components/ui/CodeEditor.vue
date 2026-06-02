@@ -47,6 +47,14 @@ const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 const wrapper = ref<HTMLDivElement | null>(null);
 const view = shallowRef<EditorView | null>(null);
 
+/**
+ * `mounted` 控制 SSR 占位 `<pre>` 的显示。
+ * - SSR 阶段：mounted=false，<pre> 渲染默认内容，用户进入页面**首屏**就能读到
+ * - 客户端 hydrate：mounted 仍为 false（与 SSR 保持一致避免 hydration mismatch）
+ * - onMounted → CodeMirror 实例创建完成 → mounted=true → <pre> 消失
+ */
+const mounted = ref(false);
+
 const themeCompartment = new Compartment();
 const readonlyCompartment = new Compartment();
 const langCompartment = new Compartment();
@@ -136,6 +144,8 @@ function initEditor() {
   });
 
   view.value = new EditorView({ state, parent: wrapper.value });
+  // EditorView 已挂载到 wrapper，触发 mounted=true 让 SSR <pre> 占位消失
+  mounted.value = true;
 
   // 异步注入语言高亮
   if (props.lang && props.lang !== 'text') {
@@ -190,12 +200,27 @@ const minHeight = computed(() => `${props.rows * 19 + 16}px`);
 </script>
 
 <template>
-  <!-- CodeMirror 直接挂载到 wrapper；minHeight 作用在 wrapper 自身保证高度 -->
+  <!-- 外层 relative 容器：CodeMirror 挂载点 + SSR 占位 <pre> 共存于此
+       hydrate 完成后 <pre> 用 v-show 隐藏，避免与 CodeMirror DOM 视觉重叠 -->
   <div
-    ref="wrapper"
-    class="overflow-hidden rounded-md border bg-card focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/30"
+    class="relative overflow-hidden rounded-md border bg-card focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/30"
     :style="{ minHeight }"
-  />
+  >
+    <!-- CodeMirror 挂载点（始终在 DOM 中）；minHeight 同样作用在 wrapper 上，
+         避免 h-full 在只有 min-height 的父元素下塌成 0 -->
+    <div ref="wrapper" class="h-full" :style="{ minHeight }" />
+
+    <!-- SSR 占位：服务端渲染时把 modelValue 内容直接 HTML 化输出，
+         首屏就能读到默认内容，不再"白屏 2 秒等 chunk"。
+         - data-no-i18n：跳过 useToolI18n 扫描，避免 i18n 改动 textContent 引发抖动
+         - pointer-events-none：不抢焦点，hydrate 中不影响交互
+         - v-show 而非 v-if：保证 SSR/client 初次 render 一致，无 hydration mismatch -->
+    <pre
+      v-show="!mounted"
+      data-no-i18n
+      class="pointer-events-none absolute inset-0 m-0 overflow-hidden whitespace-pre-wrap break-words bg-card p-2 font-mono text-[13px] leading-[19px] text-foreground/80"
+    >{{ modelValue || placeholder }}</pre>
+  </div>
 </template>
 
 <style>

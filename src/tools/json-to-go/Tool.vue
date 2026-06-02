@@ -2,7 +2,7 @@
 import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import Input from '@/components/ui/Input.vue';
-import CodeEditor from '@/components/ui/CodeEditor.vue';
+import CodeEditor from '@/components/ui/LiteCodeEditor.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
 const rootName = ref('Root');

@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
 import { format, type SqlLanguage } from 'sql-formatter';
-import CodeEditor from '@/components/ui/CodeEditor.vue';
+import CodeEditor from '@/components/ui/LiteCodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 

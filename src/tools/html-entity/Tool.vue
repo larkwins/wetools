@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { ArrowLeftRight, Trash2 } from 'lucide-vue-next';
-import CodeEditor from '@/components/ui/CodeEditor.vue';
+import CodeEditor from '@/components/ui/LiteCodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue';
 import { AlertCircle, Plus, Minus, Pencil } from 'lucide-vue-next';
-import CodeEditor from '@/components/ui/CodeEditor.vue';
+import CodeEditor from '@/components/ui/LiteCodeEditor.vue';
 
 const left = ref(JSON.stringify({
   name: 'Alice',

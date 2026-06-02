@@ -6,7 +6,7 @@ import { ArrowLeftRight, AlertCircle } from 'lucide-vue-next';
 // 用 `import * as` 反而拿到 `{ default: { parse, stringify } }`，调用时 undefined。
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 import TOML from '@iarna/toml';
-import CodeEditor from '@/components/ui/CodeEditor.vue';
+import CodeEditor from '@/components/ui/LiteCodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 

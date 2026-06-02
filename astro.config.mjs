@@ -151,6 +151,17 @@ export default defineConfig({
         '@codemirror/legacy-modes/mode/protobuf',
         '@codemirror/legacy-modes/mode/shell',
         '@codemirror/legacy-modes/mode/properties',
+        // LiteCodeEditor 用 Prism 做高亮（CodeMirror 的轻量替代）
+        'prismjs',
+        'prismjs/components/prism-json',
+        'prismjs/components/prism-yaml',
+        'prismjs/components/prism-toml',
+        'prismjs/components/prism-sql',
+        'prismjs/components/prism-go',
+        'prismjs/components/prism-typescript',
+        'prismjs/components/prism-protobuf',
+        'prismjs/components/prism-bash',
+        'prismjs/components/prism-properties',
       ],
       // 同样让预构建阶段的 esbuild 把 `global` 替换成 `globalThis`，
       // 否则 @iarna/toml 等使用 Node `global` 的 CJS 包预构建后仍会

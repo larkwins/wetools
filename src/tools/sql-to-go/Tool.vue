@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { AlertCircle } from 'lucide-vue-next';
-import CodeEditor from '@/components/ui/CodeEditor.vue';
+import CodeEditor from '@/components/ui/LiteCodeEditor.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
 const useGorm = ref(true);

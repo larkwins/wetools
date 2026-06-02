@@ -19,7 +19,8 @@ const { meta } = Astro.props as Props;
 ---
 
 <ToolLayout meta={meta}>
-  <!-- client:load：进入页面立刻 hydrate（之前的 client:visible 在打开页面后还要等 IntersectionObserver
-       触发才开始下载/执行 chunk，工具区会有明显空白；改 load 后 SSR 骨架立即被替换） -->
+  <!-- ToolMount 内部用 async setup + import.meta.glob 静态选出对应 Tool.vue。
+       SSR 阶段 Vue 会 await import，把工具完整骨架渲染进 HTML（含 CodeEditor 占位）。
+       客户端 hydrate 时也是同一份组件树，无空白窗口。 -->
   <ToolMount client:load meta={meta} />
 </ToolLayout>
