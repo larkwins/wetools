@@ -258,8 +258,9 @@ function applySize(s: typeof sizes[number]) {
       </Button>
     </div>
 
-    <!-- 代码片段 -->
-    <div class="grid gap-3 lg:grid-cols-2">
+    <!-- 代码片段：三段各自一行（标题+复制按钮 -> 文本框） -->
+    <div class="flex flex-col gap-4">
+      <!-- SVG 源码 -->
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">SVG 源码</label>
@@ -267,16 +268,23 @@ function applySize(s: typeof sizes[number]) {
         </div>
         <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ svgString }}</code></pre>
       </div>
+
+      <!-- Data URL -->
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Data URL（&lt;img src&gt; / CSS background）</label>
           <CopyButton :text="dataUrl" icon-only />
         </div>
         <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ dataUrl }}</code></pre>
+      </div>
+
+      <!-- CSS background-image -->
+      <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <span class="text-xs text-muted-foreground">CSS：<code class="font-mono">background-image: …</code></span>
+          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">CSS background-image</label>
           <CopyButton :text="`background-image: ${cssUrl};`" icon-only />
         </div>
+        <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>background-image: {{ cssUrl }};</code></pre>
       </div>
     </div>
 
