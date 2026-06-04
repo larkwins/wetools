@@ -114,31 +114,30 @@ const text = computed(() => JSON.stringify(items.value, null, 2));
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="grid items-start gap-4 lg:grid-cols-[1fr_2fr]">
-      <!-- 左侧：配置 -->
-      <section class="flex flex-col gap-3 rounded-lg border bg-card p-4">
+    <div class="grid items-stretch gap-4 lg:grid-cols-[1fr_2fr]">
+      <!-- 左侧：配置（高度由内容决定，不被 grid 拉伸） -->
+      <section class="flex flex-col gap-3 self-start rounded-lg border bg-card p-4">
         <!-- 数量 -->
         <div class="flex flex-col gap-1.5">
           <label class="tool-section-title">数量</label>
           <Input v-model="count" type="number" />
         </div>
 
-        <!-- 字段配置：每行一个字段 = 勾选 + 字段名 + 输出 key 自定义 -->
-        <div class="flex flex-col gap-2">
-          <div class="grid grid-cols-[auto_1fr_2fr_auto] items-center justify-items-start gap-2 tool-section-title">
-            <span class="inline-block w-4"></span>
-            <span class="block">字段</span>
-            <span class="block">输出 Key</span>
-            <label class="flex cursor-pointer items-center gap-1 text-xs font-normal normal-case tracking-normal text-muted-foreground">
-              <input v-model="capitalize" type="checkbox" class="size-4 accent-[hsl(var(--primary))]" />
+        <!-- 字段配置：表头 + 字段行同处一个 grid，保证列严格对齐 -->
+        <div class="grid grid-cols-[auto_1fr_2fr] items-center gap-x-3 gap-y-2">
+          <!-- 表头 -->
+          <span class="tool-section-title"></span>
+          <span class="tool-section-title">字段</span>
+          <div class="flex items-center justify-between gap-2">
+            <span class="tool-section-title">输出</span>
+            <label class="flex shrink-0 cursor-pointer items-center gap-1.5 text-xs font-normal normal-case tracking-normal text-muted-foreground">
+              <input v-model="capitalize" type="checkbox" class="size-3.5 accent-[hsl(var(--primary))]" />
               首字母大写
             </label>
           </div>
-          <div
-            v-for="f in fields"
-            :key="f.key"
-            class="grid grid-cols-[auto_1fr_2fr_auto] items-center gap-2"
-          >
+
+          <!-- 字段行（用 template v-for 让子元素直接成为父 grid 子项，从而共享列宽） -->
+          <template v-for="f in fields" :key="f.key">
             <input
               v-model="f.enabled"
               type="checkbox"
@@ -154,8 +153,7 @@ const text = computed(() => JSON.stringify(items.value, null, 2));
               :disabled="!f.enabled"
               class="h-8 font-mono text-sm"
             />
-            <span></span>
-          </div>
+          </template>
         </div>
 
         <Button variant="primary" class="mt-1 w-full" @click="generate">
@@ -163,14 +161,16 @@ const text = computed(() => JSON.stringify(items.value, null, 2));
         </Button>
       </section>
 
-      <!-- 右侧：结果 -->
-      <section class="flex flex-col gap-2 sticky top-0">
-        <div class="flex items-center justify-between">
-          <span class="text-xs text-muted-foreground">{{ items.length }} 条记录</span>
-          <CopyButton :text="text" />
-        </div>
-        <div class="flex-1 min-h-0 overflow-hidden rounded-md border">
-          <CodeEditor :model-value="text" lang="json" readonly :rows="1" class="h-full" />
+      <!-- 右侧：结果（绝对定位铺满 grid 行，行高由左侧决定） -->
+      <section class="relative">
+        <div class="absolute inset-0 flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-muted-foreground">{{ items.length }} 条记录</span>
+            <CopyButton :text="text" />
+          </div>
+          <div class="flex-1 min-h-0 overflow-hidden rounded-md border">
+            <CodeEditor :model-value="text" lang="json" readonly :rows="1" class="h-full" />
+          </div>
         </div>
       </section>
     </div>

@@ -48,7 +48,7 @@ const isExternal = meta.privacy === 'external';
           </div>
           <!-- 收藏/复制 — 占位避免布局跳动 -->
           <div class="flex flex-none items-center gap-2 w-[72px] h-8">
-            <ToolActions client:only="vue" toolId={meta.id} />
+            <ToolActions client:load toolId={meta.id} />
           </div>
         </div>
       </header>

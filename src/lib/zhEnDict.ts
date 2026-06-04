@@ -285,6 +285,7 @@ export const zhToEnDict: Record<string, string> = {
   '字符串': 'String',
   '大写': 'Uppercase',
   '大写输出': 'Uppercase output',
+  '首字母大写': 'Capitalize',
   '小写': 'Lowercase',
   '空格': 'Space',
   '连续': 'Continuous',
