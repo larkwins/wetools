@@ -92,7 +92,56 @@ export const meta: ToolMeta = {
 
 ---
 
-## 4. 其他
+## 4. UI 文字层级与输入框样式规范
+
+所有工具的内页 UI 必须遵循以下文字层级和输入框样式规则，保持全局视觉一致。
+
+### 4.1 文字层级
+
+| 层级 | 用途 | 样式 |
+|---|---|---|
+| **区块标题** | 各功能区块的 label（如"输入要匹配的文本"、"匹配结果"） | `class="tool-section-title"`（全局 CSS 类，定义在 `src/styles/tokens.css`） |
+| **重要结果** | 匹配结果、无匹配结果等关键输出 | `text-foreground font-medium`（或 `font-semibold`） |
+| **辅助说明** | 空状态提示、补充说明、底部说明文字 | `text-xs text-muted-foreground`（不加粗） |
+
+- 区块标题统一使用全局 CSS 类 `.tool-section-title`，**禁止**在每个文件里写 Tailwind 工具类。
+- 区块标题统一放在卡片**外部**（上方），不放在卡片内部。
+- 修改标题样式只需改 `src/styles/tokens.css` 中的 `.tool-section-title`，全局生效。
+
+### 4.2 输入框 / Textarea 样式
+
+所有 `Input`、`Textarea` 组件统一使用以下样式，不得自行覆盖：
+
+```vue
+<!-- Input -->
+class="... border border-input bg-card px-3 shadow-sm
+       placeholder:text-muted-foreground
+       hover:border-primary/40 hover:shadow
+       focus:border-primary focus:shadow ..."
+
+<!-- Textarea -->
+class="... border border-input bg-card shadow-sm
+       placeholder:text-muted-foreground
+       hover:border-primary/40 hover:shadow
+       focus:border-primary focus:shadow ..."
+```
+
+关键规则：
+- **背景色**：使用 `bg-card`（接近纯白），与页面背景 `bg-background` 有明显区分，避免看起来像"禁用"状态。
+- **边框**：使用 `border`（1px 细边框），不过粗。
+- **边框颜色**：使用 `border-input`，由 CSS 变量 `--input` 控制：
+  - 浅色模式：`hsl(150 25% 55%)`，中深绿色
+  - 深色模式：`hsl(150 20% 50%)`，浅绿色
+  - 与项目主色系（绿色）一致，accent 蓝色仅用于 hover/focus 高亮
+- **阴影**：默认 `shadow-sm`，hover/focus 时加深阴影，让输入框"浮"在页面上，明确可交互。
+- **禁止**：不得使用 `bg-muted`、`bg-background` 作为输入框背景；不得自行覆盖 `border-input` 颜色。
+
+> 以上样式已在 `src/components/ui/Input.vue` 和 `src/components/ui/Textarea.vue` 中统一定义，
+> 新增工具直接使用 `<Input />` / `<Textarea />` 组件即可，无需重复写 class。
+
+---
+
+## 5. 其他
 
 - 所有工具默认 `privacy: 'local'`；调用第三方接口的工具需显式声明 `privacy: 'external'`。
 - 提交前确保无 TS / ESLint 报错。

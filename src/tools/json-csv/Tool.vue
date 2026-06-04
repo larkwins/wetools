@@ -116,14 +116,14 @@ function swap() {
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">{{ mode === 'j2c' ? 'JSON' : 'CSV' }} 输入</label>
+          <label class="tool-section-title">{{ mode === 'j2c' ? 'JSON' : 'CSV' }} 输入</label>
           <CopyButton :text="input" icon-only />
         </div>
         <CodeEditor v-model="input" :lang="mode === 'j2c' ? 'json' : 'text'" :rows="18" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">{{ mode === 'j2c' ? 'CSV' : 'JSON' }} 输出</label>
+          <label class="tool-section-title">{{ mode === 'j2c' ? 'CSV' : 'JSON' }} 输出</label>
           <CopyButton :text="output" icon-only />
         </div>
         <CodeEditor :model-value="output" :lang="mode === 'j2c' ? 'text' : 'json'" :rows="18" readonly />

@@ -89,7 +89,7 @@ function regen() {
         >{{ u.l }}</button>
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">数量</label>
+        <label class="tool-section-title">数量</label>
         <Input v-model.number="count" type="number" class="w-24" />
       </div>
       <label v-if="lang === 'lorem' && unit !== 'word'" class="inline-flex cursor-pointer items-center gap-1.5 self-end pb-2 text-sm text-muted-foreground">

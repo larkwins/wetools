@@ -60,15 +60,15 @@ const extras = computed(() => {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">输入值</label>
+        <label class="tool-section-title">输入值</label>
         <Input v-model="value" class="font-mono" placeholder="支持负数；进制由右侧选择" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">输入进制</label>
+        <label class="tool-section-title">输入进制</label>
         <Input v-model.number="fromBase" type="number" class="w-32" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">自定义输出进制</label>
+        <label class="tool-section-title">自定义输出进制</label>
         <Input v-model.number="customBase" type="number" class="w-32" />
       </div>
     </div>

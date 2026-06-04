@@ -63,12 +63,12 @@ const text = computed(() => items.value.join('\n'));
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">数量</label>
+        <label class="tool-section-title">数量</label>
         <Input v-model="count" type="number" class="w-24" />
       </div>
 
       <div v-if="kind === 'nanoid'" class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">长度</label>
+        <label class="tool-section-title">长度</label>
         <Input v-model="length" type="number" class="w-24" />
       </div>
 
@@ -92,7 +92,7 @@ const text = computed(() => items.value.join('\n'));
     </div>
 
     <div v-if="kind === 'nanoid'" class="flex flex-col gap-1.5">
-      <label class="text-[11px] uppercase tracking-wider text-muted-foreground">字符集</label>
+      <label class="tool-section-title">字符集</label>
       <Input v-model="alphabet" />
     </div>
 

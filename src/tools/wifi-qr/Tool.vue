@@ -65,17 +65,17 @@ const auths: Array<{ k: Auth; l: string }> = [
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-2">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">WiFi 名称 (SSID)</label>
+        <label class="tool-section-title">WiFi 名称 (SSID)</label>
         <Input v-model="ssid" placeholder="MyWiFi" />
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">加密方式</label>
+        <label class="tool-section-title">加密方式</label>
         <select v-model="auth" class="h-9 rounded-md border bg-background px-3 text-sm text-foreground hover:border-primary/40 focus:border-primary focus:outline-none">
           <option v-for="a in auths" :key="a.k" :value="a.k">{{ a.l }}</option>
         </select>
       </div>
       <div v-if="auth !== 'nopass'" class="flex flex-col gap-1 sm:col-span-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">WiFi 密码</label>
+        <label class="tool-section-title">WiFi 密码</label>
         <Input v-model="password" type="text" placeholder="password" />
       </div>
       <label class="inline-flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground sm:col-span-2">
@@ -93,7 +93,7 @@ const auths: Array<{ k: Auth; l: string }> = [
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">WiFi 编码字符串</label>
+          <label class="tool-section-title">WiFi 编码字符串</label>
           <CopyButton :text="wifiString" icon-only />
         </div>
         <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ wifiString }}</code></pre>

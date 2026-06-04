@@ -128,7 +128,7 @@ const swatches = ['#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6', '#EC489
   <div class="flex flex-col gap-4">
     <div class="grid gap-4 lg:grid-cols-[280px_1fr]">
       <section class="space-y-3 rounded-lg border bg-card p-4">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">输入颜色</label>
+        <label class="tool-section-title">输入颜色</label>
         <div class="flex items-center gap-2">
           <input
             type="color"

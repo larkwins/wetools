@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue';
+import { ref, computed, reactive, watch } from 'vue';
 import { RefreshCw } from 'lucide-vue-next';
 import Input from '@/components/ui/Input.vue';
-import Textarea from '@/components/ui/Textarea.vue';
+import CodeEditor from '@/components/ui/LiteCodeEditor.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
 
@@ -12,7 +12,7 @@ import CopyButton from '@/components/ui/CopyButton.vue';
  *   enabled: 是否输出
  *   alias: 自定义输出 key（空则使用 key 原始值）
  */
-type FieldKey = 'id' | 'name' | 'email' | 'phone' | 'address' | 'age' | 'job' | 'company' | 'bio';
+type FieldKey = 'id' | 'name' | 'email' | 'phone' | 'age' | 'job' | 'company' | 'bio' | 'address' | 'country' | 'province' | 'city';
 interface FieldDef {
   key: FieldKey;
   enabled: boolean;
@@ -20,24 +20,44 @@ interface FieldDef {
 }
 
 const fields = reactive<FieldDef[]>([
-  { key: 'id',      enabled: true,  alias: '' },
-  { key: 'name',    enabled: true,  alias: '' },
-  { key: 'email',   enabled: true,  alias: '' },
-  { key: 'phone',   enabled: true,  alias: '' },
-  { key: 'address', enabled: true,  alias: '' },
-  { key: 'age',     enabled: true,  alias: '' },
-  { key: 'job',     enabled: false, alias: '' },
-  { key: 'company', enabled: false, alias: '' },
-  { key: 'bio',     enabled: false, alias: '' },
+  { key: 'id',       enabled: true,  alias: '' },
+  { key: 'name',     enabled: true,  alias: '' },
+  { key: 'email',    enabled: true,  alias: '' },
+  { key: 'phone',    enabled: true,  alias: '' },
+  { key: 'age',      enabled: true,  alias: '' },
+  { key: 'address',  enabled: true,  alias: '' },
+  { key: 'country',  enabled: false, alias: '' },
+  { key: 'province', enabled: false, alias: '' },
+  { key: 'city',     enabled: false, alias: '' },
+  { key: 'job',      enabled: false, alias: '' },
+  { key: 'company',  enabled: false, alias: '' },
+  { key: 'bio',      enabled: false, alias: '' },
 ]);
 
 const count = ref(10);
+const capitalize = ref(false);
+
+function toPascal(key: string): string {
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+watch(capitalize, (val) => {
+  for (const f of fields) {
+    if (val) {
+      if (!f.alias) f.alias = toPascal(f.key);
+    } else {
+      if (f.alias === toPascal(f.key)) f.alias = '';
+    }
+  }
+});
 
 const FIRSTS = ['张', '王', '李', '赵', '陈', '刘', '杨', '黄', '周', '吴'];
 const SECONDS = ['伟', '芳', '娜', '敏', '静', '丽', '强', '磊', '军', '洋'];
 const EN_FIRSTS = ['Alice', 'Bob', 'Cathy', 'Daniel', 'Eve', 'Frank', 'Grace', 'Henry'];
 const EN_LASTS = ['Smith', 'Johnson', 'Brown', 'Davis', 'Wilson', 'Taylor'];
 const DOMAINS = ['gmail.com', 'outlook.com', 'qq.com', '163.com', 'wetools.cc'];
+const COUNTRIES = ['中国'];
+const PROVINCES = ['北京市', '上海市', '广东省', '浙江省', '四川省', '湖北省', '江苏省'];
 const CITIES = ['北京', '上海', '广州', '深圳', '杭州', '成都', '武汉', '南京'];
 const STREETS = ['中山路', '人民路', '解放路', '建国路', '科华路', '高新大道'];
 const JOBS = ['前端工程师', '后端工程师', '产品经理', '设计师', 'SRE', '架构师'];
@@ -50,15 +70,18 @@ function num(min: number, max: number) { return Math.floor(Math.random() * (max 
 /** 根据 fieldKey 生成单条值 */
 function genValue(key: FieldKey, i: number, ctx: { name: string; localPart: string }): unknown {
   switch (key) {
-    case 'id':      return i + 1;
-    case 'name':    return ctx.name;
-    case 'email':   return `${ctx.localPart}@${pick(DOMAINS)}`;
-    case 'phone':   return `1${pick([3, 5, 7, 8, 9])}${String(num(1, 9))}${String(num(10000000, 99999999))}`;
-    case 'address': return `${pick(CITIES)}市${pick(STREETS)}${num(1, 999)}号`;
-    case 'age':     return num(18, 60);
-    case 'job':     return pick(JOBS);
-    case 'company': return pick(COMPANIES);
-    case 'bio':     return pick(BIOS);
+    case 'id':       return i + 1;
+    case 'name':     return ctx.name;
+    case 'email':    return `${ctx.localPart}@${pick(DOMAINS)}`;
+    case 'phone':    return `1${pick([3, 5, 7, 8, 9])}${String(num(1, 9))}${String(num(10000000, 99999999))}`;
+    case 'age':      return num(18, 60);
+    case 'job':      return pick(JOBS);
+    case 'company':  return pick(COMPANIES);
+    case 'bio':      return pick(BIOS);
+    case 'address':  return `${pick(STREETS)}${num(1, 999)}号`;
+    case 'country':  return pick(COUNTRIES);
+    case 'province': return pick(PROVINCES);
+    case 'city':     return pick(CITIES);
   }
 }
 
@@ -70,7 +93,8 @@ function gen(i: number): Record<string, unknown> {
   for (const f of fields) {
     if (!f.enabled) continue;
     // 输出 key 优先使用 alias（去空白），否则用原始 key
-    const outKey = f.alias.trim() || f.key;
+    let outKey = f.alias.trim() || f.key;
+    if (capitalize.value) outKey = toPascal(outKey);
     obj[outKey] = genValue(f.key, i, { name, localPart });
   }
   return obj;
@@ -90,26 +114,30 @@ const text = computed(() => JSON.stringify(items.value, null, 2));
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="grid gap-4 lg:grid-cols-[1fr_2fr]">
+    <div class="grid items-start gap-4 lg:grid-cols-[1fr_2fr]">
       <!-- 左侧：配置 -->
       <section class="flex flex-col gap-3 rounded-lg border bg-card p-4">
         <!-- 数量 -->
         <div class="flex flex-col gap-1.5">
-          <label class="text-[11px] uppercase tracking-wider text-muted-foreground">数量</label>
+          <label class="tool-section-title">数量</label>
           <Input v-model="count" type="number" />
         </div>
 
         <!-- 字段配置：每行一个字段 = 勾选 + 字段名 + 输出 key 自定义 -->
         <div class="flex flex-col gap-2">
-          <div class="grid grid-cols-[auto_1fr_2fr] items-center gap-2 text-[11px] uppercase tracking-wider text-muted-foreground">
-            <span class="w-4"></span>
-            <span>字段</span>
-            <span>输出 key（留空使用原字段名）</span>
+          <div class="grid grid-cols-[auto_1fr_2fr_auto] items-center justify-items-start gap-2 tool-section-title">
+            <span class="inline-block w-4"></span>
+            <span class="block">字段</span>
+            <span class="block">输出 Key</span>
+            <label class="flex cursor-pointer items-center gap-1 text-xs font-normal normal-case tracking-normal text-muted-foreground">
+              <input v-model="capitalize" type="checkbox" class="size-4 accent-[hsl(var(--primary))]" />
+              首字母大写
+            </label>
           </div>
           <div
             v-for="f in fields"
             :key="f.key"
-            class="grid grid-cols-[auto_1fr_2fr] items-center gap-2"
+            class="grid grid-cols-[auto_1fr_2fr_auto] items-center gap-2"
           >
             <input
               v-model="f.enabled"
@@ -122,10 +150,11 @@ const text = computed(() => JSON.stringify(items.value, null, 2));
             </span>
             <Input
               v-model="f.alias"
-              :placeholder="f.key"
+              :placeholder="capitalize ? toPascal(f.key) : f.key"
               :disabled="!f.enabled"
               class="h-8 font-mono text-sm"
             />
+            <span></span>
           </div>
         </div>
 
@@ -135,12 +164,14 @@ const text = computed(() => JSON.stringify(items.value, null, 2));
       </section>
 
       <!-- 右侧：结果 -->
-      <section class="flex flex-col gap-2">
+      <section class="flex flex-col gap-2 sticky top-0">
         <div class="flex items-center justify-between">
           <span class="text-xs text-muted-foreground">{{ items.length }} 条记录</span>
           <CopyButton :text="text" />
         </div>
-        <Textarea :model-value="text" mono :rows="22" readonly />
+        <div class="flex-1 min-h-0 overflow-hidden rounded-md border">
+          <CodeEditor :model-value="text" lang="json" readonly :rows="1" class="h-full" />
+        </div>
       </section>
     </div>
   </div>

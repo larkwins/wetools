@@ -97,11 +97,11 @@ function fmt(v: unknown): string {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">原 JSON (A)</label>
+        <label class="tool-section-title">原 JSON (A)</label>
         <CodeEditor v-model="left" lang="json" :rows="14" />
       </div>
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">新 JSON (B)</label>
+        <label class="tool-section-title">新 JSON (B)</label>
         <CodeEditor v-model="right" lang="json" :rows="14" />
       </div>
     </div>
@@ -129,7 +129,7 @@ function fmt(v: unknown): string {
 
       <div class="overflow-x-auto rounded-lg border bg-card">
         <table class="w-full text-sm">
-          <thead class="bg-secondary/50 text-xs uppercase tracking-wider text-muted-foreground">
+          <thead class="bg-secondary/50 tool-section-title">
             <tr>
               <th class="px-3 py-2 text-left w-16">类型</th>
               <th class="px-3 py-2 text-left">路径</th>

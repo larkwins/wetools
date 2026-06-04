@@ -66,17 +66,17 @@ function swap() {
 
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">原文 A</label>
+        <label class="tool-section-title">原文 A</label>
         <Textarea v-model="a" mono :rows="10" />
       </div>
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">新文 B</label>
+        <label class="tool-section-title">新文 B</label>
         <Textarea v-model="b" mono :rows="10" />
       </div>
     </div>
 
     <section>
-      <h3 class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">差异</h3>
+      <h3 class="mb-2 tool-section-title">差异</h3>
       <pre class="code-area whitespace-pre-wrap break-words rounded-md border bg-card p-4 leading-7"><span v-for="(p, i) in parts" :key="i" :class="p.added ? 'rounded bg-primary/15 text-primary' : p.removed ? 'rounded bg-destructive/15 text-destructive line-through decoration-destructive/40' : 'text-foreground'">{{ p.value }}</span></pre>
     </section>
   </div>

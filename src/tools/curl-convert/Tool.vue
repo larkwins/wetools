@@ -35,7 +35,7 @@ const result = computed(() => {
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">cURL 命令</label>
+      <label class="tool-section-title">cURL 命令</label>
       <CodeEditor v-model="input" lang="shell" :rows="8" />
     </div>
 
@@ -54,7 +54,7 @@ const result = computed(() => {
 
     <template v-if="result.ok">
       <div class="flex items-center justify-between">
-        <span class="text-xs uppercase tracking-wider text-muted-foreground">{{ target }} 代码</span>
+        <span class="tool-section-title">{{ target }} 代码</span>
         <CopyButton :text="result.code" />
       </div>
       <CodeEditor :model-value="result.code" :lang="curlOutLang" :rows="14" readonly />

@@ -102,7 +102,7 @@ const grouped = computed(() => {
     </div>
 
     <div v-for="[g, items] in grouped" :key="g" class="space-y-2">
-      <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ g }}</h3>
+      <h3 class="tool-section-title">{{ g }}</h3>
       <div class="grid gap-2 sm:grid-cols-2">
         <div v-for="i in items" :key="i.cls" class="flex items-center gap-3 rounded-md border bg-card px-3 py-2">
           <code class="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-primary">{{ i.cls }}</code>

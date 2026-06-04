@@ -93,7 +93,7 @@ function setNow() {
     <div class="grid gap-6 lg:grid-cols-2">
       <!-- 时间戳 → 日期 -->
       <section class="space-y-3 rounded-lg border bg-card p-4">
-        <h3 class="text-sm font-semibold">时间戳 → 日期</h3>
+        <h3 class="tool-section-title">时间戳 → 日期</h3>
         <Input v-model="tsInput" placeholder="支持秒或毫秒，自动识别" />
         <div v-if="tsResults" class="space-y-2 font-mono text-xs">
           <div class="flex items-center gap-2"><span class="w-14 shrink-0 text-muted-foreground">ISO</span><span class="flex-1 break-all">{{ tsResults.iso }}</span><CopyButton :text="tsResults.iso" icon-only /></div>
@@ -106,7 +106,7 @@ function setNow() {
 
       <!-- 日期 → 时间戳 -->
       <section class="space-y-3 rounded-lg border bg-card p-4">
-        <h3 class="text-sm font-semibold">日期 → 时间戳</h3>
+        <h3 class="tool-section-title">日期 → 时间戳</h3>
         <Input v-model="dateInput" type="datetime-local" />
         <div v-if="dateParsed" class="space-y-2 font-mono text-xs">
           <div class="flex items-center gap-2"><span class="w-14 shrink-0 text-muted-foreground">秒</span><span class="flex-1">{{ Math.floor(dateParsed.getTime() / 1000) }}</span><CopyButton :text="String(Math.floor(dateParsed.getTime() / 1000))" icon-only /></div>

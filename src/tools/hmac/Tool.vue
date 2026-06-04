@@ -73,18 +73,18 @@ const algos: Algo[] = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">密钥</label>
+      <label class="tool-section-title">密钥</label>
       <Input v-model="key" placeholder="输入 HMAC 密钥…" />
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">消息</label>
+      <label class="tool-section-title">消息</label>
       <Textarea v-model="message" mono :rows="6" placeholder="输入要签名的消息…" />
     </div>
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">HMAC 输出</label>
+        <label class="tool-section-title">HMAC 输出</label>
         <CopyButton :text="result" icon-only />
       </div>
       <div class="rounded-md border bg-card px-3 py-2 font-mono text-xs break-all min-h-[2.5rem]">{{ result || '—' }}</div>

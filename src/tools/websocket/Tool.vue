@@ -228,7 +228,7 @@ onBeforeUnmount(disconnect);
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">发送消息</label>
+      <label class="tool-section-title">发送消息</label>
       <div class="flex gap-2">
         <Textarea v-model="messageInput" mono :rows="3" placeholder="要发送的文本…" />
         <Button variant="primary" :disabled="status !== 'open'" @click="send" class="self-stretch">

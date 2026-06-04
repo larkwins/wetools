@@ -173,12 +173,12 @@ const examples = [
 
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">docker run 命令</label>
+        <label class="tool-section-title">docker run 命令</label>
         <CodeEditor v-model="dockerCmd" lang="shell" :rows="14" placeholder="粘贴 docker run 命令…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">docker-compose.yml</label>
+          <label class="tool-section-title">docker-compose.yml</label>
           <CopyButton :text="compose" icon-only />
         </div>
         <CodeEditor :model-value="compose" lang="yaml" :rows="14" readonly />

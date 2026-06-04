@@ -23,7 +23,7 @@ defineEmits<{ (e: 'update:modelValue', value: string): void }>();
     autocorrect="off"
     autocapitalize="off"
     :class="[
-      'block w-full resize-y rounded-md border-2 border-input bg-card px-3 py-2 text-foreground shadow-sm placeholder:text-muted-foreground transition-colors hover:border-primary/40 hover:shadow focus:border-primary focus:shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50',
+      'block w-full resize-y rounded-md border border-input bg-card px-3 py-2 text-foreground shadow-sm placeholder:text-muted-foreground transition-colors hover:border-primary/40 hover:shadow focus:border-primary focus:shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50',
       mono ? 'code-area' : 'text-sm leading-6',
     ]"
     @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"

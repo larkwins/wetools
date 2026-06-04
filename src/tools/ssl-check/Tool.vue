@@ -312,7 +312,7 @@ const expiredGroups = computed(() => groups.value.filter((g) => g.notAfter <= Da
 
     <!-- 一键跳转检测平台 -->
     <div class="flex flex-col gap-2">
-      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">在线检测（新窗口打开权威报告）</p>
+      <p class="tool-section-title">在线检测（新窗口打开权威报告）</p>
       <div class="grid gap-2 sm:grid-cols-3">
         <a
           v-for="s in externalScanners"
@@ -373,7 +373,7 @@ const expiredGroups = computed(() => groups.value.filter((g) => g.notAfter <= Da
 
       <!-- 有效证书 -->
       <section v-if="validGroups.length" class="flex flex-col gap-2">
-        <h3 class="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+        <h3 class="tool-section-title">
           有效证书（{{ validGroups.length }}）
         </h3>
         <div class="flex flex-col gap-2">
@@ -413,7 +413,7 @@ const expiredGroups = computed(() => groups.value.filter((g) => g.notAfter <= Da
 
       <!-- 历史证书（折叠） -->
       <details v-if="expiredGroups.length" class="rounded-lg border bg-card/30">
-        <summary class="cursor-pointer p-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground">
+        <summary class="cursor-pointer p-3 tool-section-title hover:text-foreground">
           历史已过期证书（{{ expiredGroups.length }}）
         </summary>
         <div class="flex flex-col gap-1 px-3 pb-3 text-xs">

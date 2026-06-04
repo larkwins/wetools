@@ -89,7 +89,7 @@ const presets: Array<{ label: string; c: number }> = [
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">常用温度</label>
+      <label class="tool-section-title">常用温度</label>
       <div class="flex flex-wrap gap-1.5">
         <button v-for="p in presets" :key="p.label" type="button"
           class="inline-flex items-center gap-1.5 rounded-md border bg-card px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary"

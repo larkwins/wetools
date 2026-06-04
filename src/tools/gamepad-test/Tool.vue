@@ -64,7 +64,7 @@ const BUTTON_NAMES = [
       <p class="font-mono text-xs text-muted-foreground">{{ p.id }}</p>
 
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">按键 ({{ p.buttons.length }})</label>
+        <label class="tool-section-title">按键 ({{ p.buttons.length }})</label>
         <div class="grid grid-cols-6 gap-1.5 sm:grid-cols-9 lg:grid-cols-12">
           <div v-for="(b, i) in p.buttons" :key="i"
             :class="['flex flex-col items-center gap-0.5 rounded-md border bg-background p-1.5 text-xs transition-colors',
@@ -77,7 +77,7 @@ const BUTTON_NAMES = [
       </div>
 
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">摇杆 / 扳机 ({{ p.axes.length }})</label>
+        <label class="tool-section-title">摇杆 / 扳机 ({{ p.axes.length }})</label>
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div v-for="(a, i) in p.axes" :key="i" class="rounded-md border bg-background p-2">
             <div class="flex items-baseline justify-between text-xs">

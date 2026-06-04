@@ -79,7 +79,7 @@ const progress = computed(() => (remaining.value / period.value) * 100);
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-[1fr_auto]">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Secret（Base32）</label>
+        <label class="tool-section-title">Secret（Base32）</label>
         <Input v-model="secret" class="font-mono uppercase" />
       </div>
       <div class="flex items-end">
@@ -91,22 +91,22 @@ const progress = computed(() => (remaining.value / period.value) * 100);
 
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Issuer</label>
+        <label class="tool-section-title">Issuer</label>
         <Input v-model="issuer" />
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Account</label>
+        <label class="tool-section-title">Account</label>
         <Input v-model="account" />
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">位数</label>
+        <label class="tool-section-title">位数</label>
         <select v-model.number="digits" class="h-9 rounded-md border bg-background px-3 text-sm">
           <option :value="6">6 位</option>
           <option :value="8">8 位</option>
         </select>
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">周期 (秒)</label>
+        <label class="tool-section-title">周期 (秒)</label>
         <select v-model.number="period" class="h-9 rounded-md border bg-background px-3 text-sm">
           <option :value="30">30</option>
           <option :value="60">60</option>
@@ -140,7 +140,7 @@ const progress = computed(() => (remaining.value / period.value) * 100);
 
     <div v-if="otpAuthUri" class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">otpauth:// URI（导入到 Authenticator）</label>
+        <label class="tool-section-title">otpauth:// URI（导入到 Authenticator）</label>
         <CopyButton :text="otpAuthUri" icon-only />
       </div>
       <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ otpAuthUri }}</code></pre>

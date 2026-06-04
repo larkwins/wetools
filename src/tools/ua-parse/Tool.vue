@@ -36,7 +36,7 @@ function fillCurrent() {
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">User-Agent</label>
+        <label class="tool-section-title">User-Agent</label>
         <Button variant="ghost" size="sm" @click="fillCurrent"><RefreshCw :size="14" />使用当前浏览器</Button>
       </div>
       <Textarea v-model="ua" mono :rows="4" />
@@ -44,7 +44,7 @@ function fillCurrent() {
 
     <div v-if="parsed" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div v-for="(v, k) in parsed" :key="k" class="rounded-lg border bg-card p-4">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ k }}</p>
+        <p class="tool-section-title">{{ k }}</p>
         <ul class="mt-2 space-y-1 text-sm">
           <li v-for="(val, key) in v" :key="key" class="flex items-center gap-2">
             <span class="w-20 shrink-0 font-mono text-xs text-muted-foreground">{{ key }}</span>

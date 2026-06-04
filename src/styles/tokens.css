@@ -36,7 +36,7 @@
   --info-foreground: 0 0% 100%;
 
   --border: 150 20% 88%;        /* #D6E2DC — 浅绿色边框 */
-  --input: 150 20% 88%;
+  --input: 150 25% 55%;         /* 输入框深绿色边框（浅色模式） */
   --ring: 220 70% 50%;
 
   --radius: 8px;
@@ -81,8 +81,19 @@
   --info-foreground: 165 30% 6%;
 
   --border: 165 18% 18%;        /* #25342F */
-  --input: 165 18% 18%;
+  --input: 150 20% 50%;         /* 输入框浅绿色边框（深色模式） */
   --ring: 217 92% 64%;
 
   color-scheme: dark;
+}
+
+/* ==========================================================================
+   Tool 页区块标题 — 全局统一样式
+   ========================================================================== */
+.tool-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
 }

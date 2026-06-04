@@ -153,13 +153,13 @@ async function onPaste(e: ClipboardEvent) {
     <div v-show="tab === 'generate'" class="grid gap-4 lg:grid-cols-[1fr_auto]">
       <section class="space-y-4">
         <div class="flex flex-col gap-2">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">内容</label>
+          <label class="tool-section-title">内容</label>
           <Textarea v-model="text" :rows="6" placeholder="输入文字或链接…" />
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2">
           <div class="flex flex-col gap-1.5">
-            <label class="text-[11px] uppercase tracking-wider text-muted-foreground">容错率</label>
+            <label class="tool-section-title">容错率</label>
             <div class="inline-flex rounded-md border bg-card p-0.5">
               <button v-for="l in ['L','M','Q','H']" :key="l" type="button"
                 :class="['h-9 flex-1 rounded-sm text-sm', ecLevel === l ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground']"
@@ -168,20 +168,20 @@ async function onPaste(e: ClipboardEvent) {
             </div>
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="text-[11px] uppercase tracking-wider text-muted-foreground">尺寸 (px)</label>
+            <label class="tool-section-title">尺寸 (px)</label>
             <Input v-model.number="size" type="number" />
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="text-[11px] uppercase tracking-wider text-muted-foreground">边距</label>
+            <label class="tool-section-title">边距</label>
             <Input v-model.number="margin" type="number" />
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="flex flex-col gap-1.5">
-              <label class="text-[11px] uppercase tracking-wider text-muted-foreground">前景色</label>
+              <label class="tool-section-title">前景色</label>
               <input v-model="dark" type="color" class="h-9 w-full rounded-md border bg-card" />
             </div>
             <div class="flex flex-col gap-1.5">
-              <label class="text-[11px] uppercase tracking-wider text-muted-foreground">背景色</label>
+              <label class="tool-section-title">背景色</label>
               <input v-model="light" type="color" class="h-9 w-full rounded-md border bg-card" />
             </div>
           </div>
@@ -220,7 +220,7 @@ async function onPaste(e: ClipboardEvent) {
         <img :src="previewUrl" alt="" class="max-h-64 rounded-md border bg-card object-contain" />
         <div class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
-            <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">识别结果</label>
+            <label class="tool-section-title">识别结果</label>
             <CopyButton :text="result" icon-only />
           </div>
           <Textarea :model-value="result" mono :rows="8" readonly placeholder="未识别到内容" />

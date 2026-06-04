@@ -72,7 +72,7 @@ const examples: Array<{ label: string; v: string }> = [
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">逐行结果</label>
+        <label class="tool-section-title">逐行结果</label>
       </div>
       <div class="rounded-lg border bg-card font-mono text-xs">
         <div v-for="(l, i) in lines" :key="i" class="grid grid-cols-[1fr_auto_1fr_auto] items-start gap-3 border-b border-border/50 px-3 py-1.5 last:border-0">

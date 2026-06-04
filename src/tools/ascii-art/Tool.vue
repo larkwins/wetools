@@ -83,11 +83,11 @@ watch([text, font], render);
   <div class="flex flex-col gap-4">
     <div class="grid items-start gap-3 sm:grid-cols-[1fr_auto]">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">文本（支持多行）</label>
+        <label class="tool-section-title">文本（支持多行）</label>
         <Textarea v-model="text" placeholder="输入英文字符…（Enter 换行，每行独立渲染）" :rows="3" class="font-mono" />
       </div>
       <div class="flex flex-col gap-1 sm:w-44">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">字体</label>
+        <label class="tool-section-title">字体</label>
         <select v-model="font" class="h-9 rounded-md border bg-background px-3 text-sm">
           <option v-for="f in FONTS" :key="f" :value="f">{{ f }}</option>
         </select>
@@ -96,7 +96,7 @@ watch([text, font], render);
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <label class="tool-section-title">
           字符画 {{ busy ? '· 渲染中…' : '' }}
         </label>
         <CopyButton :text="result" icon-only />

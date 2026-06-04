@@ -72,15 +72,15 @@ function useGenHash() {
 
 <template>
   <div class="flex flex-col gap-5">
+    <label class="tool-section-title">生成哈希</label>
     <section class="flex flex-col gap-3 rounded-lg border bg-card p-4">
-      <h3 class="text-sm font-semibold text-foreground">生成哈希</h3>
       <div class="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
         <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">明文密码</label>
+          <label class="text-sm text-foreground">明文密码</label>
           <Input v-model="genPassword" placeholder="要哈希的密码" />
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">轮数 (4-15)</label>
+          <label class="text-sm text-foreground">轮数 (4-15)</label>
           <Input v-model.number="rounds" type="number" min="4" max="15" class="!w-24" />
         </div>
         <div class="flex items-end">
@@ -104,11 +104,11 @@ function useGenHash() {
       </p>
     </section>
 
+    <label class="tool-section-title">校验密码</label>
     <section class="flex flex-col gap-3 rounded-lg border bg-card p-4">
-      <h3 class="text-sm font-semibold text-foreground">校验密码</h3>
       <div class="grid gap-3 sm:grid-cols-[1fr_auto]">
         <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">明文密码</label>
+          <label class="text-sm text-foreground">明文密码</label>
           <Input v-model="verifyPassword" />
         </div>
         <div class="flex items-end">
@@ -118,7 +118,7 @@ function useGenHash() {
         </div>
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Bcrypt Hash</label>
+        <label class="text-sm text-foreground">Bcrypt Hash</label>
         <Input v-model="verifyHash" placeholder="$2b$10$..." class="font-mono text-xs" />
       </div>
       <div v-if="verifyResult !== null" :class="['flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium',

@@ -198,7 +198,7 @@ onMounted(() => {
       <canvas ref="canvas" width="800" height="160" class="w-full rounded-lg border bg-slate-950" />
 
       <div v-if="recordedUrl" class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">录音回放</label>
+        <label class="tool-section-title">录音回放</label>
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
           <audio :src="recordedUrl" controls class="w-full max-w-md" />
           <Button variant="outline" @click="downloadRecord"><Download :size="14" />下载</Button>

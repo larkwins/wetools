@@ -101,7 +101,7 @@ function clearAll() {
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <label class="tool-section-title">
             {{ mode === 'encode' ? '原文输入' : 'Base64 输入' }}
           </label>
           <CopyButton :text="input" label="复制输入" icon-only />
@@ -116,7 +116,7 @@ function clearAll() {
 
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <label class="tool-section-title">
             {{ mode === 'encode' ? 'Base64 输出' : '解码结果' }}
           </label>
           <CopyButton :text="output" label="复制输出" icon-only />

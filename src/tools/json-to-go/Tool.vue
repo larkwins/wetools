@@ -138,7 +138,7 @@ watchEffect(() => {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">根 struct 名</label>
+        <label class="tool-section-title">根 struct 名</label>
         <Input v-model="rootName" placeholder="Root" />
       </div>
       <label class="inline-flex cursor-pointer items-end gap-1.5 pb-2 text-sm text-muted-foreground">
@@ -152,14 +152,14 @@ watchEffect(() => {
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JSON 输入</label>
+          <label class="tool-section-title">JSON 输入</label>
           <CopyButton :text="jsonText" icon-only />
         </div>
         <CodeEditor v-model="jsonText" lang="json" :rows="20" placeholder="粘贴 JSON…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Go Struct</label>
+          <label class="tool-section-title">Go Struct</label>
           <CopyButton :text="goCode" icon-only />
         </div>
         <CodeEditor :model-value="goCode" lang="go" :rows="20" readonly />

@@ -48,27 +48,27 @@ watch(input, format, { immediate: true });
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex flex-wrap items-center gap-3">
-      <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">缩进</label>
+    <div class="flex flex-col gap-2">
+      <label class="tool-section-title">缩进</label>
+      <div class="flex flex-wrap items-center gap-3">
         <input v-model.number="indent" type="number" min="0" max="8" class="h-9 w-20 rounded-md border bg-background px-3 text-sm" />
+        <Button variant="primary" @click="format">格式化</Button>
+        <Button variant="outline" @click="minify">压缩</Button>
+        <Button variant="ghost" @click="swap">交换输入/输出</Button>
       </div>
-      <Button variant="primary" @click="format">格式化</Button>
-      <Button variant="outline" @click="minify">压缩</Button>
-      <Button variant="ghost" @click="swap">交换输入/输出</Button>
     </div>
 
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输入</label>
+          <label class="tool-section-title">输入</label>
           <CopyButton :text="input" icon-only />
         </div>
         <CodeEditor v-model="input" lang="xml" :rows="18" placeholder="粘贴 XML…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输出</label>
+          <label class="tool-section-title">输出</label>
           <CopyButton :text="output" icon-only />
         </div>
         <CodeEditor :model-value="output" lang="xml" :rows="18" readonly />

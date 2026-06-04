@@ -70,7 +70,7 @@ function swap() {
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <label class="tool-section-title">
             {{ mode === 'y2t' ? 'YAML' : 'TOML' }} 输入
           </label>
           <CopyButton :text="input" icon-only />
@@ -84,7 +84,7 @@ function swap() {
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <label class="tool-section-title">
             {{ mode === 'y2t' ? 'TOML' : 'YAML' }} 输出
           </label>
           <CopyButton :text="output" icon-only />

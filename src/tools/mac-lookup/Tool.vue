@@ -40,7 +40,7 @@ const examples = [
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">MAC 地址</label>
+      <label class="tool-section-title">MAC 地址</label>
       <Input v-model="input" placeholder="格式不限：00:11:22, 00-11-22, 001122…" class="font-mono text-base uppercase" />
     </div>
 

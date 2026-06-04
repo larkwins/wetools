@@ -70,13 +70,13 @@ function remove(z: string) {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-[1fr_auto_auto] sm:items-end">
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">本地时间</label>
+        <label class="tool-section-title">本地时间</label>
         <Input v-model="localInput" type="datetime-local" />
       </div>
       <Button variant="outline" size="md" @click="localInput = nowLocal()">填入当前</Button>
       <div class="flex items-end gap-2">
         <div class="flex flex-col gap-1.5">
-          <label class="text-[11px] uppercase tracking-wider text-muted-foreground">添加时区</label>
+          <label class="tool-section-title">添加时区</label>
           <Input v-model="newZone" placeholder="如 Asia/Hong_Kong" class="w-56 font-mono" />
         </div>
         <Button variant="primary" size="md" @click="add"><Plus :size="14" />添加</Button>

@@ -156,15 +156,15 @@ function applySize(s: typeof sizes[number]) {
     <!-- 尺寸 -->
     <div class="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">宽度 (px)</label>
+        <label class="tool-section-title">宽度 (px)</label>
         <Input v-model.number="width" type="number" />
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">高度 (px)</label>
+        <label class="tool-section-title">高度 (px)</label>
         <Input v-model.number="height" type="number" />
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">字号 (0 = 自动)</label>
+        <label class="tool-section-title">字号 (0 = 自动)</label>
         <Input v-model.number="fontSize" type="number" />
       </div>
     </div>
@@ -182,27 +182,27 @@ function applySize(s: typeof sizes[number]) {
     <!-- 配色 -->
     <div class="grid gap-3 sm:grid-cols-[auto_1fr_1fr_1fr]">
       <label class="flex flex-col gap-1">
-        <span class="text-xs font-medium uppercase tracking-wider text-muted-foreground">渐变</span>
+        <span class="tool-section-title">渐变</span>
         <div class="inline-flex h-9 items-center rounded-md border bg-card px-2.5">
           <input v-model="useGradient" type="checkbox" class="accent-[hsl(var(--primary))]" />
         </div>
       </label>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">背景色 {{ useGradient ? '①' : '' }}</label>
+        <label class="tool-section-title">背景色 {{ useGradient ? '①' : '' }}</label>
         <div class="flex h-9 items-center gap-2 rounded-md border bg-card px-2">
           <input v-model="bg" type="color" class="h-6 w-8 cursor-pointer rounded" />
           <Input v-model="bg" class="h-7 flex-1 border-0 bg-transparent" />
         </div>
       </div>
       <div v-if="useGradient" class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">背景色 ②</label>
+        <label class="tool-section-title">背景色 ②</label>
         <div class="flex h-9 items-center gap-2 rounded-md border bg-card px-2">
           <input v-model="bg2" type="color" class="h-6 w-8 cursor-pointer rounded" />
           <Input v-model="bg2" class="h-7 flex-1 border-0 bg-transparent" />
         </div>
       </div>
       <div class="flex flex-col gap-1" :class="!useGradient && 'sm:col-span-2'">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">文字色</label>
+        <label class="tool-section-title">文字色</label>
         <div class="flex h-9 items-center gap-2 rounded-md border bg-card px-2">
           <input v-model="fg" type="color" class="h-6 w-8 cursor-pointer rounded" />
           <Input v-model="fg" class="h-7 flex-1 border-0 bg-transparent" />
@@ -225,14 +225,14 @@ function applySize(s: typeof sizes[number]) {
 
     <!-- 文字 -->
     <div class="flex flex-col gap-1">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">文字（留空使用尺寸）</label>
+      <label class="tool-section-title">文字（留空使用尺寸）</label>
       <Input v-model="text" :placeholder="`${width} × ${height}`" />
     </div>
 
     <!-- 预览 -->
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">预览</label>
+        <label class="tool-section-title">预览</label>
         <div class="inline-flex rounded-md border bg-card p-0.5">
           <button v-for="f in (['svg', 'png'] as Fmt[])" :key="f" type="button"
             :class="['h-7 rounded-sm px-2.5 text-[11px] font-medium uppercase', fmt === f ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground']"
@@ -263,7 +263,7 @@ function applySize(s: typeof sizes[number]) {
       <!-- SVG 源码 -->
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">SVG 源码</label>
+          <label class="tool-section-title">SVG 源码</label>
           <CopyButton :text="svgString" icon-only />
         </div>
         <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ svgString }}</code></pre>
@@ -272,7 +272,7 @@ function applySize(s: typeof sizes[number]) {
       <!-- Data URL -->
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Data URL（&lt;img src&gt; / CSS background）</label>
+          <label class="tool-section-title">Data URL（&lt;img src&gt; / CSS background）</label>
           <CopyButton :text="dataUrl" icon-only />
         </div>
         <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ dataUrl }}</code></pre>
@@ -281,7 +281,7 @@ function applySize(s: typeof sizes[number]) {
       <!-- CSS background-image -->
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">CSS background-image</label>
+          <label class="tool-section-title">CSS background-image</label>
           <CopyButton :text="`background-image: ${cssUrl};`" icon-only />
         </div>
         <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>background-image: {{ cssUrl }};</code></pre>

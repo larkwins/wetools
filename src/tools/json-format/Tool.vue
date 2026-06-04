@@ -77,7 +77,7 @@ watchEffect(() => {
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JSON 输入</label>
+          <label class="tool-section-title">JSON 输入</label>
           <CopyButton :text="input" icon-only />
         </div>
         <CodeEditor v-model="input" lang="json" :rows="20" placeholder="粘贴 JSON…" />
@@ -93,7 +93,7 @@ watchEffect(() => {
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输出</label>
+          <label class="tool-section-title">输出</label>
           <CopyButton :text="output" icon-only />
         </div>
         <!-- escape 模式输出的是 JSON 字符串字面量（外层是字符串），按 text 高亮更合理 -->

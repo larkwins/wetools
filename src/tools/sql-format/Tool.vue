@@ -65,13 +65,13 @@ watch([dialect, indent, kwCase], doFormat, { immediate: true });
   <div class="flex flex-col gap-4">
     <div class="flex flex-wrap items-end gap-3">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">方言</label>
+        <label class="tool-section-title">方言</label>
         <select v-model="dialect" class="h-9 rounded-md border bg-background px-3 text-sm text-foreground hover:border-primary/40 focus:border-primary focus:outline-none">
           <option v-for="d in dialects" :key="d.v" :value="d.v">{{ d.l }}</option>
         </select>
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">关键字</label>
+        <label class="tool-section-title">关键字</label>
         <div class="inline-flex rounded-md border bg-card p-0.5">
           <button v-for="c in (['upper', 'lower', 'preserve'] as KeywordCase[])" :key="c" type="button"
             :class="['h-9 rounded-sm px-3 text-xs font-medium', kwCase === c ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground']"
@@ -80,7 +80,7 @@ watch([dialect, indent, kwCase], doFormat, { immediate: true });
         </div>
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">缩进</label>
+        <label class="tool-section-title">缩进</label>
         <input v-model.number="indent" type="number" min="0" max="8" class="h-9 w-20 rounded-md border bg-background px-3 text-sm text-foreground" />
       </div>
       <Button variant="primary" @click="doFormat">格式化</Button>
@@ -91,14 +91,14 @@ watch([dialect, indent, kwCase], doFormat, { immediate: true });
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输入</label>
+          <label class="tool-section-title">输入</label>
           <CopyButton :text="input" icon-only />
         </div>
         <CodeEditor v-model="input" lang="sql" :rows="18" placeholder="粘贴 SQL…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输出</label>
+          <label class="tool-section-title">输出</label>
           <CopyButton :text="output" icon-only />
         </div>
         <CodeEditor :model-value="output" lang="sql" :rows="18" readonly />

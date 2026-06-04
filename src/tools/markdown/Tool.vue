@@ -53,14 +53,14 @@ const html = computed(() => {
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Markdown</label>
+          <label class="tool-section-title">Markdown</label>
           <CopyButton :text="md" icon-only />
         </div>
         <Textarea v-model="md" mono :rows="22" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">预览（已 sanitize）</label>
+          <label class="tool-section-title">预览（已 sanitize）</label>
           <CopyButton :text="html" icon-only label="复制 HTML" />
         </div>
         <article

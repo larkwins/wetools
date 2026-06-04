@@ -124,11 +124,11 @@ watchEffect(() => {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-2">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">package</label>
+        <label class="tool-section-title">package</label>
         <Input v-model="packageName" placeholder="demo" />
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">根 message 名</label>
+        <label class="tool-section-title">根 message 名</label>
         <Input v-model="rootName" placeholder="Root" />
       </div>
     </div>
@@ -136,14 +136,14 @@ watchEffect(() => {
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JSON 输入</label>
+          <label class="tool-section-title">JSON 输入</label>
           <CopyButton :text="jsonText" icon-only />
         </div>
         <CodeEditor v-model="jsonText" lang="json" :rows="20" placeholder="粘贴 JSON…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Protobuf 3</label>
+          <label class="tool-section-title">Protobuf 3</label>
           <CopyButton :text="proto" icon-only />
         </div>
         <CodeEditor :model-value="proto" lang="proto" :rows="20" readonly />

@@ -64,7 +64,7 @@ const items = computed(() => [
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输入</label>
+      <label class="tool-section-title">输入</label>
       <Textarea v-model="input" mono :rows="5" placeholder="输入任意标识符或短语…" />
     </div>
 

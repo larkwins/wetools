@@ -126,7 +126,7 @@ onBeforeUnmount(stop);
       </div>
 
       <div v-if="photoUrl" class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">拍摄结果</label>
+        <label class="tool-section-title">拍摄结果</label>
         <div class="flex flex-col items-start gap-2 sm:flex-row">
           <img :src="photoUrl" alt="snapshot" class="max-w-full rounded-lg border sm:max-w-md" />
           <Button variant="outline" @click="downloadPhoto"><Download :size="14" />下载</Button>

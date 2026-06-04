@@ -90,11 +90,11 @@ function recompress() {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-3">
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">最大文件大小 (MB)</label>
+        <label class="tool-section-title">最大文件大小 (MB)</label>
         <Input v-model="maxSize" type="number" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">最大边长 (px)</label>
+        <label class="tool-section-title">最大边长 (px)</label>
         <Input v-model="maxWH" type="number" />
       </div>
       <div class="flex items-end">

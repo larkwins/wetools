@@ -240,7 +240,7 @@ const running = computed(() => phase.value === 'running');
         </div>
       </article>
       <article class="flex flex-col gap-1 rounded-lg border bg-card p-4">
-        <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted-foreground">
+        <div class="flex items-center gap-1.5 tool-section-title">
           <Activity :size="12" class="text-amber-500" />抖动
         </div>
         <div class="flex items-baseline gap-1">
@@ -249,7 +249,7 @@ const running = computed(() => phase.value === 'running');
         </div>
       </article>
       <article class="flex flex-col gap-1 rounded-lg border bg-card p-4">
-        <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted-foreground">
+        <div class="flex items-center gap-1.5 tool-section-title">
           <Download :size="12" class="text-emerald-500" />下载
         </div>
         <div class="flex items-baseline gap-1">
@@ -258,7 +258,7 @@ const running = computed(() => phase.value === 'running');
         </div>
       </article>
       <article class="flex flex-col gap-1 rounded-lg border bg-card p-4">
-        <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted-foreground">
+        <div class="flex items-center gap-1.5 tool-section-title">
           <Upload :size="12" class="text-blue-500" />上传
         </div>
         <div class="flex items-baseline gap-1">

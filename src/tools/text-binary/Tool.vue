@@ -57,14 +57,14 @@ const seps: Array<{ k: Sep; l: string }> = [
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">文本 (UTF-8)</label>
+          <label class="tool-section-title">文本 (UTF-8)</label>
           <CopyButton :text="text" icon-only />
         </div>
         <Textarea v-model="text" mono :rows="10" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">二进制</label>
+          <label class="tool-section-title">二进制</label>
           <CopyButton :text="binary" icon-only />
         </div>
         <Textarea v-model="binary" mono :rows="10" />

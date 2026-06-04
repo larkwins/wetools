@@ -188,7 +188,7 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
     <!-- 1. 文本输入 -->
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">输入要匹配的文本</label>
+        <label class="tool-section-title">输入要匹配的文本</label>
         <CopyButton :text="text" icon-only />
       </div>
       <Textarea v-model="text" mono :rows="8" placeholder="粘贴或输入待匹配文本…" />
@@ -196,7 +196,7 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
 
     <!-- 2. 正则栏：标题在卡片外，控件在卡片内 -->
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">选择常用正则表达式</label>
+      <label class="tool-section-title">选择常用正则表达式</label>
       <div class="rounded-lg border bg-card/60 p-3">
         <select
           v-model="presetValue"
@@ -210,7 +210,7 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">输入正则表达式</label>
+      <label class="tool-section-title">输入正则表达式</label>
       <div class="rounded-lg border bg-card/60 p-3">
         <div class="flex flex-col gap-3 lg:flex-row lg:items-end">
           <div class="flex flex-1 flex-col gap-1.5">
@@ -268,7 +268,7 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
     <!-- 3. 匹配结果 -->
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+        <label class="tool-section-title">
           匹配结果（{{ matches.length }} 项{{ busy ? ' · 计算中…' : '' }}）
         </label>
         <CopyButton v-if="matches.length" :text="matchesAsText" icon-only />

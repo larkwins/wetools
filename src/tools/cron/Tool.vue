@@ -44,48 +44,57 @@ const presets: { v: string; l: string }[] = [
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex flex-col gap-1.5">
-      <label class="text-[11px] uppercase tracking-wider text-muted-foreground">Cron 表达式</label>
-      <div class="flex gap-2">
-        <Input v-model="expr" class="flex-1 font-mono" placeholder="例如：*/15 9-18 * * MON-FRI" />
-        <div class="inline-flex rounded-md border bg-card p-0.5">
-          <button v-for="l in [{v:'zh_CN',l:'中'},{v:'en',l:'EN'}]" :key="l.v" type="button"
-            :class="['h-9 rounded-sm px-3 text-xs', lang === l.v ? 'bg-secondary text-foreground' : 'text-muted-foreground hover:text-foreground']"
-            @click="lang = l.v as 'zh_CN' | 'en'"
-          >{{ l.l }}</button>
+    <!-- Cron 表达式输入 -->
+    <div class="flex flex-col gap-2">
+      <label class="tool-section-title">Cron 表达式</label>
+      <div class="rounded-lg border bg-card/60 p-3 flex flex-col gap-3">
+        <div class="flex gap-2">
+          <Input v-model="expr" class="flex-1 font-mono" placeholder="例如：*/15 9-18 * * MON-FRI" />
+          <div class="inline-flex rounded-md border bg-card p-0.5">
+            <button v-for="l in [{v:'zh_CN',l:'中'},{v:'en',l:'EN'}]" :key="l.v" type="button"
+              :class="['h-9 rounded-sm px-3 text-xs', lang === l.v ? 'bg-secondary text-foreground' : 'text-muted-foreground hover:text-foreground']"
+              @click="lang = l.v as 'zh_CN' | 'en'"
+            >{{ l.l }}</button>
+          </div>
         </div>
-      </div>
-      <div class="mt-2 flex flex-wrap gap-1.5">
-        <button v-for="p in presets" :key="p.v" type="button"
-          class="rounded-md border bg-card px-2 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary"
-          @click="expr = p.v"
-        >{{ p.l }}</button>
+        <div class="flex flex-wrap gap-1.5">
+          <button v-for="p in presets" :key="p.v" type="button"
+            class="rounded-md border bg-card px-2 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary"
+            @click="expr = p.v"
+          >{{ p.l }}</button>
+        </div>
       </div>
     </div>
 
-    <div v-if="error" class="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+    <!-- 错误提示 -->
+    <div v-if="error" class="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm font-medium text-destructive">
       <AlertCircle :size="14" class="inline" /> {{ error }}
     </div>
 
+    <!-- 结果展示 -->
     <div v-else class="grid gap-4 lg:grid-cols-2">
-      <section class="rounded-lg border bg-card p-4">
-        <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">人类可读描述</h3>
-        <div class="flex items-center gap-2">
-          <p class="flex-1 text-base">{{ human }}</p>
-          <CopyButton :text="human ?? ''" icon-only />
-        </div>
-      </section>
+      <div class="flex flex-col gap-2">
+        <h3 class="tool-section-title">人类可读描述</h3>
+        <section class="rounded-lg border bg-card p-4">
+          <div class="flex items-center gap-2">
+            <p class="flex-1 text-base">{{ human }}</p>
+            <CopyButton :text="human ?? ''" icon-only />
+          </div>
+        </section>
+      </div>
 
-      <section class="rounded-lg border bg-card p-4">
-        <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">下次执行时间（前 8 次）</h3>
-        <ol class="space-y-1 font-mono text-xs">
-          <li v-for="(t, i) in upcoming ?? []" :key="i" class="flex items-center gap-2">
-            <span class="w-6 shrink-0 text-muted-foreground">{{ i + 1 }}.</span>
-            <span class="flex-1">{{ t }}</span>
-            <CopyButton :text="t" icon-only />
-          </li>
-        </ol>
-      </section>
+      <div class="flex flex-col gap-2">
+        <h3 class="tool-section-title">下次执行时间（前 8 次）</h3>
+        <section class="rounded-lg border bg-card p-4">
+          <ol class="space-y-1 font-mono text-xs">
+            <li v-for="(t, i) in upcoming ?? []" :key="i" class="flex items-center gap-2">
+              <span class="w-6 shrink-0 text-muted-foreground">{{ i + 1 }}.</span>
+              <span class="flex-1">{{ t }}</span>
+              <CopyButton :text="t" icon-only />
+            </li>
+          </ol>
+        </section>
+      </div>
     </div>
   </div>
 </template>

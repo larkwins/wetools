@@ -56,7 +56,7 @@ generate();
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-2">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">分隔符</label>
+        <label class="tool-section-title">分隔符</label>
         <div class="inline-flex w-fit rounded-md border bg-card p-0.5">
           <button v-for="s in ([':', '-', '.', ''] as Sep[])" :key="s" type="button"
             :class="['h-9 rounded-sm px-3 text-xs font-mono', sep === s ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground']"
@@ -65,11 +65,11 @@ generate();
         </div>
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">数量</label>
+        <label class="tool-section-title">数量</label>
         <input v-model.number="count" type="number" min="1" max="1000" class="h-9 w-24 rounded-md border bg-background px-3 text-sm" />
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">OUI 前缀（可选）</label>
+        <label class="tool-section-title">OUI 前缀（可选）</label>
         <input v-model="prefix" placeholder="B8:27:EB" class="h-9 rounded-md border bg-background px-3 font-mono text-sm uppercase" />
       </div>
       <div class="flex flex-col gap-2 sm:col-span-2">

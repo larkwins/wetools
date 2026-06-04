@@ -73,7 +73,7 @@ const claims = computed(() => {
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JWT</label>
+      <label class="tool-section-title">JWT</label>
       <Textarea v-model="input" mono :rows="4" placeholder="粘贴 JWT…" />
       <p v-if="'error' in decoded" class="flex items-center gap-1.5 text-xs text-destructive">
         <AlertCircle :size="12" />{{ decoded.error }}
@@ -108,7 +108,7 @@ const claims = computed(() => {
       </div>
 
       <section v-if="claims && claims.length" class="rounded-lg border bg-card p-4">
-        <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">标准声明</h3>
+        <h3 class="mb-3 tool-section-title">标准声明</h3>
         <ul class="space-y-1.5 text-sm">
           <li v-for="c in claims" :key="c.k" class="flex items-center gap-3">
             <span class="w-32 shrink-0 font-mono text-xs text-muted-foreground">{{ c.k }}</span>

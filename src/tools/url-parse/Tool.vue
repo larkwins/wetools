@@ -73,7 +73,7 @@ const parts = computed(() => {
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">URL</label>
+      <label class="tool-section-title">URL</label>
       <div class="flex gap-2">
         <Input v-model="input" class="flex-1 font-mono" />
         <CopyButton :text="input" />
@@ -86,7 +86,7 @@ const parts = computed(() => {
 
     <div v-else class="grid gap-4 lg:grid-cols-2">
       <section>
-        <h3 class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">组件</h3>
+        <h3 class="mb-2 tool-section-title">组件</h3>
         <div class="space-y-1">
           <div v-for="p in parts" :key="p.k" class="flex items-center gap-3 rounded-md border bg-card px-3 py-1.5">
             <span class="w-24 shrink-0 font-mono text-xs text-muted-foreground">{{ p.k }}</span>
@@ -98,7 +98,7 @@ const parts = computed(() => {
 
       <section>
         <div class="mb-2 flex items-center justify-between">
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">查询参数</h3>
+          <h3 class="tool-section-title">查询参数</h3>
           <Button variant="ghost" size="sm" @click="addParam">
             <Plus :size="14" />新增
           </Button>

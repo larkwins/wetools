@@ -106,7 +106,7 @@ const LOCATION_MAP: Record<number, string> = {
 
     <div v-if="history.length" class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">历史记录</label>
+        <label class="tool-section-title">历史记录</label>
         <button type="button" class="text-xs text-muted-foreground hover:text-destructive" @click="clearHistory">清空</button>
       </div>
       <div class="max-h-72 overflow-y-auto rounded-lg border bg-card font-mono text-xs">

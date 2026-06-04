@@ -111,7 +111,7 @@ const presets = ['192.168.1.0/24', '10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/1
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">CIDR</label>
+      <label class="tool-section-title">CIDR</label>
       <Input v-model="cidr" placeholder="192.168.1.0/24" class="font-mono text-base" />
     </div>
 
@@ -146,7 +146,7 @@ const presets = ['192.168.1.0/24', '10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/1
     </div>
 
     <div v-if="info" class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">二进制</label>
+      <label class="tool-section-title">二进制</label>
       <div class="grid grid-cols-1 gap-1 rounded-lg border bg-card p-3 font-mono text-xs">
         <div class="flex items-center gap-3"><span class="w-16 text-muted-foreground">IP</span><span class="flex-1">{{ info.binary }}</span></div>
         <div class="flex items-center gap-3"><span class="w-16 text-muted-foreground">Mask</span><span class="flex-1">{{ info.maskBinary }}</span></div>

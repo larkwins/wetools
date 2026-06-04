@@ -63,14 +63,14 @@ function swap() {
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">{{ mode === 'j2y' ? 'JSON' : 'YAML' }} 输入</label>
+          <label class="tool-section-title">{{ mode === 'j2y' ? 'JSON' : 'YAML' }} 输入</label>
           <CopyButton :text="input" icon-only />
         </div>
         <CodeEditor v-model="input" :lang="mode === 'j2y' ? 'json' : 'yaml'" :rows="20" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">{{ mode === 'j2y' ? 'YAML' : 'JSON' }} 输出</label>
+          <label class="tool-section-title">{{ mode === 'j2y' ? 'YAML' : 'JSON' }} 输出</label>
           <CopyButton :text="output" icon-only />
         </div>
         <CodeEditor :model-value="output" :lang="mode === 'j2y' ? 'yaml' : 'json'" :rows="20" readonly />

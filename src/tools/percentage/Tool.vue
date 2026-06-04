@@ -112,11 +112,11 @@ const tabs: Array<{ k: Mode; l: string }> = [
       <p class="mb-3 text-sm text-muted-foreground">原价 - 折扣百分比 = 折后价 + 节省金额</p>
       <div class="grid gap-3 sm:grid-cols-2">
         <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">原价</label>
+          <label class="tool-section-title">原价</label>
           <Input v-model.number="d_origin" type="number" />
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">折扣 (%)</label>
+          <label class="tool-section-title">折扣 (%)</label>
           <Input v-model.number="d_pct" type="number" />
         </div>
       </div>

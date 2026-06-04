@@ -123,14 +123,14 @@ const hashes: Hash[] = ['SHA-256', 'SHA-1', 'SHA-384', 'SHA-512'];
       <div class="grid gap-3 lg:grid-cols-2">
         <div class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
-            <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">公钥 (SPKI / PEM)</label>
+            <label class="tool-section-title">公钥 (SPKI / PEM)</label>
             <CopyButton :text="publicPem" icon-only />
           </div>
           <Textarea v-model="publicPem" mono :rows="9" placeholder="-----BEGIN PUBLIC KEY-----…" />
         </div>
         <div class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
-            <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">私钥 (PKCS8 / PEM)</label>
+            <label class="tool-section-title">私钥 (PKCS8 / PEM)</label>
             <CopyButton :text="privatePem" icon-only />
           </div>
           <Textarea v-model="privatePem" mono :rows="9" placeholder="-----BEGIN PRIVATE KEY-----…" />
@@ -151,19 +151,19 @@ const hashes: Hash[] = ['SHA-256', 'SHA-1', 'SHA-384', 'SHA-512'];
 
       <div class="grid gap-3 lg:grid-cols-3">
         <div class="flex flex-col gap-2">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">明文</label>
+          <label class="tool-section-title">明文</label>
           <Textarea v-model="plaintext" mono :rows="8" />
         </div>
         <div class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
-            <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">密文 (Base64)</label>
+            <label class="tool-section-title">密文 (Base64)</label>
             <CopyButton :text="ciphertext" icon-only />
           </div>
           <Textarea v-model="ciphertext" mono :rows="8" />
         </div>
         <div class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
-            <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">解密结果</label>
+            <label class="tool-section-title">解密结果</label>
             <CopyButton :text="decrypted" icon-only />
           </div>
           <Textarea :model-value="decrypted" mono :rows="8" readonly />

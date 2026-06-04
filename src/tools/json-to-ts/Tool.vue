@@ -36,14 +36,14 @@ watchEffect(() => {
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1.5">
-      <label class="text-[11px] uppercase tracking-wider text-muted-foreground">根接口名</label>
+      <label class="tool-section-title">根接口名</label>
       <Input v-model="root" class="max-w-xs font-mono" />
     </div>
 
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JSON</label>
+          <label class="tool-section-title">JSON</label>
           <CopyButton :text="input" icon-only />
         </div>
         <CodeEditor v-model="input" lang="json" :rows="20" />
@@ -51,7 +51,7 @@ watchEffect(() => {
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">TypeScript</label>
+          <label class="tool-section-title">TypeScript</label>
           <CopyButton :text="output" icon-only />
         </div>
         <CodeEditor :model-value="output" lang="typescript" :rows="20" readonly />

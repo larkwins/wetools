@@ -150,7 +150,7 @@ const typeLabel: Record<HeaderRow['type'], string> = {
       </div>
       <div class="ml-auto inline-flex rounded-md border bg-card p-0.5">
         <button v-for="t in types" :key="t.k" type="button"
-          :class="['h-7 rounded-sm px-2.5 text-[11px] font-medium', filterType === t.k ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground']"
+          :class="['h-7 rounded-sm px-2.5 text-sm font-semibold', filterType === t.k ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground']"
           @click="filterType = t.k"
         >{{ t.l }}</button>
       </div>

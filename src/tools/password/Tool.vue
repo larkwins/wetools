@@ -64,11 +64,11 @@ function strength(p: string) {
       <section class="space-y-4 rounded-lg border bg-card p-4">
         <div class="grid grid-cols-2 gap-3">
           <div class="flex flex-col gap-1.5">
-            <label class="text-[11px] uppercase tracking-wider text-muted-foreground">长度</label>
+            <label class="tool-section-title">长度</label>
             <Input v-model="length" type="number" />
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="text-[11px] uppercase tracking-wider text-muted-foreground">数量</label>
+            <label class="tool-section-title">数量</label>
             <Input v-model="count" type="number" />
           </div>
         </div>

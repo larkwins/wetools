@@ -84,7 +84,7 @@ const presets: Array<{ n: number; r: string; label: string }> = [
   <div class="flex flex-col gap-4">
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">阿拉伯数字</label>
+        <label class="tool-section-title">阿拉伯数字</label>
         <div class="flex items-center gap-2">
           <Input v-model.number="arabic" type="number" min="1" max="3999" />
           <CopyButton :text="String(arabic)" icon-only />
@@ -94,7 +94,7 @@ const presets: Array<{ n: number; r: string; label: string }> = [
         </p>
       </div>
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">罗马数字</label>
+        <label class="tool-section-title">罗马数字</label>
         <div class="flex items-center gap-2">
           <Input v-model="roman" class="font-mono text-base uppercase tracking-wider" />
           <CopyButton :text="roman" icon-only />
@@ -106,7 +106,7 @@ const presets: Array<{ n: number; r: string; label: string }> = [
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">常用示例</label>
+      <label class="tool-section-title">常用示例</label>
       <div class="flex flex-wrap gap-1.5">
         <button v-for="p in presets" :key="p.n" type="button"
           class="inline-flex items-center gap-1.5 rounded-md border bg-card px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary"

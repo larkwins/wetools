@@ -52,7 +52,7 @@ const examples = [
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">原文</label>
+      <label class="tool-section-title">原文</label>
       <Input v-model="input" placeholder="输入文本…" />
     </div>
 
@@ -73,14 +73,14 @@ const examples = [
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Slug 结果</label>
+        <label class="tool-section-title">Slug 结果</label>
         <CopyButton :text="result" icon-only />
       </div>
       <div class="break-all rounded-md border bg-card px-3 py-3 font-mono text-base text-primary">{{ result || '—' }}</div>
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">示例</label>
+      <label class="tool-section-title">示例</label>
       <div class="flex flex-wrap gap-1.5">
         <button v-for="e in examples" :key="e" type="button"
           class="rounded-md border bg-card px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary"

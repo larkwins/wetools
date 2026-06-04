@@ -33,19 +33,19 @@ const items = computed(() => {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">输入值（px）</label>
+        <label class="tool-section-title">输入值（px）</label>
         <Input v-model.number="value" type="number" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">根字号 (px)</label>
+        <label class="tool-section-title">根字号 (px)</label>
         <Input v-model.number="baseFont" type="number" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">视口宽 (px)</label>
+        <label class="tool-section-title">视口宽 (px)</label>
         <Input v-model.number="viewportW" type="number" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">视口高 (px)</label>
+        <label class="tool-section-title">视口高 (px)</label>
         <Input v-model.number="viewportH" type="number" />
       </div>
     </div>

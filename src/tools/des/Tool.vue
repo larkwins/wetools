@@ -125,15 +125,15 @@ const fmts: OutFormat[] = ['base64', 'hex'];
 
     <div class="grid gap-3" :class="mode === 'CBC' ? 'sm:grid-cols-2' : ''">
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          密钥（DES 需 8 字节，3DES 需 16 或 24 字节）
-        </label>
+          <label class="tool-section-title">
+            密钥（DES 需 8 字节，3DES 需 16 或 24 字节）
+          </label>
         <Input v-model="key" placeholder="UTF-8 字节" />
       </div>
       <div v-if="mode === 'CBC'" class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          IV（CBC 模式必填，8 字节）
-        </label>
+          <label class="tool-section-title">
+            IV（CBC 模式必填，8 字节）
+          </label>
         <Input v-model="iv" placeholder="UTF-8 字节" />
       </div>
     </div>
@@ -151,14 +151,14 @@ const fmts: OutFormat[] = ['base64', 'hex'];
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输入</label>
+          <label class="tool-section-title">输入</label>
           <CopyButton :text="input" icon-only />
         </div>
         <Textarea v-model="input" mono :rows="12" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">输出</label>
+          <label class="tool-section-title">输出</label>
           <CopyButton :text="output" icon-only />
         </div>
         <Textarea :model-value="output" mono :rows="12" readonly />

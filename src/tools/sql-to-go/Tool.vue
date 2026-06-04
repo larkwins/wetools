@@ -219,14 +219,14 @@ watchEffect(() => {
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">CREATE TABLE 语句</label>
+          <label class="tool-section-title">CREATE TABLE 语句</label>
           <CopyButton :text="sqlText" icon-only />
         </div>
         <CodeEditor v-model="sqlText" lang="sql" :rows="20" placeholder="粘贴 CREATE TABLE…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Go Struct</label>
+          <label class="tool-section-title">Go Struct</label>
           <CopyButton :text="goCode" icon-only />
         </div>
         <CodeEditor :model-value="goCode" lang="go" :rows="20" readonly />

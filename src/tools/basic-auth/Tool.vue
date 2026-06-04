@@ -32,18 +32,18 @@ const fetchSnippet = computed(() => {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 sm:grid-cols-2">
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">用户名</label>
+        <label class="tool-section-title">用户名</label>
         <Input v-model="user" placeholder="username" />
       </div>
       <div class="flex flex-col gap-1">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">密码</label>
+        <label class="tool-section-title">密码</label>
         <Input v-model="pass" type="text" placeholder="password" />
       </div>
     </div>
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Base64 凭证</label>
+        <label class="tool-section-title">Base64 凭证</label>
         <CopyButton :text="encoded" icon-only />
       </div>
       <div class="break-all rounded-md border bg-card px-3 py-2 font-mono text-sm">{{ encoded || '—' }}</div>
@@ -51,7 +51,7 @@ const fetchSnippet = computed(() => {
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Authorization 请求头</label>
+        <label class="tool-section-title">Authorization 请求头</label>
         <CopyButton :text="headerLine" icon-only />
       </div>
       <div class="break-all rounded-md border bg-card px-3 py-2 font-mono text-sm">{{ headerLine || '—' }}</div>
@@ -60,7 +60,7 @@ const fetchSnippet = computed(() => {
     <!-- 上下两行：cURL 与 fetch 单独一行展示，避免在窄屏挤成一行难读 -->
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">cURL</label>
+        <label class="tool-section-title">cURL</label>
         <CopyButton :text="curlSnippet" icon-only />
       </div>
       <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ curlSnippet || '—' }}</code></pre>
@@ -68,7 +68,7 @@ const fetchSnippet = computed(() => {
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">JavaScript fetch</label>
+        <label class="tool-section-title">JavaScript fetch</label>
         <CopyButton :text="fetchSnippet" icon-only />
       </div>
       <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ fetchSnippet || '—' }}</code></pre>

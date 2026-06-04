@@ -28,12 +28,12 @@ const output = computed(() => {
   <div class="flex flex-col gap-4">
     <div class="grid gap-3 lg:grid-cols-2">
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">原文</label>
+        <label class="tool-section-title">原文</label>
         <Textarea v-model="input" :rows="8" placeholder="输入英文字母或数字…" />
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">NATO 字母</label>
+          <label class="tool-section-title">NATO 字母</label>
           <CopyButton :text="output" icon-only />
         </div>
         <Textarea :model-value="output" :rows="8" readonly />
@@ -41,7 +41,7 @@ const output = computed(() => {
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">完整字母表</label>
+      <label class="tool-section-title">完整字母表</label>
       <div class="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-6">
         <div v-for="(v, k) in NATO" :key="k" class="flex items-center gap-2 rounded-md border bg-card px-2.5 py-1.5 text-sm">
           <span class="font-mono font-semibold text-primary">{{ k }}</span>

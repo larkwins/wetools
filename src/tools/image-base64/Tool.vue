@@ -80,7 +80,7 @@ function fmtSize() {
 
     <section class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Data URL</label>
+        <label class="tool-section-title">Data URL</label>
         <div class="flex items-center gap-2">
           <Button v-if="dataUrl" variant="outline" size="sm" @click="download">
             <Download :size="14" />下载图片
@@ -91,7 +91,7 @@ function fmtSize() {
       <Textarea v-model="dataUrl" mono :rows="14" placeholder="data:image/png;base64,..." />
 
       <div v-if="cssExample" class="mt-2">
-        <label class="text-xs font-medium uppercase tracking-wider text-muted-foreground">CSS 示例</label>
+        <label class="tool-section-title">CSS 示例</label>
         <pre class="code-area mt-1 rounded-md border bg-muted/40 p-3">{{ cssExample }}</pre>
       </div>
     </section>
