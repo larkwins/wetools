@@ -27,7 +27,7 @@ const PRESETS: { label: string; pattern: string; sample?: string }[] = [
 ];
 
 /* ---------- 状态 ---------- */
-const pattern = ref('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
+const pattern = ref('');
 const flagGlobal = ref(true);
 const flagIgnoreCase = ref(false);
 const flagMultiline = ref(false);
@@ -136,7 +136,7 @@ function runRegex() {
   }, 1000);
 }
 
-onMounted(() => { ensureWorker(); runRegex(); });
+onMounted(() => { ensureWorker(); });
 onBeforeUnmount(() => {
   if (killTimer) clearTimeout(killTimer);
   killWorker();
@@ -188,85 +188,87 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
     <!-- 1. 文本输入 -->
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">输入要匹配的文本</label>
+        <label class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">输入要匹配的文本</label>
         <CopyButton :text="text" icon-only />
       </div>
       <Textarea v-model="text" mono :rows="8" placeholder="粘贴或输入待匹配文本…" />
     </div>
 
-    <!-- 2. 正则栏：输入 + 预设 + 开关 + 测试按钮 -->
-    <div class="rounded-lg border bg-card/60 p-3">
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-end">
-        <!-- 正则输入 -->
-        <div class="flex flex-1 flex-col gap-1.5">
-          <label class="text-[11px] uppercase tracking-wider text-muted-foreground">正则表达式</label>
-          <div class="flex items-center gap-1 font-mono">
-            <span class="text-muted-foreground">/</span>
-            <Input
-              v-model="pattern"
-              class="flex-1"
-              placeholder="请输入正则表达式…"
-              spellcheck="false"
-            />
-            <span class="text-muted-foreground">/</span>
-            <span class="ml-1 inline-flex h-9 items-center rounded-md border bg-muted/40 px-2 text-xs text-muted-foreground">
-              {{ flags || '—' }}
-            </span>
+    <!-- 2. 正则栏：标题在卡片外，控件在卡片内 -->
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">选择常用正则表达式</label>
+      <div class="rounded-lg border bg-card/60 p-3">
+        <select
+          v-model="presetValue"
+          class="h-9 w-full rounded-md border border-input bg-card px-2 text-sm focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40"
+          @change="applyPreset(Number(presetValue))"
+        >
+          <option value="" disabled>请选择</option>
+          <option v-for="(p, i) in PRESETS" :key="p.label" :value="i">{{ p.label }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">输入正则表达式</label>
+      <div class="rounded-lg border bg-card/60 p-3">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-end">
+          <div class="flex flex-1 flex-col gap-1.5">
+            <div class="flex items-center gap-1 font-mono">
+              <span class="text-muted-foreground">/</span>
+              <Input
+                v-model="pattern"
+                class="flex-1"
+                placeholder=""
+                spellcheck="false"
+              />
+              <span class="text-muted-foreground">/</span>
+              <span class="ml-1 inline-flex h-9 items-center rounded-md border bg-muted/40 px-2 text-xs text-muted-foreground">
+                {{ flags || '—' }}
+              </span>
+            </div>
           </div>
+
+          <!-- 测试按钮 -->
+          <Button variant="primary" class="lg:self-end" @click="runRegex">
+            <Play :size="14" />测试匹配
+          </Button>
         </div>
 
-        <!-- 预设下拉 -->
-        <div class="flex flex-col gap-1.5 lg:w-56">
-          <label class="text-[11px] uppercase tracking-wider text-muted-foreground">常用正则表达式</label>
-          <select
-            v-model="presetValue"
-            class="h-9 rounded-md border border-input bg-card px-2 text-sm focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40"
-            @change="applyPreset(Number(presetValue))"
-          >
-            <option value="" disabled>选择预设…</option>
-            <option v-for="(p, i) in PRESETS" :key="p.label" :value="i">{{ p.label }}</option>
-          </select>
+        <!-- 选项开关 -->
+        <div class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-t pt-3">
+          <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+            <input v-model="flagGlobal" type="checkbox" class="size-4 accent-primary" />
+            <span>全局搜索 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">g</code></span>
+          </label>
+          <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+            <input v-model="flagIgnoreCase" type="checkbox" class="size-4 accent-primary" />
+            <span>忽略大小写 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">i</code></span>
+          </label>
+          <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+            <input v-model="flagMultiline" type="checkbox" class="size-4 accent-primary" />
+            <span>多行 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">m</code></span>
+          </label>
+          <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+            <input v-model="flagDotAll" type="checkbox" class="size-4 accent-primary" />
+            <span>点匹配换行 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">s</code></span>
+          </label>
         </div>
 
-        <!-- 测试按钮 -->
-        <Button variant="primary" class="lg:self-end" @click="runRegex">
-          <Play :size="14" />测试匹配
-        </Button>
+        <!-- 错误提示 -->
+        <p v-if="compileError" class="mt-2 flex items-center gap-1.5 text-xs text-destructive">
+          <AlertCircle :size="12" />正则语法错误：{{ compileError }}
+        </p>
+        <p v-else-if="runtimeError" class="mt-2 flex items-center gap-1.5 text-xs text-destructive">
+          <AlertCircle :size="12" />{{ runtimeError }}
+        </p>
       </div>
-
-      <!-- 选项开关 -->
-      <div class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-t pt-3">
-        <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-          <input v-model="flagGlobal" type="checkbox" class="size-4 accent-primary" />
-          <span>全局搜索 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">g</code></span>
-        </label>
-        <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-          <input v-model="flagIgnoreCase" type="checkbox" class="size-4 accent-primary" />
-          <span>忽略大小写 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">i</code></span>
-        </label>
-        <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-          <input v-model="flagMultiline" type="checkbox" class="size-4 accent-primary" />
-          <span>多行 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">m</code></span>
-        </label>
-        <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-          <input v-model="flagDotAll" type="checkbox" class="size-4 accent-primary" />
-          <span>点匹配换行 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">s</code></span>
-        </label>
-      </div>
-
-      <!-- 错误提示 -->
-      <p v-if="compileError" class="mt-2 flex items-center gap-1.5 text-xs text-destructive">
-        <AlertCircle :size="12" />正则语法错误：{{ compileError }}
-      </p>
-      <p v-else-if="runtimeError" class="mt-2 flex items-center gap-1.5 text-xs text-destructive">
-        <AlertCircle :size="12" />{{ runtimeError }}
-      </p>
     </div>
 
     <!-- 3. 匹配结果 -->
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <label class="text-[11px] uppercase tracking-wider text-muted-foreground">
+        <label class="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           匹配结果（{{ matches.length }} 项{{ busy ? ' · 计算中…' : '' }}）
         </label>
         <CopyButton v-if="matches.length" :text="matchesAsText" icon-only />
@@ -302,7 +304,7 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
           已显示前 50 项，共 {{ matches.length }} 项
         </li>
       </ul>
-      <p v-else-if="!compileError && !busy && text" class="text-xs text-muted-foreground">
+      <p v-else-if="!compileError && !busy && text" class="text-sm font-medium text-foreground">
         无匹配结果
       </p>
     </div>
