@@ -194,21 +194,7 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
       <Textarea v-model="text" mono :rows="8" placeholder="粘贴或输入待匹配文本…" />
     </div>
 
-    <!-- 2. 正则栏：标题在卡片外，控件在卡片内 -->
-    <div class="flex flex-col gap-2">
-      <label class="tool-section-title">选择常用正则表达式</label>
-      <div class="rounded-lg border bg-card/60 p-3">
-        <select
-          v-model="presetValue"
-          class="h-9 w-full rounded-md border border-input bg-card px-2 text-sm focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40"
-          @change="applyPreset(Number(presetValue))"
-        >
-          <option value="" disabled>请选择</option>
-          <option v-for="(p, i) in PRESETS" :key="p.label" :value="i">{{ p.label }}</option>
-        </select>
-      </div>
-    </div>
-
+    <!-- 2. 正则栏 -->
     <div class="flex flex-col gap-2">
       <label class="tool-section-title">输入正则表达式</label>
       <div class="rounded-lg border bg-card/60 p-3">
@@ -235,24 +221,38 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
           </Button>
         </div>
 
-        <!-- 选项开关 -->
-        <div class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-t pt-3">
-          <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-            <input v-model="flagGlobal" type="checkbox" class="size-4 accent-primary" />
-            <span>全局搜索 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">g</code></span>
-          </label>
-          <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-            <input v-model="flagIgnoreCase" type="checkbox" class="size-4 accent-primary" />
-            <span>忽略大小写 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">i</code></span>
-          </label>
-          <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-            <input v-model="flagMultiline" type="checkbox" class="size-4 accent-primary" />
-            <span>多行 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">m</code></span>
-          </label>
-          <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-            <input v-model="flagDotAll" type="checkbox" class="size-4 accent-primary" />
-            <span>点匹配换行 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">s</code></span>
-          </label>
+        <!-- 选项开关 + 常用预设 -->
+        <div class="mt-3 flex flex-wrap items-center justify-between gap-y-2 border-t pt-3">
+          <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+              <input v-model="flagGlobal" type="checkbox" class="size-4 accent-primary" />
+              <span>全局搜索 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">g</code></span>
+            </label>
+            <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+              <input v-model="flagIgnoreCase" type="checkbox" class="size-4 accent-primary" />
+              <span>忽略大小写 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">i</code></span>
+            </label>
+            <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+              <input v-model="flagMultiline" type="checkbox" class="size-4 accent-primary" />
+              <span>多行 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">m</code></span>
+            </label>
+            <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+              <input v-model="flagDotAll" type="checkbox" class="size-4 accent-primary" />
+              <span>点匹配换行 <code class="ml-0.5 rounded bg-muted px-1 text-[11px]">s</code></span>
+            </label>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-muted-foreground">选择常用表达式：</span>
+            <select
+              v-model="presetValue"
+              class="h-8 w-44 rounded-md border border-input bg-card px-2 text-sm focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40"
+              @change="applyPreset(Number(presetValue))"
+            >
+              <option value="" disabled>请选择</option>
+              <option v-for="(p, i) in PRESETS" :key="p.label" :value="i">{{ p.label }}</option>
+            </select>
+          </div>
         </div>
 
         <!-- 错误提示 -->
