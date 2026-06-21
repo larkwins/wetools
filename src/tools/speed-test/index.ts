@@ -14,6 +14,6 @@ export const meta: ToolMeta = {
       description: 'Test your current network latency / download / upload speed via Cloudflare Speed Test endpoints.',
     },
   },
-  keywords: ['speed', 'test', 'bandwidth', '测速', '网速', 'ping', 'latency', 'cloudflare'],
+  keywords: ['网速', '带宽', '延迟', '网络'],
   privacy: 'external',
 };

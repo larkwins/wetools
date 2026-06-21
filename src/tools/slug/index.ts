@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'Slug 字符串', description: '把任意文本转为 URL 友好的 slug（含中文音译、特殊字符清理）。' },
     en: { title: 'Slugify', description: 'Turn any text into URL-friendly slugs (with CJK transliteration & special-char cleanup).' },
   },
-  keywords: ['slug', 'slugify', 'url', 'kebab', '拼音'],
+  keywords: ['slug', 'url', '拼音', '文本'],
   privacy: 'local',
 };

@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'HTML Meta Tag 生成', description: '生成 SEO / Open Graph / Twitter Card meta 标签。' },
     en: { title: 'HTML Meta Tag Generator', description: 'Generate SEO / Open Graph / Twitter Card meta tags.' },
   },
-  keywords: ['meta', 'seo', 'og', 'opengraph', 'twitter', 'social'],
+  keywords: ['seo', 'html', '前端', 'web', '社交媒体'],
   privacy: 'local',
 };

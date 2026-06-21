@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'JSON → Go Struct', description: '从任意 JSON 推导出 Go 结构体定义，支持 json tag。' },
     en: { title: 'JSON → Go Struct', description: 'Generate Go struct definitions from any JSON with json tags.' },
   },
-  keywords: ['json', 'go', 'golang', 'struct', 'codegen'],
+  keywords: ['json', 'golang', 'struct', '代码', '数据'],
   privacy: 'local',
 };

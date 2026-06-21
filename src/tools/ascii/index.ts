@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'ASCII 码表', description: '0-127 标准 ASCII 表：dec / hex / oct / bin / 字符 / 描述。' },
     en: { title: 'ASCII Table', description: 'Full ASCII table (0-127) with dec / hex / oct / bin / char / desc.' },
   },
-  keywords: ['ascii', '码表', 'character', 'hex', 'binary'],
+  keywords: ['ascii', '码表', '字符', '编码'],
   privacy: 'local',
 };

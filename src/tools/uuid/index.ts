@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'UUID / NanoID', description: '批量生成 UUID v4 与 NanoID，支持自定义长度。' },
     en: { title: 'UUID / NanoID', description: 'Batch generate UUID v4 and NanoID with custom length.' },
   },
-  keywords: ['uuid', 'guid', 'nanoid', 'id'],
+  keywords: ['uuid', 'nanoid', '唯一标识', '开发'],
   privacy: 'local',
 };

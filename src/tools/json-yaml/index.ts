@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'JSON ↔ YAML', description: '在 JSON 与 YAML 之间互转，保留注释结构能力有限。' },
     en: { title: 'JSON ↔ YAML', description: 'Convert between JSON and YAML.' },
   },
-  keywords: ['json', 'yaml', 'yml'],
+  keywords: ['json', 'yaml', '配置文件', '数据'],
   privacy: 'local',
 };

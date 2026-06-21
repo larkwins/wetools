@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '大小写 / 命名转换', description: 'camelCase / snake_case / kebab-case / PascalCase / CONSTANT 一键互转。' },
     en: { title: 'Case Convert', description: 'Convert between camel / snake / kebab / Pascal / CONSTANT case.' },
   },
-  keywords: ['case', 'camel', 'snake', 'kebab', 'pascal', '大小写', '驼峰'],
+  keywords: ['camelCase', 'snake_case', '驼峰', '大小写', '文本', '命名'],
   privacy: 'local',
 };

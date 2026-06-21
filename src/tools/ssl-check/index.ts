@@ -14,6 +14,6 @@ export const meta: ToolMeta = {
       description: 'Look up CT log records for a domain and jump to SSL Labs / Mozilla Observatory for full reports.',
     },
   },
-  keywords: ['ssl', 'tls', 'https', 'certificate', '证书', '检测', 'ssllabs', 'crt.sh', 'ct'],
+  keywords: ['ssl', 'tls', 'https', '证书', '网络', '安全'],
   privacy: 'external',
 };

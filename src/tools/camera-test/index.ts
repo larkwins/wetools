@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '摄像头检测', description: '实时预览摄像头画面，支持多设备切换与拍照保存。' },
     en: { title: 'Camera Test', description: 'Live preview camera feed, switch between devices, take photos.' },
   },
-  keywords: ['camera', 'webcam', 'video', '摄像头', 'getusermedia'],
+  keywords: ['camera', 'webcam', 'video', '摄像头', '图片', '设备'],
   privacy: 'local',
 };

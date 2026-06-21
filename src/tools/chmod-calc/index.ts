@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'Chmod 权限计算', description: 'Linux 文件权限 rwx ↔ 数字（755 / 644 等）双向互转。' },
     en: { title: 'Chmod Calculator', description: 'Convert between Linux rwx permissions and numeric mode (755 / 644 etc.).' },
   },
-  keywords: ['chmod', 'permission', 'linux', 'unix', '权限', '755'],
+  keywords: ['chmod', 'linux', '权限', '开发'],
   privacy: 'local',
 };

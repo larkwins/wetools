@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'ASCII 字符画', description: '将文本渲染为 ASCII 字符画（figlet 字体），支持多种字体。' },
     en: { title: 'ASCII Art', description: 'Render text as ASCII art using figlet fonts.' },
   },
-  keywords: ['ascii', 'art', 'figlet', '字符画', 'banner'],
+  keywords: ['ascii', 'figlet', '字符画', '图片', '文本'],
   privacy: 'local',
 };

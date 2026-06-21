@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '随机数', description: '范围内整数 / 浮点数批量生成，去重可选。' },
     en: { title: 'Random Number', description: 'Generate random integers or floats within a range.' },
   },
-  keywords: ['random', '随机数', 'number'],
+  keywords: ['随机数', '数字', '数学'],
   privacy: 'local',
 };

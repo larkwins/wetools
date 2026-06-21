@@ -78,8 +78,28 @@ export function groupedByCategory(): Array<{
     }));
 }
 
-/** 同分类下随机相关工具（用于工具页底部"相关推荐"） */
+/**
+ * 基于 keywords 的语义相似度得分：
+ * 两个工具的 keywords 中任意一个相同词即计 1 分，
+ * 命中词越多分越高。keywords 应为名词/实词，由各工具 index.ts 维护。
+ */
+function similarityScore(a: ToolMeta, b: ToolMeta): number {
+  const kwA = new Set((a.keywords ?? []).map((k) => k.toLowerCase()));
+  const kwB = new Set((b.keywords ?? []).map((k) => k.toLowerCase()));
+  let score = 0;
+  for (const kw of kwA) {
+    if (kwB.has(kw)) score += 1;
+  }
+  return score;
+}
+
+/** 基于 keywords 语义相似度推荐相关工具（用于工具页底部"相关推荐"） */
 export function relatedTools(meta: ToolMeta, limit = 4): ToolMeta[] {
-  const same = toolsByCategory(meta.category).filter((t) => t.id !== meta.id);
-  return same.sort(() => Math.random() - 0.5).slice(0, limit);
+  const candidates = allTools.filter((t) => t.id !== meta.id);
+  return candidates
+    .map((t) => ({ tool: t, score: similarityScore(meta, t) }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || Math.random() - 0.5)
+    .slice(0, limit)
+    .map(({ tool }) => tool);
 }

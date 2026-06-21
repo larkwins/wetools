@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'SQL → Go Struct', description: '从 CREATE TABLE 语句生成 Go 结构体，支持 gorm / db tag。' },
     en: { title: 'SQL → Go Struct', description: 'Generate Go structs from CREATE TABLE statements with gorm / db tags.' },
   },
-  keywords: ['sql', 'go', 'golang', 'struct', 'gorm', 'codegen', 'ddl'],
+  keywords: ['sql', 'golang', 'struct', '数据库', '代码'],
   privacy: 'local',
 };

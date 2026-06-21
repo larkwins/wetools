@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'Unicode 转义', description: '\\uXXXX 与原文互转，支持非 BMP 代理对。' },
     en: { title: 'Unicode Escape', description: 'Convert between text and \\uXXXX escape forms.' },
   },
-  keywords: ['unicode', 'escape', '\\u', '转义'],
+  keywords: ['unicode', '编码', '转义', '字符'],
   privacy: 'local',
 };

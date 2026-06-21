@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'Cron 解析', description: '人类可读描述 + 接下来 N 次执行时间。' },
     en: { title: 'Cron Parser', description: 'Human-readable description and next N runs.' },
   },
-  keywords: ['cron', 'schedule', '定时'],
+  keywords: ['cron', '定时任务', '时间', '调度'],
   privacy: 'local',
 };

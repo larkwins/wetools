@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'Keycode 速查', description: '按下任意键，显示 event.key / code / keyCode / which。' },
     en: { title: 'Keycode Info', description: 'Press any key to see its event.key / code / keyCode / which value.' },
   },
-  keywords: ['keycode', 'keyboard', 'event', '键码'],
+  keywords: ['键码', '键盘', '设备', '输入'],
   privacy: 'local',
 };

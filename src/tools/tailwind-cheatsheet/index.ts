@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'Tailwind 速查', description: '搜索 Tailwind 常用 utility 类，复制即用。' },
     en: { title: 'Tailwind Cheatsheet', description: 'Search common Tailwind utilities and copy.' },
   },
-  keywords: ['tailwind', 'cheatsheet', 'utility', 'css'],
+  keywords: ['tailwind', 'css', '前端', 'web', '速查'],
   privacy: 'local',
 };

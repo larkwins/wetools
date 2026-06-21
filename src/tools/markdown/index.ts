@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'Markdown 预览', description: '实时渲染 Markdown，输出 HTML 已 sanitize。' },
     en: { title: 'Markdown Preview', description: 'Live Markdown rendering with sanitized HTML output.' },
   },
-  keywords: ['markdown', 'md', 'preview'],
+  keywords: ['markdown', 'html', '文本', '富文本'],
   privacy: 'local',
 };

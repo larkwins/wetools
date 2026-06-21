@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'XML 格式化 / 压缩', description: '美化或压缩 XML，可调缩进。' },
     en: { title: 'XML Format / Minify', description: 'Beautify or minify XML with configurable indent.' },
   },
-  keywords: ['xml', 'format', 'beautify', 'minify'],
+  keywords: ['xml', '格式化', '数据'],
   privacy: 'local',
 };

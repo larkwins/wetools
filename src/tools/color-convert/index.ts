@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '颜色转换', description: 'HEX / RGB / HSL / HSV 互转，附带预览块。' },
     en: { title: 'Color Convert', description: 'Convert between HEX / RGB / HSL / HSV with preview.' },
   },
-  keywords: ['color', 'hex', 'rgb', 'hsl', 'hsv', '颜色'],
+  keywords: ['颜色', 'rgb', 'hex', '前端', 'css', '设计'],
   privacy: 'local',
 };

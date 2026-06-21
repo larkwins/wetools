@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '正则表达式', description: '高亮匹配、分组提取、替换预览，附常见正则速查。' },
     en: { title: 'Regex Tester', description: 'Highlight matches, extract groups, preview replacements.' },
   },
-  keywords: ['regex', 'regexp', '正则', '正则表达式', 'match'],
+  keywords: ['regex', 'regexp', '正则表达式', '文本', '字符串'],
   privacy: 'local',
 };

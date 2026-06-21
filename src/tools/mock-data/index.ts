@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'Mock 假数据', description: '一键生成姓名 / 邮箱 / 电话 / 地址等 JSON 假数据。' },
     en: { title: 'Mock Data', description: 'Generate fake names / emails / phones / addresses as JSON.' },
   },
-  keywords: ['mock', 'fake', '假数据', 'faker'],
+  keywords: ['mock', '假数据', '测试数据', '开发', '数据'],
   privacy: 'local',
 };

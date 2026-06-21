@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '图片 ↔ Base64', description: '图片与 Data URL 互转，方便嵌入 CSS / HTML。' },
     en: { title: 'Image ↔ Base64', description: 'Convert image to/from base64 data URL.' },
   },
-  keywords: ['image', 'base64', 'data', 'url'],
+  keywords: ['image', 'base64', '图片', '编码'],
   privacy: 'local',
 };

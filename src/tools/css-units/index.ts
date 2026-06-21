@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'CSS 单位换算', description: 'px / rem / em / vw / vh / pt 互转，可设根字号与视口宽。' },
     en: { title: 'CSS Units Convert', description: 'Convert px / rem / em / vw / vh / pt with custom base.' },
   },
-  keywords: ['css', 'px', 'rem', 'em', 'vw', '单位'],
+  keywords: ['css', '单位', '前端', 'web', '数字'],
   privacy: 'local',
 };

@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'UA 解析', description: '解析 User-Agent，识别浏览器、引擎、OS、设备类型。' },
     en: { title: 'UA Parser', description: 'Parse User-Agent into browser / engine / OS / device.' },
   },
-  keywords: ['user-agent', 'ua', 'browser', 'os'],
+  keywords: ['user-agent', 'ua', '浏览器', '操作系统', '设备'],
   privacy: 'local',
 };

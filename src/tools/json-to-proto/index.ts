@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'JSON → Protobuf', description: '从任意 JSON 推导出 Protobuf 3 message 定义。' },
     en: { title: 'JSON → Protobuf', description: 'Generate Protobuf 3 message definitions from any JSON.' },
   },
-  keywords: ['json', 'proto', 'protobuf', 'message', 'codegen'],
+  keywords: ['json', 'protobuf', 'struct', '代码', '数据'],
   privacy: 'local',
 };

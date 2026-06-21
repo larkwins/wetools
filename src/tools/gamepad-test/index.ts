@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '游戏手柄检测', description: '检测连接的游戏手柄，实时显示按键、扳机、摇杆状态。' },
     en: { title: 'Gamepad Test', description: 'Detect connected gamepads, show buttons / triggers / axes in real-time.' },
   },
-  keywords: ['gamepad', 'controller', 'joystick', '手柄', 'xbox'],
+  keywords: ['手柄', '游戏手柄', '设备', '输入'],
   privacy: 'local',
 };

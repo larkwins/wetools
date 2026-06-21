@@ -8,7 +8,7 @@ export const meta: ToolMeta = {
     zh: { title: 'JSON → TypeScript', description: '从任意 JSON 生成 TypeScript Interface / Type 定义。' },
     en: { title: 'JSON → TypeScript', description: 'Generate TypeScript interfaces from any JSON.' },
   },
-  keywords: ['json', 'typescript', 'interface', 'ts'],
+  keywords: ['json', 'typescript', '代码', '数据'],
   tags: ['new'],
   privacy: 'local',
 };

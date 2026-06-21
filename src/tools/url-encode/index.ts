@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'URL 编解码', description: 'encodeURIComponent / decodeURIComponent，按行批量处理。' },
     en: { title: 'URL Encode/Decode', description: 'Encode/decode URI components, line-batch supported.' },
   },
-  keywords: ['url', 'encode', 'decode', 'uri', 'percent'],
+  keywords: ['url', 'uri', '编码', '网络'],
   privacy: 'local',
 };

@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: 'JSON ↔ XML', description: '在 JSON 与 XML 之间互转，可调缩进、根元素名。' },
     en: { title: 'JSON ↔ XML', description: 'Convert between JSON and XML with custom indent & root.' },
   },
-  keywords: ['json', 'xml', 'convert', '互转'],
+  keywords: ['json', 'xml', '数据'],
   privacy: 'local',
 };

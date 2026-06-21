@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '罗马数字转换', description: '阿拉伯数字与罗马数字互转（1 - 3999）。' },
     en: { title: 'Roman Numeral Converter', description: 'Convert between Arabic and Roman numerals (1 - 3999).' },
   },
-  keywords: ['roman', '罗马', 'numeral', 'mcmxcix'],
+  keywords: ['罗马数字', '数字', '数学'],
   privacy: 'local',
 };

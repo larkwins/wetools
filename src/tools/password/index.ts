@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '随机密码', description: '可配置字符集、长度、批量生成；可排除易混淆字符。' },
     en: { title: 'Random Password', description: 'Configurable charset, length, batch — exclude look-alikes.' },
   },
-  keywords: ['password', '密码', 'random', 'secure'],
+  keywords: ['password', '密码', '安全', '随机'],
   privacy: 'local',
 };

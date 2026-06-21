@@ -8,7 +8,7 @@ export const meta: ToolMeta = {
     zh: { title: 'JSON 格式化 / 校验', description: '美化、压缩、转义 JSON，错误位置精确提示。' },
     en: { title: 'JSON Format / Validate', description: 'Beautify, minify, escape JSON with precise error position.' },
   },
-  keywords: ['json', 'format', 'beautify', 'minify', 'validate', '格式化', '校验'],
+  keywords: ['json', '格式化', '数据'],
   tags: ['hot'],
   privacy: 'local',
 };

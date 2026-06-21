@@ -8,6 +8,6 @@ export const meta: ToolMeta = {
     zh: { title: '时区换算', description: '一个时间，多地查看；支持自定义时区列表。' },
     en: { title: 'Timezone Convert', description: 'View a single moment across many timezones.' },
   },
-  keywords: ['timezone', 'tz', '时区'],
+  keywords: ['timezone', '时区', '时间', '日期'],
   privacy: 'local',
 };

@@ -14,6 +14,6 @@ export const meta: ToolMeta = {
       description: 'Generate solid / gradient placeholder images. Download PNG / SVG with custom text & colors.',
     },
   },
-  keywords: ['placeholder', 'dummy', 'image', 'svg', 'png', '占位图', 'dummyimage'],
+  keywords: ['image', 'svg', 'png', '图片', '占位图'],
   privacy: 'local',
 };
