@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
 import { Download, Upload, AlertCircle, QrCode, ScanLine, Palette, X, Settings2 } from 'lucide-vue-next';
+import { storeToRefs } from 'pinia';
+import { useLocaleStore } from '@/stores/locale';
 import Textarea from '@/components/ui/Textarea.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
@@ -9,6 +11,8 @@ import type { QRTemplate } from '@/lib/qrcode';
 
 type Tab = 'generate' | 'decode';
 const tab = ref<Tab>('generate');
+
+const { locale } = storeToRefs(useLocaleStore());
 
 // ============ 预设配色方案 ============
 interface ColorPreset {
@@ -192,7 +196,7 @@ async function onPaste(e: ClipboardEvent) {
           tab === 'generate' ? 'bg-primary text-primary-foreground shadow-soft-sm' : 'text-muted-foreground hover:text-foreground']"
         @click="tab = 'generate'"
       >
-        <QrCode :size="14" />生成
+        <QrCode :size="14" />Generate
       </button>
       <button
         type="button"
@@ -200,7 +204,7 @@ async function onPaste(e: ClipboardEvent) {
           tab === 'decode' ? 'bg-primary text-primary-foreground shadow-soft-sm' : 'text-muted-foreground hover:text-foreground']"
         @click="tab = 'decode'"
       >
-        <ScanLine :size="14" />识别
+        <ScanLine :size="14" />Recognize
       </button>
     </div>
 
@@ -282,7 +286,7 @@ async function onPaste(e: ClipboardEvent) {
                   ? `background: linear-gradient(135deg, ${p.fg}, ${p.fg2})`
                   : `background: ${p.fg}`"
               />
-              <span class="text-xs text-muted-foreground whitespace-nowrap">{{ p.label }}</span>
+              <span :class="['text-muted-foreground whitespace-nowrap', p.gradient && locale === 'en' ? 'text-[10px]' : 'text-xs']">{{ p.label }}</span>
             </button>
           </div>
         </div>

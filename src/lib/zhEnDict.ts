@@ -516,6 +516,38 @@ export const zhToEnDict: Record<string, string> = {
   // '省' 单字易误伤（省份/省略），不收
   'CSS 示例': 'CSS example',
   '内容': 'Content',
+
+  // ---- QR Code 生成页 ----
+  '外观模板': 'Appearance',
+  '配色方案': 'Palette',
+  '自定义': 'Custom',
+  '定位点内层色': 'Finder inner color',
+  '定位点外层色': 'Finder outer color',
+  // 外观模板名
+  '水滴': 'Teardrop',
+  '融合': 'Smooth',
+  '矩形': 'Square',
+  '条形': 'Bar',
+  '六边形': 'Hexagon',
+  '菱形': 'Diamond',
+  '星形': 'Star',
+  '爱心': 'Heart',
+  '光斑': 'Spotlight',
+  '描边': 'Outline',
+  // 配色预设名
+  '经典黑': 'Black',
+  '海洋蓝': 'Blue',
+  '活力橙': 'Orange',
+  '森林绿': 'Green',
+  '浪漫粉': 'Pink',
+  '暗夜紫': 'Purple',
+  '贵族金': 'Gold',
+  '渐变黑灰': 'Gradient Black',
+  '渐变蓝紫': 'Gradient Purple',
+  '渐变橙红': 'Gradient Orange',
+  '渐变青绿': 'Gradient Green',
+  '渐变玫金': 'Gradient Rose',
+  '渐变靛蓝': 'Gradient Blue',
   '根接口名': 'Root interface name',
 
   // ============================================================
