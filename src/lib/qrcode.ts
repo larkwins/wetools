@@ -176,6 +176,75 @@ export async function generateQRCode(options: QRCodeOptions): Promise<string> {
         }
       }
       if (hasContent || Date.now() - startTime > 3000) {
+        // 若有 Logo，在 logo 四周绘制白色渐变过渡，logo 本身裁剪为圆角
+        if (logo) {
+          const logoSize = Math.ceil(canvas.width / 4);
+          const lx = (canvas.width - logoSize) / 2;
+          const ly = (canvas.height - logoSize) / 2;
+          const fadeSize = Math.ceil(canvas.width / 60);       // 渐变宽度
+          const radius   = Math.ceil(logoSize * 0.08);          // logo 圆角半径（小圆角）
+
+          // 圆角矩形路径
+          function roundRect(x: number, y: number, w: number, h: number, r: number) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.arcTo(x + w, y,     x + w, y + r,     r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+            ctx.lineTo(x + r, y + h);
+            ctx.arcTo(x,     y + h, x,     y + h - r, r);
+            ctx.lineTo(x, y + r);
+            ctx.arcTo(x,     y,     x + r, y,          r);
+            ctx.closePath();
+          }
+
+          // 1. 先保存 logo 区域像素
+          const logoPixels = ctx.getImageData(lx, ly, logoSize, logoSize);
+
+          // 2. 在扩展区域用径向渐变（中心白→边缘透明）绘制过渡晕圈
+          //    使用一个稍大的矩形区域，四条边各画渐变条
+          const ex = lx - fadeSize, ey = ly - fadeSize;
+          const ew = logoSize + fadeSize * 2, eh = logoSize + fadeSize * 2;
+
+          ctx.save();
+          // 用扩展圆角矩形作为 clip，防止渐变溢出
+          roundRect(ex, ey, ew, eh, radius + fadeSize);
+          ctx.clip();
+
+          // 上
+          { const g = ctx.createLinearGradient(0, ey, 0, ly);
+            g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(255,255,255,1)');
+            ctx.fillStyle = g; ctx.fillRect(ex, ey, ew, fadeSize); }
+          // 下
+          { const g = ctx.createLinearGradient(0, ly + logoSize, 0, ey + eh);
+            g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = g; ctx.fillRect(ex, ly + logoSize, ew, fadeSize); }
+          // 左
+          { const g = ctx.createLinearGradient(ex, 0, lx, 0);
+            g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(255,255,255,1)');
+            ctx.fillStyle = g; ctx.fillRect(ex, ly, fadeSize, logoSize); }
+          // 右
+          { const g = ctx.createLinearGradient(lx + logoSize, 0, ex + ew, 0);
+            g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = g; ctx.fillRect(lx + logoSize, ly, fadeSize, logoSize); }
+          // 中间纯白底（logo 区域本身）
+          ctx.fillStyle = 'rgba(255,255,255,1)';
+          ctx.fillRect(lx, ly, logoSize, logoSize);
+
+          ctx.restore();
+
+          // 3. 将 logo 以圆角矩形 clip 绘制回去
+          ctx.save();
+          roundRect(lx, ly, logoSize, logoSize, radius);
+          ctx.clip();
+          // 用临时 canvas 绘制 logo 像素再贴回
+          const tmpCanvas = document.createElement('canvas');
+          tmpCanvas.width = logoSize; tmpCanvas.height = logoSize;
+          tmpCanvas.getContext('2d')!.putImageData(logoPixels, 0, 0);
+          ctx.drawImage(tmpCanvas, lx, ly, logoSize, logoSize);
+          ctx.restore();
+        }
         resolve(canvas.toDataURL('image/png'));
       } else {
         requestAnimationFrame(tryExport);

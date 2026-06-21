@@ -97,7 +97,7 @@ export const siteDict = {
       usesExternal: '调用外部 API',
     },
     footer: {
-      copyright: (year: number) => `© ${year} WeTools · 开源 · 本地运行`,
+      copyright: (year: number) => `© ${year} WeTools · 100%本地运行的开发者工具箱`,
       about: '关于',
     },
     theme: {
@@ -146,7 +146,7 @@ export const siteDict = {
       usesExternal: '呼叫外部 API',
     },
     footer: {
-      copyright: (year: number) => `© ${year} WeTools · 開放原始碼 · 本地執行`,
+      copyright: (year: number) => `© ${year} WeTools · 本地執行`,
       about: '關於',
     },
     theme: {
@@ -196,7 +196,7 @@ export const siteDict = {
       usesExternal: 'Uses external API',
     },
     footer: {
-      copyright: (year: number) => `© ${year} WeTools · Open source · Runs locally`,
+      copyright: (year: number) => `© ${year} WeTools · Runs locally`,
       about: 'About',
     },
     theme: {

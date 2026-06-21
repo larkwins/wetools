@@ -11,7 +11,6 @@ const year = new Date().getFullYear();
       <span>{{ dict.footer.copyright(year) }}</span>
       <div class="flex items-center gap-4">
         <a href="/about" class="transition-colors hover:text-foreground">{{ dict.footer.about }}</a>
-        <a href="https://github.com" target="_blank" rel="noopener" class="transition-colors hover:text-foreground">{{ dict.nav.github }}</a>
       </div>
     </div>
   </footer>

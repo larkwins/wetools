@@ -2,7 +2,7 @@ import getAPI from '../method/DrawUtil.js';
 
 export default function(context,data,options){
     let len = data.length;
-    let margin = context.canvas.width*0.05;
+    let margin = context.canvas.width*0.02;
     let pxWidth = (context.canvas.width-2*margin)/len;
     let x = margin;
     let y = margin;

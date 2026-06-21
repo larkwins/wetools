@@ -94,6 +94,7 @@ export const zhToEnDict: Record<string, string> = {
   // —— SiteFooter / CommandPalette ——
   // ============================================================
   '· 开源 · 本地运行': ' · Open source · Runs locally',
+  '100%本地运行的开发者工具箱': '100% Local Developer Toolbox',
   // CommandPalette "共匹配 N 个工具" 三个文本节点（不用单字 '共' 避免误伤）
   '共匹配': 'Found',
   '个工具': 'tools',
