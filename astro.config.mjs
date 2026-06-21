@@ -102,6 +102,7 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': new URL('./src', import.meta.url).pathname,
+        '@third-party': new URL('./third-party', import.meta.url).pathname,
       },
     },
     // 工具组件通过 import.meta.glob 懒加载，Vite 的依赖扫描可能漏掉这些工具内的

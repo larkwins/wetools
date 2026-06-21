@@ -1,19 +1,24 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { Download, AlertCircle } from 'lucide-vue-next';
-import QRCode from 'qrcode';
 import Input from '@/components/ui/Input.vue';
 import Button from '@/components/ui/Button.vue';
 import CopyButton from '@/components/ui/CopyButton.vue';
+import { generateQRCode, downloadQRCode, QR_TEMPLATES } from '@/lib/qrcode';
+import type { QRTemplate } from '@/lib/qrcode';
 
 type Auth = 'WPA' | 'WEP' | 'nopass';
-const ssid = ref('MyWiFi');
-const password = ref('hunter2hunter2');
-const auth = ref<Auth>('WPA');
-const hidden = ref(false);
+const ssid      = ref('MyWiFi');
+const password  = ref('hunter2hunter2');
+const auth      = ref<Auth>('WPA');
+const hidden    = ref(false);
+const template  = ref<QRTemplate>('water');
+const fgColor   = ref('#000000');
+const bgColor   = ref('#ffffff');
 
-const error = ref('');
-const dataUrl = ref('');
+const error      = ref('');
+const dataUrl    = ref('');
+const generating = ref(false);
 
 // WiFi QR 协议格式：WIFI:T:WPA;S:<ssid>;P:<password>;H:true;;
 // 特殊字符 \;,":\ 需要用 \ 转义
@@ -30,33 +35,32 @@ const wifiString = computed(() => {
 
 async function render() {
   error.value = '';
+  generating.value = true;
   try {
-    dataUrl.value = await QRCode.toDataURL(wifiString.value, {
-      errorCorrectionLevel: 'M',
-      margin: 2,
-      scale: 8,
-      color: { dark: '#000000', light: '#ffffff' },
+    dataUrl.value = await generateQRCode({
+      value:           wifiString.value,
+      size:            400,
+      level:           'M',
+      template:        template.value,
+      foregroundColor: fgColor.value,
+      backgroundColor: bgColor.value,
     });
   } catch (e) {
     error.value = (e as Error).message || String(e);
+  } finally {
+    generating.value = false;
   }
 }
 
-watch(wifiString, render, { immediate: true });
+watch([wifiString, template, fgColor, bgColor], render, { immediate: true });
 
-function download() {
-  if (!dataUrl.value) return;
-  const a = document.createElement('a');
-  a.href = dataUrl.value;
-  a.download = `wifi-${ssid.value}.png`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+function onDownload() {
+  downloadQRCode(dataUrl.value, `wifi-${ssid.value}.png`);
 }
 
 const auths: Array<{ k: Auth; l: string }> = [
-  { k: 'WPA', l: 'WPA / WPA2 / WPA3' },
-  { k: 'WEP', l: 'WEP（已淘汰）' },
+  { k: 'WPA',    l: 'WPA / WPA2 / WPA3' },
+  { k: 'WEP',    l: 'WEP（已淘汰）' },
   { k: 'nopass', l: '无密码' },
 ];
 </script>
@@ -83,11 +87,41 @@ const auths: Array<{ k: Auth; l: string }> = [
       </label>
     </div>
 
+    <!-- 外观 -->
+    <div class="flex flex-col gap-2">
+      <label class="tool-section-title">外观模板</label>
+      <div class="flex flex-wrap gap-1.5">
+        <button
+          v-for="t in QR_TEMPLATES"
+          :key="t.value"
+          type="button"
+          :class="['h-7 rounded-md border px-2 text-xs transition-colors',
+            template === t.value
+              ? 'border-primary bg-primary text-primary-foreground'
+              : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground']"
+          @click="template = t.value"
+        >{{ t.label }}</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 sm:w-64">
+      <div class="flex flex-col gap-1.5">
+        <label class="tool-section-title">前景色</label>
+        <input v-model="fgColor" type="color" class="h-9 w-full rounded-md border bg-card cursor-pointer" />
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <label class="tool-section-title">背景色</label>
+        <input v-model="bgColor" type="color" class="h-9 w-full rounded-md border bg-card cursor-pointer" />
+      </div>
+    </div>
+
     <div class="grid gap-4 lg:grid-cols-[auto_1fr]">
       <div class="flex flex-col items-center gap-2 rounded-lg border bg-card p-4">
-        <img v-if="dataUrl" :src="dataUrl" alt="WiFi QR" class="w-64 h-64" />
-        <div v-else class="flex h-64 w-64 items-center justify-center text-muted-foreground">渲染中…</div>
-        <Button variant="primary" :disabled="!dataUrl" @click="download">
+        <div class="flex h-64 w-64 items-center justify-center overflow-hidden rounded">
+          <img v-if="dataUrl && !generating" :src="dataUrl" alt="WiFi QR" class="h-full w-full object-contain" />
+          <span v-else class="text-sm text-muted-foreground">渲染中…</span>
+        </div>
+        <Button variant="primary" :disabled="!dataUrl || generating" @click="onDownload">
           <Download :size="14" />下载 PNG
         </Button>
       </div>
