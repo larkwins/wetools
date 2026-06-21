@@ -24,6 +24,8 @@ const { locale } = storeToRefs(store);
 
 // 记录原始文本/属性，保证切回 zh-CN 能复原
 const originalsText = new WeakMap<Text, string>();
+// 记录我们上次写入该文本节点的译文，用于侦测 Vue 是否重新渲染过该节点
+const appliedText = new WeakMap<Text, string>();
 const originalsAttr = new WeakMap<Element, Record<string, string>>();
 let observer: MutationObserver | null = null;
 let pending = false;
@@ -88,14 +90,21 @@ function applyTextNodes(loc: typeof locale.value) {
   let n: Node | null;
   while ((n = walker.nextNode())) {
     const tn = n as Text;
-    const orig = originalsText.get(tn) ?? tn.nodeValue ?? '';
-    if (!originalsText.has(tn)) originalsText.set(tn, orig);
+    const current = tn.nodeValue ?? '';
+    // 若当前值与我们上次写入的译文不同，说明 Vue 重新渲染了该节点 → 重新捕获原文，
+    // 避免把 Vue 动态更新后的文本（如状态由"未连接"变为"已连接"）回写成旧缓存值。
+    const last = appliedText.get(tn);
+    if (last === undefined || current !== last) originalsText.set(tn, current);
+    const orig = originalsText.get(tn) ?? current;
+
     if (!hasCJK(orig) && loc !== 'zh-TW') {
       if (tn.nodeValue !== orig) tn.nodeValue = orig;
+      appliedText.set(tn, orig);
       continue;
     }
     const next = transform(orig, loc);
     if (tn.nodeValue !== next) tn.nodeValue = next;
+    appliedText.set(tn, next);
   }
 }
 
@@ -109,8 +118,16 @@ function applyAttrs(loc: typeof locale.value) {
         cache = {};
         originalsAttr.set(el, cache);
       }
-      const orig = cache[attr] ?? el.getAttribute(attr) ?? '';
+      const current = el.getAttribute(attr) ?? '';
+      const orig = cache[attr] ?? current;
       if (!(attr in cache)) cache[attr] = orig;
+
+      // zh-CN：不改写属性值，仅同步缓存
+      if (loc === 'zh-CN') {
+        if (cache[attr] !== current) cache[attr] = current;
+        return;
+      }
+
       if (!hasCJK(orig) && loc !== 'zh-TW') {
         if (el.getAttribute(attr) !== orig) el.setAttribute(attr, orig);
         return;

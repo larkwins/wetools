@@ -14,16 +14,14 @@ interface LogEntry {
   text: string;
 }
 
-// 默认使用 Postman 的官方 echo（更稳定）；echo.websocket.events 偶尔会握手失败。
-const url = ref('wss://ws.postman-echo.com/raw');
+// 默认使用 websocket.org 的官方 echo。
+const url = ref('wss://echo.websocket.org');
 const protocols = ref('');
 
 // 常用公共 echo / 测试服务预设
 const presets: Array<{ url: string; label: string }> = [
+  { url: 'wss://echo.websocket.org', label: 'WebSocket.org' },
   { url: 'wss://ws.postman-echo.com/raw', label: 'Postman Echo' },
-  { url: 'wss://echo.websocket.events', label: 'Lob Echo' },
-  { url: 'wss://socketsbay.com/wss/v2/1/demo/', label: 'Socketsbay' },
-  { url: 'wss://stream.binance.com:9443/ws/btcusdt@trade', label: 'Binance BTC trades' },
 ];
 const status = ref<Status>('idle');
 const messageInput = ref('Hello, WeTools');
@@ -86,14 +84,16 @@ function connect() {
     const protos = protocols.value.trim()
       ? protocols.value.split(',').map((s) => s.trim()).filter(Boolean)
       : undefined;
-    ws = protos ? new WebSocket(u, protos) : new WebSocket(u);
+    const currentWs = protos ? new WebSocket(u, protos) : new WebSocket(u);
+    ws = currentWs;
     ws.binaryType = 'arraybuffer';
 
-    ws.onopen = () => {
+    currentWs.onopen = () => {
       status.value = 'open';
-      log('info', `已连接（${ws?.protocol ? '子协议: ' + ws.protocol : '无子协议'}）`);
+      log('info', `已连接（${currentWs.protocol ? '子协议: ' + currentWs.protocol : '无子协议'}）`);
     };
-    ws.onmessage = (e: MessageEvent) => {
+    currentWs.onmessage = (e: MessageEvent) => {
+      if (ws !== currentWs) return;
       let text: string;
       if (typeof e.data === 'string') {
         text = e.data;
@@ -105,15 +105,17 @@ function connect() {
       }
       log('recv', text);
     };
-    ws.onerror = () => {
+    currentWs.onerror = () => {
+      if (ws !== currentWs) return;
       status.value = 'error';
       log('error', '连接错误（浏览器出于安全考虑不会暴露具体原因，常见情况见下方说明）');
     };
-    ws.onclose = (e) => {
+    currentWs.onclose = (e) => {
+      if (ws !== currentWs) return;
+      ws = null;
       status.value = 'closed';
       const codeDesc = describeCloseCode(e.code);
       log('info', `已关闭（code=${e.code}${codeDesc ? ' · ' + codeDesc : ''}${e.reason ? ', reason=' + e.reason : ''}）`);
-      ws = null;
     };
   } catch (e) {
     status.value = 'error';
@@ -123,11 +125,16 @@ function connect() {
 
 function disconnect() {
   if (!ws) return;
-  try {
-    ws.close(1000, 'client closed');
-  } catch {/* ignore */}
+  const closing = ws;
   ws = null;
   status.value = 'closed';
+  try {
+    closing.onopen = null;
+    closing.onmessage = null;
+    closing.onerror = null;
+    closing.onclose = null;
+    closing.close(1000, 'client closed');
+  } catch {/* ignore */}
 }
 
 function send() {

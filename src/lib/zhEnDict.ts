@@ -841,6 +841,13 @@ export const zhToEnDict: Record<string, string> = {
   '连接中': 'Connecting',
   '已关闭': 'Closed',
   '未连接': 'Disconnected',
+  // WebSocket 运行日志（动态拼接，需整段 / 前缀覆盖，配合文末全角括号转换）
+  '正在连接': 'Connecting',
+  '已连接（无子协议）': 'Connected (no subprotocol)',
+  '已连接（子协议: ': 'Connected (subprotocol: ',
+  '已关闭（code=': 'Closed (code=',
+  '创建 WebSocket 失败：': 'Failed to create WebSocket: ',
+  '发送失败：': 'Send failed: ',
 
   // Placeholder Image
   '宽度 (px)': 'Width (px)',
@@ -1360,6 +1367,14 @@ export const zhToEnDict: Record<string, string> = {
   '抖动': 'Jitter',
   '游戏延迟 < 50ms 极佳、50-100ms 良好、> 150ms 偏高；视频会议下载 > 5 Mbps、上传 > 1 Mbps 即可流畅。':
     'Gaming latency: < 50ms excellent, 50-100ms good, > 150ms high. Video calls: download > 5 Mbps and upload > 1 Mbps for smooth quality.',
+
+  // ============================================================
+  // —— 全角标点 → 半角（最短 key，排序在最后执行）——
+  // 用于清理动态拼接文本中残留的全角括号，使英文输出更自然。
+  // 长短语已在前面优先替换，此处仅处理残余的孤立括号。
+  // ============================================================
+  '（': '(',
+  '）': ')',
 };
 
 /**
