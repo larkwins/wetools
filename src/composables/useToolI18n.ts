@@ -128,23 +128,28 @@ export function useToolI18n(opts: Options = {}) {
     if (!root) return;
     if (locale.value === 'zh-TW') await waitOpenCC();
     if (locale.value === 'en') await waitZhEnReady();
+    // 执行翻译期间暂停 observer，防止 nodeValue 修改触发 mutation → 无限循环
+    observer?.disconnect();
     applyTextNodes(root, locale.value);
     applyAttrs(root, locale.value);
+    // 翻译完成后重新接入 observer（监听后续 Vue 动态渲染的新节点）
+    setupObserver(root);
   }
 
   function setupObserver(root: HTMLElement) {
     observer?.disconnect();
     observer = new MutationObserver((mutations) => {
-      // 全部 mutation 都来自跳过子树（如 CodeMirror 频繁变更）则直接 return，
-      // 避免无效的微任务调度
       const hasRelevant = mutations.some((m) => !isInSkipped(m.target));
       if (!hasRelevant) return;
       if (pending) return;
       pending = true;
       Promise.resolve().then(() => {
         pending = false;
+        // 暂停 observer，防止翻译写入触发新的 mutation 循环
+        observer?.disconnect();
         applyTextNodes(root, locale.value);
         applyAttrs(root, locale.value);
+        setupObserver(root);
       });
     });
     observer.observe(root, {
