@@ -143,7 +143,7 @@ const progress = computed(() => (remaining.value / period.value) * 100);
         <label class="tool-section-title">otpauth:// URI（导入到 Authenticator）</label>
         <CopyButton :text="otpAuthUri" icon-only />
       </div>
-      <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ otpAuthUri }}</code></pre>
+      <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs" data-no-i18n><code>{{ otpAuthUri }}</code></pre>
     </div>
 
     <p class="text-xs text-muted-foreground">

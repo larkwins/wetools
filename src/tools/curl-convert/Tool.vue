@@ -61,7 +61,7 @@ const result = computed(() => {
 
       <details class="rounded-lg border bg-card/40 p-3 text-xs">
         <summary class="cursor-pointer font-medium text-muted-foreground">解析结果</summary>
-        <pre class="mt-2 overflow-x-auto font-mono">{{ JSON.stringify(result.parsed, null, 2) }}</pre>
+        <pre class="mt-2 overflow-x-auto font-mono" data-no-i18n>{{ JSON.stringify(result.parsed, null, 2) }}</pre>
       </details>
     </template>
   </div>

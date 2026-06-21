@@ -71,7 +71,7 @@ function fields(d: Record<string, any>) {
     </p>
 
     <div v-if="data" class="grid gap-4 lg:grid-cols-[2fr_1fr]">
-      <ul class="space-y-1">
+      <ul class="space-y-1" data-no-i18n>
         <li v-for="f in fields(data)" :key="f.k" class="flex items-center gap-3 rounded-md border bg-card px-3 py-2">
           <span class="w-24 shrink-0 font-mono text-xs text-muted-foreground">{{ f.k }}</span>
           <span class="flex-1 truncate font-mono text-sm">{{ f.v }}</span>
@@ -84,7 +84,7 @@ function fields(d: Record<string, any>) {
           <p class="text-xs font-medium text-muted-foreground">原始 JSON</p>
           <CopyButton :text="JSON.stringify(data, null, 2)" icon-only />
         </div>
-        <pre class="code-area mt-2 overflow-auto text-[11px] leading-5">{{ JSON.stringify(data, null, 2) }}</pre>
+        <pre class="code-area mt-2 overflow-auto text-[11px] leading-5" data-no-i18n>{{ JSON.stringify(data, null, 2) }}</pre>
       </div>
     </div>
   </div>

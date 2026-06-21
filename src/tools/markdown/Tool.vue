@@ -66,6 +66,7 @@ const html = computed(() => {
         <article
           class="prose-md min-h-[400px] rounded-md border bg-card p-5"
           v-html="html"
+          data-no-i18n
         />
       </div>
     </div>

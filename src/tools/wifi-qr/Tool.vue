@@ -118,7 +118,7 @@ const auths: Array<{ k: Auth; l: string }> = [
     <div class="grid gap-4 lg:grid-cols-[auto_1fr]">
       <div class="flex flex-col items-center gap-2 rounded-lg border bg-card p-4">
         <div class="flex h-64 w-64 items-center justify-center overflow-hidden rounded">
-          <img v-if="dataUrl && !generating" :src="dataUrl" alt="WiFi QR" class="h-full w-full object-contain" />
+          <img v-if="dataUrl && !generating" :src="dataUrl" alt="WiFi QR" class="h-full w-full object-contain" data-no-i18n />
           <span v-else class="text-sm text-muted-foreground">渲染中…</span>
         </div>
         <Button variant="primary" :disabled="!dataUrl || generating" @click="onDownload">
@@ -130,7 +130,7 @@ const auths: Array<{ k: Auth; l: string }> = [
           <label class="tool-section-title">WiFi 编码字符串</label>
           <CopyButton :text="wifiString" icon-only />
         </div>
-        <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ wifiString }}</code></pre>
+        <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs" data-no-i18n><code>{{ wifiString }}</code></pre>
         <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive">
           <AlertCircle :size="12" />{{ error }}
         </p>

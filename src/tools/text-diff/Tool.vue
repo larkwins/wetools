@@ -77,7 +77,7 @@ function swap() {
 
     <section>
       <h3 class="mb-2 tool-section-title">差异</h3>
-      <pre class="code-area whitespace-pre-wrap break-words rounded-md border bg-card p-4 leading-7"><span v-for="(p, i) in parts" :key="i" :class="p.added ? 'rounded bg-primary/15 text-primary' : p.removed ? 'rounded bg-destructive/15 text-destructive line-through decoration-destructive/40' : 'text-foreground'">{{ p.value }}</span></pre>
+      <pre class="code-area whitespace-pre-wrap break-words rounded-md border bg-card p-4 leading-7" data-no-i18n><span v-for="(p, i) in parts" :key="i" :class="p.added ? 'rounded bg-primary/15 text-primary' : p.removed ? 'rounded bg-destructive/15 text-destructive line-through decoration-destructive/40' : 'text-foreground'">{{ p.value }}</span></pre>
     </section>
   </div>
 </template>

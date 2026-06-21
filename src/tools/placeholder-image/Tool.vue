@@ -241,7 +241,7 @@ function applySize(s: typeof sizes[number]) {
         </div>
       </div>
       <div class="flex max-h-[500px] items-center justify-center overflow-auto rounded-lg border bg-[linear-gradient(45deg,hsl(var(--muted)/.5)_25%,transparent_25%),linear-gradient(-45deg,hsl(var(--muted)/.5)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,hsl(var(--muted)/.5)_75%),linear-gradient(-45deg,transparent_75%,hsl(var(--muted)/.5)_75%)] bg-[length:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0] p-4">
-        <img :src="dataUrl" :alt="displayText" class="max-w-full" :style="{ maxHeight: '460px' }" />
+        <img :src="dataUrl" :alt="displayText" class="max-w-full" :style="{ maxHeight: '460px' }" data-no-i18n />
       </div>
     </div>
 
@@ -266,7 +266,7 @@ function applySize(s: typeof sizes[number]) {
           <label class="tool-section-title">SVG 源码</label>
           <CopyButton :text="svgString" icon-only />
         </div>
-        <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ svgString }}</code></pre>
+        <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs" data-no-i18n><code>{{ svgString }}</code></pre>
       </div>
 
       <!-- Data URL -->
@@ -275,7 +275,7 @@ function applySize(s: typeof sizes[number]) {
           <label class="tool-section-title">Data URL（&lt;img src&gt; / CSS background）</label>
           <CopyButton :text="dataUrl" icon-only />
         </div>
-        <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ dataUrl }}</code></pre>
+        <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs" data-no-i18n><code>{{ dataUrl }}</code></pre>
       </div>
 
       <!-- CSS background-image -->
@@ -284,7 +284,7 @@ function applySize(s: typeof sizes[number]) {
           <label class="tool-section-title">CSS background-image</label>
           <CopyButton :text="`background-image: ${cssUrl};`" icon-only />
         </div>
-        <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>background-image: {{ cssUrl }};</code></pre>
+        <pre class="max-h-40 overflow-auto rounded-md border bg-card p-3 font-mono text-xs" data-no-i18n><code>background-image: {{ cssUrl }};</code></pre>
       </div>
     </div>
 

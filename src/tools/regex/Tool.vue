@@ -278,6 +278,7 @@ const matchesAsText = computed(() => matches.value.map((m) => m.match).join('\n'
       <div
         class="min-h-[120px] whitespace-pre-wrap break-words rounded-md border bg-card p-3 font-mono text-[13px] leading-[20px]"
         v-html="highlighted"
+        data-no-i18n
       />
 
       <!-- 匹配列表 -->

@@ -63,7 +63,7 @@ const fetchSnippet = computed(() => {
         <label class="tool-section-title">cURL</label>
         <CopyButton :text="curlSnippet" icon-only />
       </div>
-      <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ curlSnippet || '—' }}</code></pre>
+      <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs" data-no-i18n><code>{{ curlSnippet || '—' }}</code></pre>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -71,7 +71,7 @@ const fetchSnippet = computed(() => {
         <label class="tool-section-title">JavaScript fetch</label>
         <CopyButton :text="fetchSnippet" icon-only />
       </div>
-      <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ fetchSnippet || '—' }}</code></pre>
+      <pre class="overflow-auto rounded-md border bg-card p-3 font-mono text-xs" data-no-i18n><code>{{ fetchSnippet || '—' }}</code></pre>
     </div>
 
     <p class="text-xs text-muted-foreground">

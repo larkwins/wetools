@@ -90,6 +90,6 @@ generate();
       <CopyButton :text="list.join('\n')" icon-only />
     </div>
 
-    <pre class="max-h-96 overflow-auto rounded-lg border bg-card p-3 font-mono text-xs"><code>{{ list.join('\n') }}</code></pre>
+    <pre class="max-h-96 overflow-auto rounded-lg border bg-card p-3 font-mono text-xs" data-no-i18n><code>{{ list.join('\n') }}</code></pre>
   </div>
 </template>

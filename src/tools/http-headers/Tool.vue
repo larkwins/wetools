@@ -167,7 +167,7 @@ const typeLabel: Record<HeaderRow['type'], string> = {
           <span :class="['rounded px-1.5 py-0.5 text-[10px] font-medium', typeBadge[h.type]]">{{ typeLabel[h.type] }}</span>
         </div>
         <p class="text-xs leading-relaxed text-muted-foreground">{{ h.desc }}</p>
-        <pre v-if="h.example" class="overflow-x-auto rounded bg-secondary/50 px-2 py-1 font-mono text-[11px] text-foreground/90"><code>{{ h.example }}</code></pre>
+        <pre v-if="h.example" class="overflow-x-auto rounded bg-secondary/50 px-2 py-1 font-mono text-[11px] text-foreground/90" data-no-i18n><code>{{ h.example }}</code></pre>
       </div>
     </div>
   </div>

@@ -71,7 +71,7 @@ function fmtSize() {
       </label>
 
       <div v-if="dataUrl" class="rounded-lg border bg-card p-3">
-        <img :src="dataUrl" alt="preview" class="mx-auto max-h-64 object-contain" />
+        <img :src="dataUrl" alt="preview" class="mx-auto max-h-64 object-contain" data-no-i18n />
         <p class="mt-2 text-center text-xs text-muted-foreground">{{ previewMime }} · {{ fmtSize() }}</p>
       </div>
 
@@ -92,7 +92,7 @@ function fmtSize() {
 
       <div v-if="cssExample" class="mt-2">
         <label class="tool-section-title">CSS 示例</label>
-        <pre class="code-area mt-1 rounded-md border bg-muted/40 p-3">{{ cssExample }}</pre>
+        <pre class="code-area mt-1 rounded-md border bg-muted/40 p-3" data-no-i18n>{{ cssExample }}</pre>
       </div>
     </section>
   </div>

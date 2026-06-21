@@ -101,7 +101,7 @@ watch([text, font], render);
         </label>
         <CopyButton :text="result" icon-only />
       </div>
-      <pre class="overflow-auto rounded-lg border bg-card p-4 font-mono text-[11px] leading-tight"><code>{{ result || '请输入文本' }}</code></pre>
+      <pre class="overflow-auto rounded-lg border bg-card p-4 font-mono text-[11px] leading-tight" data-no-i18n><code>{{ result || '请输入文本' }}</code></pre>
     </div>
 
     <p v-if="error" class="flex items-center gap-1.5 text-xs text-destructive">

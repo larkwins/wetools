@@ -121,7 +121,7 @@ function recompress() {
 
     <ul v-if="items.length" class="space-y-2">
       <li v-for="(it, i) in items" :key="i" class="flex items-center gap-3 rounded-md border bg-card p-3">
-        <img :src="it.originUrl" class="h-16 w-16 rounded object-cover" alt="" />
+        <img :src="it.originUrl" class="h-16 w-16 rounded object-cover" alt="" data-no-i18n />
         <div class="flex-1 min-w-0 space-y-1">
           <p class="truncate text-sm font-medium">{{ it.origin.name }}</p>
           <p class="font-mono text-xs text-muted-foreground">

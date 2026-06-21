@@ -101,13 +101,13 @@ const meta = computed(() => {
         <label class="tool-section-title">Meta 标签代码</label>
         <CopyButton :text="meta" icon-only />
       </div>
-      <pre class="max-h-96 overflow-auto rounded-md border bg-card p-3 font-mono text-xs"><code>{{ meta }}</code></pre>
+      <pre class="max-h-96 overflow-auto rounded-md border bg-card p-3 font-mono text-xs" data-no-i18n><code>{{ meta }}</code></pre>
     </div>
 
     <div class="rounded-lg border bg-card p-4">
       <p class="mb-2 tool-section-title">社交分享预览</p>
       <div class="flex flex-col gap-2 sm:flex-row sm:items-start">
-        <img v-if="image" :src="image" :alt="title" class="h-32 w-56 flex-none rounded border object-cover" @error="(e) => ((e.target as HTMLImageElement).style.display = 'none')" />
+        <img v-if="image" :src="image" :alt="title" class="h-32 w-56 flex-none rounded border object-cover" data-no-i18n @error="(e) => ((e.target as HTMLImageElement).style.display = 'none')" />
         <div class="min-w-0 flex-1">
           <p class="truncate text-xs text-muted-foreground">{{ url }}</p>
           <p class="mt-0.5 line-clamp-2 text-sm font-semibold">{{ title }}</p>
